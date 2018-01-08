@@ -1,0 +1,116 @@
+# clone Molpro code into the "molpro-pauli" directory:
+git clone git@www.molpro.net:Molpro molpro-pauli
+
+# this can be simplified by the "~/.ssh/config" configuration (provided the Molpro ssh private key is in "~/.ssh/id_rsa.molpro" and the corresponding ssh public key is in "~/.ssh/id_rsa.molpro.pub":
+--------------------------------------------------------------------------------
+# Molpro
+Host molpro
+User git
+HostName www.molpro.net
+IdentityFile ~/.ssh/id_rsa.molpro
+--------------------------------------------------------------------------------
+
+# the key which is not in the standard location (as above) won't be seen by the Molpro git repo unless it has been added to the ssh-agent which normally isn't started on boot − add the following lines to your "~/.bash_profile":
+--------------------------------------------------------------------------------
+# ssh keys for Molpro git repo
+trap '[[ -n $SSH_AGENT_PID ]] && eval $(ssh-agent -k &> /dev/null)' 0
+eval $(ssh-agent)
+ssh-add ~/.ssh/id_rsa.molpro &> /dev/null
+--------------------------------------------------------------------------------
+
+# then the command to get Molpro reads:
+git clone molpro:Molpro molpro-pauli
+
+# patch the molpro tree:
+cd molpro-pauli
+git pull
+
+# restore deleted files (e.g. "lib/variable.registry") from a server:
+git checkout # lists deleted files
+git checkout path/file # from the list above
+
+# list branches: all, local, remote ones:
+git branch -a
+git branch -l
+git branch -r
+
+# switch to a "2002.6" branch:
+git checkout 2002.6
+
+# create a local "2012" branch to track a remote "origin/2012.1" branch:
+git checkout -b 2012 origin/2012.1
+
+# delete a local "2012" branch (first you need to switch to another branch):
+git checkout master
+git branch -D 2012
+
+# copy an "a.F90" file from a "source_br" branch into the "working_br" branch:
+git checkout working_br # if not already at working_br
+git checkout source_br a.F90
+
+# git operates on three levels:
+# (A) working dir → (B) staging area (index) → (C) git repo
+#	(A) is where we actually modify files
+#	(B) collects info on what will go in the next commit
+#	(C) collects all the data which will be copied with git clone
+# show changes between (A) and (B), so the changes from last commit which are not yet staged for a commit:
+git diff
+# show changes between (B) and (C), so what's been added to the index but not yet committed:
+git diff --cached
+git diff --staged
+# show changes between (A) and (C), so the changes from last commit:
+git diff HEAD
+
+# discard changes on a file in a working dir:
+git checkout -- file.F90
+
+# undo changes (e.g. "git pull" which led to merge conflicts):
+git reset --hard HEAD
+
+# find a commit which introduced a bug:
+git bisect start
+git bisect bad
+git bisect good good_commit_name
+# compile, check if OK, then issue
+git bisect good # works OK
+# or
+git bisect bad # doesn't work
+# or
+git bisect skip # can't say, e.g. the revision doesn't compile
+# see the current commit:
+git show HEAD
+# continue until there are no more revisions to bisect, you'll be on the revision which first broke the code
+# save the bisecting log:
+git bisect log > bisect_log
+# quit bisecting and go back to the previous state:
+git bisect reset
+
+# create a git repo for a working project:
+# go to the working dir of your project and
+git init
+# create a ".gitignore" file with the filter rules, then
+git add .
+git commit -m "initial commit"
+# possibly, you want to create a branch which you'd like to share through the remote git repo:
+git checkout shared_br
+# ssh to your cluster and initialize a bare git repo in some dir:
+cd ~/git-repos/work-repo.git
+git init --bare
+# it might be useful to add the name of the server to your "~/.ssh/config", say my_cluster
+# go back to your working dir and add the remote source at my_cluster:
+git remote add my_repo my_cluster:git-repos/work-repo.git
+# checkout your working branch and push it to the remote repo:
+git checkout shared_br
+git push -u my_repo shared_br
+# now you've got a history of your branch at the remote repo
+# you need to set the default clone branch at the remote repo:
+git symbolic-ref HEAD refs/heads/shared_br
+# now you can share your work with others, you can add their public keys to your cluster and ask people to
+git clone my_cluster:git-repos/work-repo.git my_work_dir
+# of course, my_cluster needs to be substituted with the full address if not configured at "~/.ssh/config"
+# when you've done some work with the files:
+git commit -a
+# write some info on your work, and then
+git push
+# or if you want to get the newest version from the repo:
+git pull

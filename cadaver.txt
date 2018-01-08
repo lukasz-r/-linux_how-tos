@@ -1,0 +1,5 @@
+# connecting to a remote server and putting the file index.html into it:
+cd ~/ou-www
+cadaver https://files.oakland.edu/users/bryant/
+put index.html
+# Remember that "remote" means the server you are connected to and "local" means your machine! That is why you use "put" for upload (local machine > remote server) and "get" for download (remote server > local machine)!

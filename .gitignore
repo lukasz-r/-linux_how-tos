@@ -1,0 +1,13 @@
+/*.pdf
+*.aux
+*.bcf
+*.bbl
+*.blg
+*.fdb*
+*.fls
+*.gz
+*.log
+*Notes.bib
+*.out
+*.toc
+*.xml

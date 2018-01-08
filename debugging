@@ -1,0 +1,11 @@
+# debugging with idb
+
+cd ~/molpro-dev/molpro-pauli/src/pauli/
+idbc
+file molpro.exe
+set args ~/molpro-jobs/test.inp
+run
+# then you can e.g. print p matrix:
+print p
+# print current frame:
+frame

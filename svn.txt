@@ -1,0 +1,12 @@
+# create svn repository:
+svn co https://svn.icm.edu.pl/user/lukarajc icm/
+
+# create a log file and commit changes to server
+cd icm/
+touch log # put some information to log
+svn ci
+
+# add new files to the server (e.g. new.html):
+cd icm/public_html/
+svn add new.html
+svn ci
