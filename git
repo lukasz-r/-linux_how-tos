@@ -67,6 +67,16 @@ git checkout -- file.F90
 # undo changes (e.g. "git pull" which led to merge conflicts):
 git reset --hard HEAD
 
+# rename a file:
+mv -iv old new
+git add new
+# or:
+git mv -v old new
+# git tracks contents not files, so it detects a rename
+# if "git mv" is used, the index is updated automatically
+# remember to commit a rename after renaming a file:
+git commit -a
+
 # find a commit which introduced a bug:
 git bisect start
 git bisect bad
