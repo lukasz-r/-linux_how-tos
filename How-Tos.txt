@@ -49,7 +49,7 @@ sudo usermod -aG gaussian theochem
 chsh -s /bin/bash
 
 ================================================================================
-system resources and processes
+processes
 ================================================================================
 --------------------------------------------------------------------------------
 # processes and signals
@@ -202,7 +202,7 @@ killall -9 -g molpro
 ### effective GID (EGID) is analogous to EUID
 ### a set of supplementary GIDs
 ## the persona of the process − the EUID, EGID and supplementary GIDs of the process
-## note that the PID and the persona of the process are different things: a single user can create many processes which share the same EUID and GID, but which differ in PIDs
+## note that the PID and the persona of the process are different things: a single user can create many processes which share the same EUID and EGID, but which differ in PIDs
 
 ## a login shell starts with a persona consisting of:
 ### the UID of the user
@@ -210,16 +210,15 @@ killall -9 -g molpro
 ### the GIDs of the user's secondary groups
 ## a child process normally inherits persona from its parent process
 
+## set UID upon execution (setuid, SUID) / set GID upon execution (setgid, SGID) − access rights flags that allow users to run an executable with the permissions of the executable's owner / group, respectively
+## if a program with a setuid flag set is executed, its EUID = UID of the program file owner
+## thus a normal user running a setuid-set executable file gains the privileges of the owner of the file (commonly root) within the created process
+## if a program with a setgid flag set is executed, its EGID = GID of the program file group
+## thus a normal user running a setgid-set executable file gains the privileges of the group of the file within the created process
+--------------------------------------------------------------------------------
+
 # print PIDs, UIDs and GIDs of the processes:
 ps -eo pid,user,ruid,euid,rgid,egid,comm
-
-## set UID upon execution (setuid, SUID) / set GID upon execution (setgid, SGID) − access rights flags that allow users to run an executable with the permissions of the executable's owner / group, respectively
-## if a program with a setuid flag set is executed, its:
-### RUID = UID of the user who ran it
-### EUID = UID of the owner the program file
-## thus a normal user running a setuid-set executable file gains the privileges of the owner of the file (commonly root) within the created process
-## the setgid flag allows for changing the group-based privileges within a process, just like the setuid flag does for user-based privileges
---------------------------------------------------------------------------------
 
 ================================================================================
 memory
