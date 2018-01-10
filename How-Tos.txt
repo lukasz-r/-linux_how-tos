@@ -573,7 +573,7 @@ rsync -ahPvz $OPTS src dest # RIGHT!!!
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-# globs vs. regexs [difference between wildcard patterns (globs) and regular expressions (regexs)]:
+# globs vs. regexs [difference between wildcard patterns (globs) and regular expressions (regexs)]
 --------------------------------------------------------------------------------
 ## globs match filenames
 ## globbing is applied separately on each pathname component (the components are separated with "/")
@@ -774,7 +774,7 @@ false=0
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-# arithmetic operations:
+# arithmetic operations
 --------------------------------------------------------------------------------
 ## examples:
 i=10
@@ -806,7 +806,7 @@ done < titles.txt
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-# redirection:
+# redirection
 --------------------------------------------------------------------------------
 ## stdin (file no. 0) is read from a terminal, stdout (file no. 1) and stderr (file no. 2) are sent to a terminal (TTY, say "/dev/tty0"), so the file descriptor table after BASH starts looks like
 ## 0 → /dev/tty0
@@ -934,25 +934,105 @@ set -x
 # pad one-digit integers with zeroes (e.g. "1" → "01") , leave two-digit integers unchanged (e.g. "12" → "12"):
 printf "%02d" "$num"
 
-# access last argument of a previous command with "!$":
+# unfreeze the terminal frozen by pressing <CTRL>+"s" (usually happens accidentally in vim):
+<CTRL>+"q"
+# <CTRL>+"s" = XOFF (transmit off)
+# <CTRL>+"q" = XON (transmit on)
+
+--------------------------------------------------------------------------------
+# history expansion
+--------------------------------------------------------------------------------
+## "!" not followed by a blank, newline, carriage return, "=", nor "(" starts a history substitution which allows to pick specific events, event words, and modify them before executing again
+
+--------------------------------------------------------------------------------
+## the history expansion syntax:
+event[:word[:modifiers]]
+--------------------------------------------------------------------------------
+## events:
+--------------------------------------------------------------------------------
+### !-n − the current command minus n
+### !! = !-1 − the previous command
+### !# − the entire command line typed so far
+### "!" directly followed by words and modifiers refers to the previous command
+--------------------------------------------------------------------------------
+## words:
+--------------------------------------------------------------------------------
+### 0 − the command name (word 0)
+### ^ − the first argument (word 1)
+### n − the nth argument (word n)
+### $ − the last argument (the last word)
+### * = 1-$ − all arguments
+### n* = n-$
+### n- = all arguments from nth to the last minus one
+### note that arguments also mean options passed to commands
+### "^", "$", "*" don't need to be preceded with ":"
+--------------------------------------------------------------------------------
+## modifiers:
+--------------------------------------------------------------------------------
+### h − remove a trailing filename from a pathname, leaving only its head
+### t − remove all leading pathname components, leaving a filename
+### r − remove a trailing ".xxx" suffix, leaving the basename
+### e − extract the trailing ".xxx" suffix (including ".")
+### p − print the new command but do not execute it
+--------------------------------------------------------------------------------
+## e.g.
+--------------------------------------------------------------------------------
+### !^ = !!^ − the first argument of the previous command
+### !$ = !!$ − the last argument of the previous command
+### !* = !!* − all arguments of the previous command
+### !#^:h − the head of the pathname of the first argument in the command typed so far
+### !$:p = !!$:p − print the last argument of the previous command
+--------------------------------------------------------------------------------
+echo file !#^	                # file file
+mv -iv "system file" !#$.backup # 'system file' -> 'system file.backup' (no need to quote designators, spaced are handled properly with and without single or double quotes)
+echo /usr/bin !#^:h             # /usr/bin /usr
+echo /usr/bin !#^:t             # /usr/bin bin
+echo file.txt !#^:r             # file.txt file
+echo file.txt !#^:e             # file.txt .txt
+!$:p                            # .txt ("!#^:e" in the previous command has been replaced with ".txt")
+--------------------------------------------------------------------------------
+
+## history expansion designators are replaced immediately and the replacements, not the designators, are printed and available in the history
+## globs are not replaced by their expansions in the history
+## thus history expansion designators trigger globs, not their expansions:
+ls file* # file1.txt  file2.txt
+ls -l !^ # replaced immediately with "ls -l file*", thus with a glob and not with its expansion
+history | tail -3
+------------------------------------------------------------
+output
+------------------------------------------------------------
+ 1490  ls file*
+ 1491  ls -l file*
+ 1492  history | tail -3
+------------------------------------------------------------
+
+## access last argument of the previous command:
 file --mime file
 mv -iv !$ !$.jpg
-## quoting "!$" is not necessary, spaces are handled properly with and without single or double quotes
-## last argument can be printed with
+
+## print the last argument of the previous command:
 !$:p
 
-# repeat previous command with "!!":
+## access all arguments of the previous command invoked without any options:
+file file1.txt file2.txt
+ls -l !*
+
+## access all arguments of the previous command invoked without some options:
+file --mime file1.txt file2.txt
+ls -l !:2*
+## note that "ls -l !*" would pass the "--mime" option as an argument to "ls"
+## we have to supply the starting position of arguments (here: 2)
+
+## repeat the previous command (very useful with sudo):
 dnf upgrade
 sudo !!
 
-# search the command history:
-# press <CTRL>+"r" and type part of a command, if not found look further by pressing <CTRL>+"r", execute the command with <ENTER>, edit it with left/right arrows
-
-# unfreeze the terminal frozen by pressing <CTRL>+"s" (usually happens accidentally in vi):
-<CTRL>+"q"
+## search the command history:
+### press <CTRL>+"r" and type part of a command, if not found look further by pressing <CTRL>+"r" again, if found edit it with left/right arrows and execute the command with <ENTER>
+--------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-# prompting
+# prompting:
 --------------------------------------------------------------------------------
 ## PS1 − the primary prompt string, displayed when BASH is executed interactively and ready to read a command
 ## PS2 − the secondary prompt string, displayed when BASH is executed interactively and needs more input to complete a command
