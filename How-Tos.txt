@@ -1698,19 +1698,31 @@ du -hs * | sort -hr | head -n 15
 ================================================================================
 file renaming
 ================================================================================
-# mmv command works with globs
+# use brace expansion to avoid first argument repetition:
+mv -iv {,old_}readme.txt # 'readme.txt' -> 'old_readme.txt'
+mv -iv file{,.backup} # 'file' -> 'file.backup'
 
-# dry-run a multiple rename operation with mmv:
+--------------------------------------------------------------------------------
+# renaming multiple files: rename and mmv
+--------------------------------------------------------------------------------
+## rename "linx1.txt" etc. files into "linux docs 1.txt" etc.:
+rename linx "linux docs " *.txt
+## note we cannot quote "*.txt" as the rename command needs a list of files, and quoting would prevent the shell expansion into a list of files
+
+## mmv command works with globs and the globs must be quoted as they must be processed by mmv, not by the shell
+
+## dry-run a multiple rename operation with mmv:
 mmv -n "*.jpg" "#1.png"
 
-# append "p" to filenames starting with a digit:
+## append "p" to filenames starting with a digit:
 mmv -v "[0-9]*" "p#1#2"
-# "#1" matches a first digit in a filename, "#2" matches everything after the first digit
+## "#1" matches a first digit in a filename, "#2" matches everything after the first digit
 
-# rename files and directories with names beginning with two numbers and "_" into the remainders of their names:
+## rename files and directories with names beginning with two numbers and "_" into the remainders of their names:
 mmv -rv "[0-9][0-9]_*" "#3"
-# "#1" and "#2" would match first and second digit in a filename, respectively
-# "-r" must be used to match both files and directories
+## "#1" and "#2" would match first and second digit in a filename, respectively
+## "-r" must be used to match both files and directories
+--------------------------------------------------------------------------------
 
 ================================================================================
 temporary files and directories
