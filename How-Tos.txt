@@ -1005,6 +1005,7 @@ output
  1491  ls -l file*
  1492  history | tail -3
 ------------------------------------------------------------
+## we have "ls -l file*" instead of "ls -l !^" in the history
 
 ## access last argument of the previous command:
 file --mime file
@@ -1650,7 +1651,7 @@ ls -ld dir
 # file mode creation mask:
 --------------------------------------------------------------------------------
 ## contains the permission bits that should not be set on a newly created file
-## is the logical complement of the
+## is the logical complement of the:
 ### (default mode + 0111) for newly created files
 ### default mode for newly created directories
 ## ignores the special permission bits
@@ -1702,7 +1703,7 @@ sudo mkdir dir
 sudo chown luke:luke
 ## thus created "dir" is usually 0755, since root's mask is usually 0022, and that of a regular user is usually 0002, so "luke" might additionally do
 chmod 775 dir
-## then "dir" is fully accessible to "luke"
+## "dir" is now fully accessible to "luke"
 ## note that if an external disk with FAT filesystem is mounted, a regular user can create files directly under a mount point since FAT is totally lame and doesn't know what Linux permissions are
 --------------------------------------------------------------------------------
 
