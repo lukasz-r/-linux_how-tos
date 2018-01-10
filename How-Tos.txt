@@ -952,19 +952,19 @@ event[:word[:modifiers]]
 --------------------------------------------------------------------------------
 ### !-n − the current command minus n
 ### !! = !-1 − the previous command
-### !# − the entire command line typed so far
-### "!" directly followed by words and modifiers refers to the previous command
+### !# − the entire command typed so far
+### "!" directly followed by words and modifiers refers to the previous command just like "!!"
 --------------------------------------------------------------------------------
 ## words:
 --------------------------------------------------------------------------------
+### note that arguments also encompass options passed to commands
 ### 0 − the command name (word 0)
 ### ^ − the first argument (word 1)
 ### n − the nth argument (word n)
 ### $ − the last argument (the last word)
 ### * = 1-$ − all arguments
-### n* = n-$
-### n- = all arguments from nth to the last minus one
-### note that arguments also mean options passed to commands
+### n* = n-$ − arguments from nth to the last one
+### n- − all arguments from nth to the penultimate one
 ### "^", "$", "*" don't need to be preceded with ":"
 --------------------------------------------------------------------------------
 ## modifiers:
@@ -984,7 +984,7 @@ event[:word[:modifiers]]
 ### !$:p = !!$:p − print the last argument of the previous command
 --------------------------------------------------------------------------------
 echo file !#^	                # file file
-mv -iv "system file" !#$.backup # 'system file' -> 'system file.backup' (no need to quote designators, spaced are handled properly with and without single or double quotes)
+mv -iv "system file" !#$.backup # 'system file' -> 'system file.backup' (no need to quote designators, spaces are handled properly with and without single or double quotes)
 echo /usr/bin !#^:h             # /usr/bin /usr
 echo /usr/bin !#^:t             # /usr/bin bin
 echo file.txt !#^:r             # file.txt file
@@ -996,7 +996,7 @@ echo file.txt !#^:e             # file.txt .txt
 ## globs are not replaced by their expansions in the history
 ## thus history expansion designators trigger globs, not their expansions:
 ls file* # file1.txt  file2.txt
-ls -l !^ # replaced immediately with "ls -l file*", thus with a glob and not with its expansion
+ls -l !^ # replaced immediately with "ls -l file*", thus a glob and not its expansion replaces "!^"
 history | tail -3
 ------------------------------------------------------------
 output
@@ -1013,11 +1013,11 @@ mv -iv !$ !$.jpg
 ## print the last argument of the previous command:
 !$:p
 
-## access all arguments of the previous command invoked without any options:
+## access all arguments of the previous command that was invoked without any options:
 file file1.txt file2.txt
 ls -l !*
 
-## access all arguments of the previous command invoked without some options:
+## access all arguments of the previous command that was invoked with some options:
 file --mime file1.txt file2.txt
 ls -l !:2*
 ## note that "ls -l !*" would pass the "--mime" option as an argument to "ls"
@@ -1028,7 +1028,7 @@ dnf upgrade
 sudo !!
 
 ## search the command history:
-### press <CTRL>+"r" and type part of a command, if not found look further by pressing <CTRL>+"r" again, if found edit it with left/right arrows and execute the command with <ENTER>
+### press <CTRL>+"r" and type part of a command, if not found look further by pressing <CTRL>+"r" again, if found edit it with left/right arrows etc. and execute the command with <ENTER>
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
@@ -1036,7 +1036,7 @@ sudo !!
 --------------------------------------------------------------------------------
 ## PS1 − the primary prompt string, displayed when BASH is executed interactively and ready to read a command
 ## PS2 − the secondary prompt string, displayed when BASH is executed interactively and needs more input to complete a command
-### e.g. PS1="[\u@\h \W]\$ " and PS2="> "
+## e.g. PS1="[\u@\h \W]\$ " and PS2="> ":
 ### \u − the username of the current user
 ### \h − the hostname up to the first "."
 ### \W − the basename of the current working directory
@@ -1502,14 +1502,14 @@ file permissions
 # of course, root is not bound by file permissions
 
 # file permission classes:
-## owner: used when the UID of the file equals the EUID of the calling process (e.g. the user accesses his own file) (A)
-## group: used when the GID of the file equals the EGID of the calling process or the GID of one of the supplementary groups of the calling process (e.g. the user accesses the file belonging to one of his groups) (B)
-## others: used when neither (A) nor (B) applies (e.g. the user accesses the file outside his group)
+## owner: used when the UID of the file equals the EUID of the calling process (e.g. the user accesses his own file) (A
+## group: used when the GID of the file equals the EGID of the calling process or the GID of one of the supplementary groups of the calling process (e.g. the user accesses the file which he doesn't own but which belongs to one of his groups) (B)
+## others: used when neither (A) nor (B) applies (e.g. the user accesses the file which he doesn't own and which belongs to none of his groups)
 
 # chmod and most commands refer to the owner, group and others class with "u", "g" and "o" letters, respectively, and "a" means all three classes
 # though most commands refer to the owner class as the user class, we prefer to use the former name since it avoids confusion with the current user which might not be the file's owner
 
-# display file's owner, group and corresponding UID and GID:
+# display file's owner, group and corresponding UID and GID, plus much more information:
 stat file
 
 # file mode − filesystem permissions given to owner, group and others class to access files, plus special permissions
@@ -1538,13 +1538,13 @@ stat file
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-# permissions for directories (directory is basically a list of files and other directories contained in it):
+# permissions for directories (directory is basically a list of files and directories contained in it):
 --------------------------------------------------------------------------------
 ## r = read the list (list the files within the directory)
 ## x = enter the directory and access files (but not list files)
 ## r+x = enter the directory, access and list files
 ## w+x = modify the list (create, delete, rename files), but not list files
-## note that files deletion is allowed if a containing directory is w+x for the user, irrespective of the permissions of the files
+## note that file deletion is allowed if a parent directory is w+x for the user, irrespective of the ownership and permissions of the file
 --------------------------------------------------------------------------------
 
 # typical directory permissions:
@@ -1555,22 +1555,22 @@ stat file
 
 # permissions on Unix-like systems are not inherited, with the exception of the SGID bit (see below), however, to:
 ## enter a directory, it, together with all its parent directories, must have "x" set
-## list files under a directory, (it must have "r" set for a single-level listing or "r" and "x" for at least two-level listing) and all its parent directories must have "r" and "x" set
+## list files under a directory, (it must have "r" set for a single-level listing or "r" and "x" set for at least two-level listing) and all its parent directories must have "r" and "x" set
 
 --------------------------------------------------------------------------------
 # file and directory permission examples (user is the owner of all files)
 --------------------------------------------------------------------------------
 ## the "x" bit on a directory:
 --------------------------------------------------------------------------------
-mkdir -m 775 a
-echo "text" > a/file
-chmod 111 a
-cd a     # works, "x" is set in "a"
-ls       # doesn't work, "r" not set on "a"
-ls file  # works, "x" on "a" allows to access file contents together with its properties, and "ls file" accesses that information instead of reading directory contents − bet we have to know the name of the file, completion doesn't work
-cat file # works as well
->file    # we can erase file contents, since that operation doesn't modify directory contents
-rm file  # we can't remove the file without "w" on its parent directory
+mkdir -m 775 dir
+echo "text" > dir/file
+chmod 111 dir
+cd dir                  # works, "x" is set on "dir"
+ls                      # doesn't work, "r" not set on "dir"
+ls file                 # works, "x" on "dir" allows to access file contents together with its properties, and "ls file" accesses that information instead of reading directory contents as does "ls" − but we have to know the name of the file, completion doesn't work
+cat file                # works as well
+>file                   # interesting observation: we can erase file contents, since that operation doesn't modify directory contents
+rm file                 # we can't remove any file without "w" set on its parent directory
 --------------------------------------------------------------------------------
 ## the "r" bit on a directory:
 --------------------------------------------------------------------------------
@@ -1607,7 +1607,7 @@ cd dir # doesn't work, "x" not set on "dir"
 --------------------------------------------------------------------------------
 # special permissions:
 --------------------------------------------------------------------------------
-## SUID bit and SGID bit for files (see above for the processes)
+## SUID bit and SGID bit for files (see above for the processes for explanation)
 ## SUID bit for directories is ignored by Linux
 ## SGID bit for directories means newly created files and directories under that directory inherit their group from that directory, and newly created subdirectories inherit the SGID bit
 ## sticky bit for files, used only in old operating systems, saves the program's text image on the swap device so it will load more quickly when run
@@ -1619,14 +1619,14 @@ cd dir # doesn't work, "x" not set on "dir"
 ### b₃ − SUID bit: 100 ⇒ m = 4
 --------------------------------------------------------------------------------
 
-# a file mode is uniquely defined by 4 * 3 = 12 bits, so there are 2¹² = 4096 possible file mode bit combinations
+# a full file mode is uniquely defined by 4 * 3 = 12 bits, so there are 2¹² = 4096 possible file mode bit combinations
 # listing all 12 bit values would be cumbersome, thus the mode is represented either:
 ## numerically by a 3-digit number (octal permission values for owner, group and others triads), e.g. 644, 755, etc.
 ## numerically by a 4-digit number (octal permission values for special permissions and for owner, group and others triads), e.g. 0644, 4755, etc.
 ## symbolically using a sequence of 9 characters from "r", "w", "x", "-" letters already explained above, and:
 ### "s" − "x" is set and SUID bit set when in the owner triad or SGID bit when in the group triad
 ### "S" − "x" is not set, otherwise same as "s" (rare on regular files, and useless on directories)
-### "t" − "x" is set and sticky bit set, appears only in the others triad
+### "t" − "x" is set and sticky bit set, resides only in the others triad
 ### "T" − "x" is not set, otherwise same as "t" (rare on regular files, and useless on directories)
 ### "S" and "T" are useless on directories, since without "x" a user can't enter the directory
 ## e.g.
@@ -1646,17 +1646,25 @@ ls -l file
 ls -ld dir
 # note that the mode is prepended with the file type character ("-" − regular file, "d" − directory, etc.) and if it's appended with "+", the file has extended permissions (access control lists)
 
-# file mode mask contains the permission bits that should not be set on a newly created file
-# a mask is hence the logical complement of the default mode for newly created files
-# default creation mode:
-## 0777 for directories
-## 0666 for regular files (Linux does not allow files to be created with execution permissions)
-# hence for a (typical) mask = 0002, the mode of a newly created:
-## regular file is 0664
-## directory is 0775 or 2775 if it's under a SGID-set directory
+--------------------------------------------------------------------------------
+# file mode creation mask:
+--------------------------------------------------------------------------------
+## contains the permission bits that should not be set on a newly created file
+## is the logical complement of the
+### (default mode + 0111) for newly created files
+### default mode for newly created directories
+## ignores the special permission bits
 
-# display the file mode mask:
+## default creation mode:
+### 0777 for directories
+### 0666 for regular files (Linux does not allow files to be created with executable permissions)
+## hence for the mask = 0002, the mode of a newly created:
+### regular file is 0664
+### directory is 0775 or 2775 if it's under a SGID-set directory
+
+## display the file mode mask:
 umask
+--------------------------------------------------------------------------------
 
 # changing file modes:
 umask          # 0002
@@ -1686,13 +1694,13 @@ sudo find /var/www -type d -exec chmod g+s {} \;
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-# external disk with ext4 filesystem mounted in "/run/media/luke/DataTraveler" for the "luke" user
+# external disk with ext4 filesystem mounted in "/run/media/luke/DataTraveler" for the "luke" user:
 --------------------------------------------------------------------------------
 ## "/run/media/luke/DataTraveler" is root:root 0755, so "luke" can't create files in that directory
 ## "luke" needs to use sudo to create a directory:
 sudo mkdir dir
 sudo chown luke:luke
-## such created "dir" is usually 0755, since root's mask is usually 0022, and that of a regular user is usually 0002, so "luke" might additionally do
+## thus created "dir" is usually 0755, since root's mask is usually 0022, and that of a regular user is usually 0002, so "luke" might additionally do
 chmod 775 dir
 ## then "dir" is fully accessible to "luke"
 ## note that if an external disk with FAT filesystem is mounted, a regular user can create files directly under a mount point since FAT is totally lame and doesn't know what Linux permissions are
