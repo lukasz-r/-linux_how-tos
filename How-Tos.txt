@@ -1789,7 +1789,13 @@ file renaming
 ================================================================================
 # use brace expansion to avoid first argument repetition:
 mv -iv {,old_}readme.txt # 'readme.txt' -> 'old_readme.txt'
-mv -iv file{,.backup} # 'file' -> 'file.backup'
+mv -iv file{,.backup}    # 'file' -> 'file.backup'
+
+# use history expansion to avoid first argument repetition:
+mv -iv "system file" !#$.backup # 'system file' -> 'system file.backup'
+# the filename can be printed using the "p" designator for further edition:
+mv -iv "file with a long name" !#$:p
+# then press "↑" to edit the command
 
 --------------------------------------------------------------------------------
 # renaming multiple files: rename and mmv
