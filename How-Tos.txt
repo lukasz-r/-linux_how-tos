@@ -2147,7 +2147,7 @@ exiftool "-Directory<DateTimeOriginal" -d %Y/%m/%d dir
 jhead -ft -autorot ./*.jpg
 
 ================================================================================
-LaTeX: TeX Live configuration
+LaTeX: TeX Live configuration and compilation
 ================================================================================
 # get the local TeX Live home directory (usually "~/texmf"):
 kpsewhich -var-value=TEXMFHOME
@@ -2162,6 +2162,26 @@ texdoc longtable
 
 # list package manuals matching a string:
 texdoc -s babel
+
+# useful "Makefile" to compile a LaTeX document into PDF with the SyncTeX reverse search:
+-------------------------------------------------------
+Makefile
+-------------------------------------------------------
+name := manuscript
+target := $(name).pdf
+
+all : $(target)
+
+pdf : $(target)
+
+%.pdf : %.tex
+	latexmk -pdflatex="pdflatex -synctex=1 -interaction=nonstopmode" -pdf $*
+
+.PHONY : clean
+
+clean :
+	rm -f ./*{aux,bbl,bcf,blg,fdb*,fls*,log,Notes.bib,synctex.gz,toc,out,xml} $(target)
+-------------------------------------------------------
 
 ================================================================================
 LaTeX: typesetting
