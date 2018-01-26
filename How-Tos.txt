@@ -36,6 +36,12 @@ user administration
 ## "/etc/group": definition of the groups on the system
 --------------------------------------------------------------------------------
 
+# list all users in the system:
+getent passwd
+
+# list all groups and their members in the system:
+getent group
+
 # print user and group information for the current user:
 id
 
@@ -771,6 +777,10 @@ true=1
 false=0
 ((true)) && echo "true" # echoes "true"
 ((false)) && echo "true" # echoes nothing
+
+## test if the file is executable by the user:
+file=/opt/intel/mkl/bin/mklvars.sh
+[[ -x $file ]] && echo "$file is executable"
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
