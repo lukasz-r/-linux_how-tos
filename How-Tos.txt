@@ -976,7 +976,7 @@ event[:word[:modifiers]]
 --------------------------------------------------------------------------------
 ## words:
 --------------------------------------------------------------------------------
-### note that arguments also encompass options passed to commands
+### note that arguments also encompass options passed to commands, thus in most cases it's better use "$" to refer to the last argument than "^" to refer to the first one, which might actually be an option
 ### 0 − the command name (word 0)
 ### ^ − the first argument (word 1)
 ### n − the nth argument (word n)
@@ -1003,12 +1003,14 @@ event[:word[:modifiers]]
 ### !$:p = !!$:p − print the last argument of the previous command
 --------------------------------------------------------------------------------
 echo file !#^	                # file file
+echo -e file !#^                # file -e
+echo -e file !#$                # file file
 mv -iv "system file" !#$.backup # 'system file' -> 'system file.backup' (no need to quote designators, spaces are handled properly with and without single or double quotes)
-echo /usr/bin !#^:h             # /usr/bin /usr
-echo /usr/bin !#^:t             # /usr/bin bin
-echo file.txt !#^:r             # file.txt file
-echo file.txt !#^:e             # file.txt .txt
-!$:p                            # .txt ("!#^:e" in the previous command has been replaced with ".txt")
+echo /usr/bin !#$:h             # /usr/bin /usr
+echo /usr/bin !#$:t             # /usr/bin bin
+echo file.txt !#$:r             # file.txt file
+echo file.txt !#$:e             # file.txt .txt
+!$:p                            # .txt ("!#$:e" in the previous command has been replaced with ".txt")
 --------------------------------------------------------------------------------
 
 ## history expansion designators are replaced immediately and the replacements, not the designators, are printed and available in the history
@@ -1807,11 +1809,13 @@ du -hs * | sort -hr | head -n 15
 file renaming
 ================================================================================
 # use brace expansion to avoid first argument repetition:
-mv -iv {,old_}readme.txt # 'readme.txt' -> 'old_readme.txt'
-mv -iv file{,.backup}    # 'file' -> 'file.backup'
+mv -iv {,old_}readme.txt             # 'readme.txt' -> 'old_readme.txt'
+mv -iv {Image0001,"My Passport"}.jpg # 'Image0001.jpg' -> 'My Passport.jpg'
+mv -iv file{,.backup}                # 'file' -> 'file.backup'
 
 # use history expansion to avoid first argument repetition:
-mv -iv "system file" !#$.backup # 'system file' -> 'system file.backup'
+mv -iv Image0001.jpg "My Passport"!#:2:e # 'Image0001.jpg' -> 'My Passport.jpg' ("2" means second word after "mv", which is "Image0001.jpg")
+mv -iv "system file" !#$.backup          # 'system file' -> 'system file.backup'
 # the filename can be printed using the "p" designator for further edition:
 mv -iv "file with a long name" !#$:p
 # then press "↑" to edit the command
