@@ -1,0 +1,8 @@
+pandoc Markdown
+===
+
+* use extensions:
+```bash
+pandoc text.md -s -f markdown+fenced_code_attributes+fenced_code_blocks --highlight-style=zenburn -mathjax -o text.html
+pandoc text.md -o text.html
+```
