@@ -45,6 +45,9 @@ compgen -u
 # list all users who can log in:
 grep -v nologin /etc/passwd
 
+# list all groups in the system:
+compgen -g
+
 # list all groups and their members in the system:
 getent group
 
