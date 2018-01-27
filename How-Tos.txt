@@ -51,6 +51,9 @@ compgen -g
 # list all groups and their members in the system:
 getent group
 
+# list all users in the "wheel" group:
+getent group wheel
+
 # print user and group information for the current user:
 id
 
