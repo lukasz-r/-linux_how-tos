@@ -33,11 +33,17 @@ user administration
 ## the primary group's name is usually the same as the user name
 ## secondary (supplementary) group − a group to which a user belongs which is not a primary group
 ## "/etc/passwd": UIDs are in the 3rd field, and GIDs are in the 4th field
-## "/etc/group": definition of the groups on the system
+## "/etc/group": list of the groups in the system
+## "/etc/login.defs": minimum UID for newly created regular users (usually UID_MIN = 1000) etc.
 --------------------------------------------------------------------------------
 
 # list all users in the system:
 getent passwd
+# or:
+compgen -u
+
+# list all users who can log in:
+grep -v nologin /etc/passwd
 
 # list all groups and their members in the system:
 getent group
