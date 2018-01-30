@@ -1532,9 +1532,9 @@ file permissions
 ## others: used when neither (A) nor (B) applies (e.g. the user accesses the file which he doesn't own and which belongs to none of his groups)
 
 # chmod and most commands refer to the owner, group and others class with "u", "g" and "o" letters, respectively, and "a" means all three classes
-# though most commands refer to the owner class as the user class, we prefer to use the former name since it avoids confusion with the current user which might not be the file's owner
+# though most commands refer to the owner class as the user class, we prefer to use the former name since it avoids confusion with the current user which might not be the file owner
 
-# display file's owner, group and corresponding UID and GID, plus much more information:
+# display file owner, group and corresponding UID and GID, plus much more information:
 stat file
 
 # file mode − filesystem permissions given to owner, group and others class to access files, plus special permissions
@@ -1735,19 +1735,26 @@ chmod 775 dir
 file timestamps
 ================================================================================
 # file MAC (modification, access, change) times:
-## M describes when the content of the file most recently changed
-## A describes when the file was most recently opened for reading
-## C describes when the file's permissions or owner were changed, but not its contents
-# MAC times can be reported with
+## M (mtime) describes when the file contents most recently changed
+## A (atime) describes when the file was most recently opened for reading
+## C (ctime) describes when the file metadata (owner, group, permissions, size, name) most recently changed
+## mtime changes each time a file is written during edition, even if its final version is the same as that of the originally-opened file
+## mtime change triggers atime and ctime changes: atime is set to mtime, and ctime is ca. 50 ms later in time than mtime since file metadata are written after its contents were saved
+## renaming a file changes only its ctime
+
+# report file timestamps:
 stat file
-# when e.g. wget or youtube-dl downloads a file from a website, its modification time is taken from there, but access and change times are set to the download time since the file copy has been created locally, so to list files downloaded within last hour inside a directory, use
+
+# when e.g. wget or youtube-dl downloads a file from a website, its mtime is taken from a download server if it gives a timestamp, but atime and ctime are set to the download time since the file copy has been created locally, so to list files downloaded within last hour inside a directory, use:
 find -maxdepth 1 -amin -60
-# instead of the"-cmin" switch since some files' change times might have been affected by more recently issued chown or chmod commands, and "-mmin" switch referring to the modification time
+# or:
+find -maxdepth 1 -cmin -60
+# instead of the "-mmin" switch
 
 ================================================================================
 inodes and links
 ================================================================================
-# inode − data structure with file contents, permissions and ownership
+# inode − data structure with file contents and metadata except for its name
 # filename − name of the inode in the filesystem
 # filename and inode are connected via a hard link
 # an inode can have several filenames, in that case all the names refer to the same file (multiple hard links)
@@ -2893,7 +2900,7 @@ rsync -ahPvz --filter=". $HOME/rsync_filter" "$HOME" /backup
 --------------------------------------------------------------------------------
 # filter patterns (file in general refers to directory as well, we assume we use rsync command with options as listed above):
 --------------------------------------------------------------------------------
-## rsync builds a list of files to be transferred in a similar way "find directory | sort" lists files, but for each file a pattern list is checked until the first matching pattern is found (if it's an exclude pattern, file's skipped, and vice versa, but if no pattern matches a file, it's not skipped), thus if the directory is excluded, it won't be descended into
+## rsync builds a list of files to be transferred in a similar way "find directory | sort" lists files, but for each file a pattern list is checked until the first matching pattern is found (if it's an exclude pattern, file is skipped, and vice versa, but if no pattern matches a file, it's not skipped), thus if the directory is excluded, it won't be descended into
 
 ## if the pattern contains "/" (not counting the trailing "/") or "**", it's matched against the pathname, otherwise it's matched against its final component (filename)
 
