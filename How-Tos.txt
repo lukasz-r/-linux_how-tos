@@ -1134,8 +1134,8 @@ sudo blockdev --getbsz /dev/sda
 # disk formatting proceeds in three stages:
 --------------------------------------------------------------------------------
 ## low-level formatting − basic medium preparation
-## disk partitioning − creation of one or more regions so that an operating system can manage information in each region separately
-## high-level formatting − generating a new filesystem
+## disk partitioning − creation of one or more regions (partitions) so that an operating system can manage information in each region separately
+## high-level formatting − generating a new filesystem on a partition (a partition with a filesystem is often referred to simply as a filesystem by most Linux commands)
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
@@ -1471,6 +1471,87 @@ fusermount -u ~/my-phone
 sudo mount -o norock,map=o,utf8 /dev/cdrom /media/cdrom
 
 ================================================================================
+files, directories, inodes and links
+================================================================================
+# a file is stored in at least three parts of a filesystem:
+## inode (index node) − a data structure storing file metadata, but not its name
+## data blocks − a data structure storing file contents
+## directory − a list of hard links, i.e. (filename, inode number) pairs (a file can reside in more than one directory)
+
+# file metadata (thus information stored in an inode):
+## file type (regular file, directory, etc.)
+## location of data blocks the file uses on a filesystem
+## owner and group
+## permissions
+## timestamps
+## size
+## number of links to the inode
+
+# inode numbers are unique within a filesystem
+# inode number for "/" (root dir) is traditionally 2
+# on my laptop, "/", "/home", "/opt" and "/scratch" all have inode numbers equal to 2, which is permitted since they are different filesystems
+
+# a (filename, inode number) directory entry is unique only within that directory [there can be multiple identical (filename, inode number) pairs in different directories], but it can be resolved into system-wide unique (pathname, inode number) pair through a path resolution
+# (pathname, inode number) pairs are system-wide unique since pathnames are system-wide unique (there are no identical pathnames within a filesystem, and of course pathnames on different filesystems always differ), though inode numbers are not system-wide unique
+# an inode can have several filenames (links), but each file's pathname points to one inode, thus there is a function mapping pathnames into inode numbers
+
+# list full directory contents (filenames and inode numbers):
+ls -il /scratch
+
+# moving a file is very fast since its data are not moved, just:
+## a new (filename, inode number) entry is created in a new directory
+## an old (filename, inode number) entry is deleted in an old directory
+
+------------------------------------------------------------
+# hard link:
+------------------------------------------------------------
+ln ~/text/a.txt b.txt    # ~/text/a.txt → inode ← b.txt
+## no disk space growth
+------------------------------------------------------------
+# symbolic link:
+------------------------------------------------------------
+ln -s ~/text/a.txt b.txt # b.txt → ~/text/a.txt → inode
+## no disk space growth
+------------------------------------------------------------
+# copying a file:
+------------------------------------------------------------
+cp a.txt b.txt           # a.txt → inode1, b.txt → inode2
+## disk space grows
+------------------------------------------------------------
+
+# hard links are used by many backup codes (e.g. rsnapshot) to save the disk space
+# the inode is removed and the corresponding data blocks (together with the disk space) are freed only when the inode's last filename (hard link) is removed (unlinked, with "rm" or "unlink" command)
+# since inodes are unique within a filesystem, hard links must be on the same filesystem, but symbolic links can be on multiple filesystems
+
+# get total number of filenames pointing to inodes of all files in a current directory:
+stat * | grep -i link
+
+# find files referring to the same inode as the "a.txt" file (hard links):
+find ~/ -samefile a.txt
+
+# get a full pathname to a file or a symbolic link:
+readlink -f a.txt
+# or:
+realpath a.txt
+
+# extract a filename from a pathname:
+basename ./Desktop/ # yields "Desktop"
+
+# find duplicate files in a set of directories:
+fdupes -r dir1 dir2
+
+# find duplicate files in a set of directories, including hard links:
+fdupes -rH dir1 dir2
+
+# find files identical to "a.txt" in a directory "texts" and all duplicate files in it, including hard links:
+rdfind -removeidentinode false a.txt texts
+# the results are written to a "results.txt" file
+
+# dry-run replacing duplicate files with hard links in a current directory:
+rdfind -n true -makehardlinks true .
+# the results are written to a "results.txt" file
+
+================================================================================
 filesystem structure
 ================================================================================
 --------------------------------------------------------------------------------
@@ -1737,71 +1818,20 @@ file timestamps
 # file MAC (modification, access, change) times:
 ## M (mtime) describes when the file contents most recently changed
 ## A (atime) describes when the file was most recently opened for reading
-## C (ctime) describes when the file metadata (owner, group, permissions, size, name) most recently changed
+## C (ctime) describes when the file owner, group, permissions, size or name most recently changed
 ## mtime changes each time a file is written during edition, even if its final version is the same as that of the originally-opened file
 ## mtime change triggers atime and ctime changes: atime is set to mtime, and ctime is ca. 50 ms later in time than mtime since file metadata are written after its contents were saved
 ## renaming a file changes only its ctime
+## note, however, that since most filesystems are mounted with the default "relatime" option, atime is only updated if the previous atime was earlier than the current mtime or ctime
 
 # report file timestamps:
 stat file
 
-# when e.g. wget or youtube-dl downloads a file from a website, its mtime is taken from a download server if it gives a timestamp, but atime and ctime are set to the download time since the file copy has been created locally, so to list files downloaded within last hour inside a directory, use:
+# when e.g. wget or youtube-dl downloads a file from a website, its mtime is taken from a download server if it gives timestamps, but atime and ctime are set to the download time since the file copy has been created locally, so to list files downloaded within last hour inside a directory, use:
 find -maxdepth 1 -amin -60
 # or:
 find -maxdepth 1 -cmin -60
 # instead of the "-mmin" switch
-
-================================================================================
-inodes and links
-================================================================================
-# inode − data structure with file contents and metadata except for its name
-# filename − name of the inode in the filesystem
-# filename and inode are connected via a hard link
-# an inode can have several filenames, in that case all the names refer to the same file (multiple hard links)
-# each filename points to one inode
-# hard link:
-ln ~/text/a.txt b.txt    # ~/text/a.txt → inode ← b.txt
-## no disk space growth
-# symbolic link:
-ln -s ~/text/a.txt b.txt # b.txt → ~/text/a.txt → inode
-## no disk space growth
-# copying a file:
-cp a.txt b.txt           # a.txt → inode1, b.txt → inode2
-## disk space grows
-# thus hard links are used by many backup codes to save the space
-# the inode is removed (the disk space is freed) only when its last filename (hard link) is removed (unlinked, with "rm" or "unlink" command)
-# inodes are unique within a filesystem, so hard links must be on the same filesystem, symbolic links don't have this limitation
-
-# print a file inode number:
-ls -i a.txt
-
-# get total number of filenames pointing to inodes of all files in a current directory:
-stat * | grep -i link
-
-# find files referring to the same inode as "a.txt" (hard links):
-find ~/ -samefile a.txt
-
-# get a full pathname to a file or a symbolic link:
-readlink -f a.txt
-# or:
-realpath a.txt
-
-# extract a filename from a pathname:
-basename ./Desktop/ # yields "Desktop"
-
-# find duplicate files in a set of directories:
-fdupes -r dir1 dir2
-
-# find duplicate files in a set of directories, including hard links:
-fdupes -rH dir1 dir2
-
-# find files identical to "a.txt" in a directory "texts" and all duplicate files in it, including hard links:
-rdfind -removeidentinode false a.txt texts
-# the results are written to a "results.txt" file
-
-# dry-run replacing duplicate files with hard links in a current directory:
-rdfind -n true -makehardlinks true .
-# the results are written to a "results.txt" file
 
 ================================================================================
 file and directory size
