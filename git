@@ -10,7 +10,7 @@ HostName www.molpro.net
 IdentityFile ~/.ssh/id_rsa.git
 
 # Bitbucket
-Host bb
+Host bitbucket
 User git
 HostName bitbucket.org
 IdentityFile ~/.ssh/id_rsa.git
@@ -179,8 +179,8 @@ git push -u my_repo shared_br
 [remote_machine]$ git symbolic-ref HEAD refs/heads/shared_br
 
 ## you can add more remote repos, e.g. use the Bitbucket website (where you log in in initialize a new repo via a web interface):
-git remote add bb:luke/molpro_lr_repo # the "bb" defined above in the "~/.ssh/config" file
-git push bb shared_br
+git remote add bitbucket bitbucket:luke/molpro_lr_repo # the "bitbucket" defined above in the "~/.ssh/config" file
+git push bitbucket shared_br
 
 ## now you can share your work with others, you can add their public keys to your cluster and allow them to clone the code:
 git clone my_cluster:git_repos/work_repo.git my_work_dir
