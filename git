@@ -1,33 +1,56 @@
 # clone Molpro code into the "molpro-pauli" directory:
 git clone git@www.molpro.net:Molpro molpro-pauli
 
-# this can be simplified by the "~/.ssh/config" configuration (provided the Molpro ssh private key is in "~/.ssh/id_rsa.molpro" and the corresponding ssh public key is in "~/.ssh/id_rsa.molpro.pub":
+# this can be simplified by the "~/.ssh/config" configuration file (provided the SSH private key is in "~/.ssh/id_rsa.git" and the corresponding SSH public key is in "~/.ssh/id_rsa.git.pub"):
 --------------------------------------------------------------------------------
 # Molpro
 Host molpro
 User git
 HostName www.molpro.net
-IdentityFile ~/.ssh/id_rsa.molpro
---------------------------------------------------------------------------------
+IdentityFile ~/.ssh/id_rsa.git
 
-# the key which is not in the standard location (as above) won't be seen by the Molpro git repo unless it has been added to the ssh-agent which normally isn't started on boot − add the following lines to your "~/.bash_profile":
+# Bitbucket
+Host bb
+User git
+HostName bitbucket.org
+IdentityFile ~/.ssh/id_rsa.git
 --------------------------------------------------------------------------------
-# ssh keys for Molpro git repo
+# the "IdentityFile" line is not needed when a standard location ("~/.ssh/id_rsa") key is used
+
+------------------------------------------------------------
+# SSH keys and ssh-agent
+------------------------------------------------------------
+## the key which is not in the standard location won't be seen by the remote git repos unless it has been added to the ssh-agent
+## ssh-agent normally isn't started on boot
+## add the following lines to your "~/.bash_profile" to start ssh-agent (or just the last line if the agent is started by a system):
+--------------------------------------------------------------------------------
+# ssh keys for remote git repos
 trap '[[ -n $SSH_AGENT_PID ]] && eval $(ssh-agent -k &> /dev/null)' 0
 eval $(ssh-agent)
-ssh-add ~/.ssh/id_rsa.molpro &> /dev/null
+ssh-add ~/.ssh/id_rsa.git &> /dev/null
 --------------------------------------------------------------------------------
 
-# then the command to get Molpro reads:
+## list the keys represented by the authentication agent:
+ssh-add -l
+
+## to rename a pair of keys, first remove it from the ssh-agent, and add the pair with a new name:
+ssh-add -d ~/.ssh/id_rsa.molpro
+mv -iv ~/.ssh/id_rsa.{molpro,git}
+mv -iv ~/.ssh/id_rsa.{molpro,git}.pub
+ssh-add ~/.ssh/id_rsa.git
+## adjust "~/.bash_profile" and "~/.ssh/config" files accordingly
+------------------------------------------------------------
+
+# clone the Molpro code:
 git clone molpro:Molpro molpro-pauli
 
-# patch the molpro tree:
+# patch the Molpro tree:
 cd molpro-pauli
 git pull
 
-# restore deleted files (e.g. "lib/variable.registry") from a server:
+# accidentally deleted files (e.g. "lib/variable.registry") can be restored from a remote repo:
 git checkout # lists deleted files
-git checkout path/file # from the list above
+git checkout lib/variable.registry
 
 # list branches: all, local, remote ones:
 git branch -a
@@ -48,79 +71,131 @@ git branch -D 2012
 git checkout working_br # if not already at working_br
 git checkout source_br a.F90
 
+------------------------------------------------------------
 # git operates on three levels:
-# (A) working dir → (B) staging area (index) → (C) git repo
+# (A) working directory → (B) staging area (index) → (C) git repo
 #	(A) is where we actually modify files
 #	(B) collects info on what will go in the next commit
 #	(C) collects all the data which will be copied with git clone
+
 # show changes between (A) and (B), so the changes from last commit which are not yet staged for a commit:
 git diff
+
 # show changes between (B) and (C), so what's been added to the index but not yet committed:
 git diff --cached
+# or:
 git diff --staged
+
 # show changes between (A) and (C), so the changes from last commit:
 git diff HEAD
+------------------------------------------------------------
 
-# discard changes on a file in a working dir:
+# discard changes on a file in a working directory:
 git checkout -- file.F90
 
-# undo changes (e.g. "git pull" which led to merge conflicts):
+# undo changes (e.g. "git pull" which led to merge conflicts), i.e. reset the index and working tree:
 git reset --hard HEAD
 
+------------------------------------------------------------
 # rename a file:
 mv -iv old new
 git add new
 # or:
 git mv -v old new
+
 # git tracks contents not files, so it detects a rename
 # if "git mv" is used, the index is updated automatically
+
 # remember to commit a rename after renaming a file:
 git commit -a
+------------------------------------------------------------
 
-# find a commit which introduced a bug:
+------------------------------------------------------------
+# debugging: looking for a commit which introduced a bug
+------------------------------------------------------------
+## a current revision (commit) is bad:
 git bisect start
 git bisect bad
-git bisect good good_commit_name
-# compile, check if OK, then issue
-git bisect good # works OK
-# or
-git bisect bad # doesn't work
-# or
-git bisect skip # can't say, e.g. the revision doesn't compile
-# see the current commit:
-git show HEAD
-# continue until there are no more revisions to bisect, you'll be on the revision which first broke the code
-# save the bisecting log:
-git bisect log > bisect_log
-# quit bisecting and go back to the previous state:
-git bisect reset
 
+## a "good_commit_name" revision is good:
+git bisect good good_commit_name
+
+## compile, check if OK, then use:
+git bisect good # if OK
+git bisect bad  # if not OK
+git bisect skip # if impossible to verify (e.g. the revision doesn't compile)
+
+## see the current commit:
+git show HEAD
+
+## continue until there are no more revisions to bisect, you'll be on the revision which first broke the code
+
+## save the bisecting log:
+git bisect log > bisect_log
+
+## quit bisecting and go back to the commit checked out before "git bisect start":
+git bisect reset
+------------------------------------------------------------
+
+------------------------------------------------------------
 # create a git repo for a working project:
-# go to the working dir of your project and
+------------------------------------------------------------
+## go to the working directory of your project and initialize a git repo:
 git init
-# create a ".gitignore" file with the filter rules, then
+
+## the name of the working directory is irrelevant and can be changed at any time
+## you can name your repo by editing the ".git/description" file, this name is used by some web interfaces
+
+## create a ".gitignore" file with the filter rules
+
+## add the contents of the working directory to the repo:
 git add .
+
+## record a current state as a first commit:
 git commit -m "initial commit"
-# possibly, you want to create a branch which you'd like to share through the remote git repo:
+
+## possibly, you want to create a branch which you'd like to share through the remote git repo instead of working with a master branch:
 git checkout shared_br
-# ssh to your cluster and initialize a bare git repo in some dir:
-cd ~/git-repos/work-repo.git
-git init --bare
-# it might be useful to add the name of the server to your "~/.ssh/config", say my_cluster
-# go back to your working dir and add the remote source at my_cluster:
-git remote add my_repo my_cluster:git-repos/work-repo.git
-# checkout your working branch and push it to the remote repo:
+
+## now you can add a remote git repo that the other users can access and through which you can share your changes
+
+## initialize a bare git repo in a directory on a remote machine:
+[remote_machine]$ cd ~/git_repos/work_repo.git
+[remote_machine]$ git init --bare
+
+## it might be useful to add the name of the remote machine (e.g. "my_cluster") to your "~/.ssh/config"
+
+## go back to a working directory on your local computer and add the remote repo stored at "my_cluster":
+git remote add my_repo my_cluster:git_repos/work_repo.git
+
+## checkout your working branch and push it to the remote repo:
 git checkout shared_br
 git push -u my_repo shared_br
-# now you've got a history of your branch at the remote repo
-# you need to set the default clone branch at the remote repo:
-git symbolic-ref HEAD refs/heads/shared_br
-# now you can share your work with others, you can add their public keys to your cluster and ask people to
-git clone my_cluster:git-repos/work-repo.git my_work_dir
-# of course, my_cluster needs to be substituted with the full address if not configured at "~/.ssh/config"
-# when you've done some work with the files:
+## using "-u" makes "my_repo" and "shared_br" default options for argument-less "git push" and "git pull" commands
+## now you've got a history of your branch at the remote repo
+
+## you need to set the default clone branch at the remote repo if "shared_br" ≠ "master":
+[remote_machine]$ cd ~/git_repos/work_repo.git
+[remote_machine]$ git symbolic-ref HEAD refs/heads/shared_br
+
+## you can add more remote repos, e.g. use the Bitbucket website (where you log in in initialize a new repo via a web interface):
+git remote add bb:luke/molpro_lr_repo # the "bb" defined above in the "~/.ssh/config" file
+git push bb shared_br
+
+## now you can share your work with others, you can add their public keys to your cluster and allow them to clone the code:
+git clone my_cluster:git_repos/work_repo.git my_work_dir
+## of course, "my_cluster" needs to be substituted with the full remote machine address if not configured in the "~/.ssh/config" file
+## you can also use the Bitbucket website and grant access to the users using your Bitbucket account
+
+## commit your changes and send them to a remote repo:
 git commit -a
-# write some info on your work, and then
 git push
-# or if you want to get the newest version from the repo:
+
+## get the newest version from the remote repo:
 git pull
+
+## rename a git repo directory on a remote machine:
+mv -iv git_repos/{work_repo,super_repo}.git
+## you need to change the remote URL in your local working directory accordingly:
+git remote set-url my_repo my_cluster:git_repos/super_repo.git
+------------------------------------------------------------

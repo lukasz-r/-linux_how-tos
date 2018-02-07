@@ -3011,7 +3011,7 @@ PermitRootLogin forced-commands-only
 
 ## put a perl script called rrsync (which usually comes with rsync installation) in /usr/bin/rrsync and make it executable
 
-## place local machine's public ssh key in "/root/.ssh/authorized_keys" and prepend it on a single line as follows:
+## place local machine's public SSH key in "/root/.ssh/authorized_keys" and prepend it on a single line as follows:
 commmand="/usr/bin/rrsync -ro /" ssh-rsa (the proper key follows)
 
 ## then on a local machine (which carries out backups) you can put in "/etc/rsnapshot.conf" the lines as such:
@@ -3072,10 +3072,10 @@ ldconfig
 ldd molpro
 
 ================================================================================
-ssh / VNC
+SSH / VNC
 ================================================================================
-# tunnel ssh connection to a machine C behind a gateway B from your local machine A:
-# use port forwarding to forward port 22 (usually used for ssh) from machine C to, say, port 5022 on machine B and finally to port 5022 on your local machine A:
+# tunnel SSH connection to a machine C behind a gateway B from your local machine A:
+# use port forwarding to forward port 22 (usually used for SSH) from machine C to, say, port 5022 on machine B and finally to port 5022 on your local machine A:
 ssh userB@machineB -L 5022:machineC:22
 # you can now connect to machine C from A:
 ssh -p 5022 userC@localhost
@@ -3088,7 +3088,7 @@ ssh userB@machineB -L 5900:machineC:5900
 # and then on machine A:
 vncviewer localhost:5900
 
-# use ssh config file for connceting to machine C behind a gateway B from your local machine A:
+# use SSH config file for connceting to machine C behind a gateway B from your local machine A:
 -------------------------------------------------------
 $HOME/.ssh/config
 -------------------------------------------------------
@@ -3172,7 +3172,7 @@ dar -x archive -v -R dest
 # list all files in a dar archive:
 dar -l archive
 
-# backup directory to a remote host over ssh in at most 10M slices:
+# backup directory to a remote host over SSH in at most 10M slices:
 dar -c - -R Manuals/ -z -v | ssh erwin "dar_xform -s 10M - backup/Manuals"
 
 # create the "pics.zip" archive from the files in "~/docs" without saving the pathname structure:
