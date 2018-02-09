@@ -1,7 +1,10 @@
-# clone Molpro code into the "molpro-pauli" directory:
+# clone a repo into a local directory:
 git clone git@www.molpro.net:Molpro molpro-pauli
 
-# this can be simplified by the "~/.ssh/config" configuration file (provided the SSH private key is in "~/.ssh/id_rsa.git" and the corresponding SSH public key is in "~/.ssh/id_rsa.git.pub"):
+# clone a repo containing other repos (submodules) into its default directory:
+git clone --recursive git@gitlab.com:dalton/dalton.git
+
+# simplify URLs using the "~/.ssh/config" configuration file (provided the SSH private key is in "~/.ssh/id_rsa.git" and the corresponding SSH public key is in "~/.ssh/id_rsa.git.pub"):
 --------------------------------------------------------------------------------
 # Molpro
 Host molpro
@@ -14,8 +17,16 @@ Host bitbucket
 User git
 HostName bitbucket.org
 IdentityFile ~/.ssh/id_rsa.git
+
+# GitLab
+Host gitlab
+User git
+HostName gitlab.com
+IdentityFile ~/.ssh/id_rsa.git
 --------------------------------------------------------------------------------
 # the "IdentityFile" line is not needed when a standard location ("~/.ssh/id_rsa") key is used
+# clone a code using above definitions:
+git clone --recursive gitlab:dalton/dalton.git
 
 ------------------------------------------------------------
 # SSH keys and ssh-agent
