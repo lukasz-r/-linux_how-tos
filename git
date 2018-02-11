@@ -33,7 +33,7 @@ git clone --recursive gitlab:dalton/dalton.git
 ------------------------------------------------------------
 ## the key which is not in the standard location won't be seen by the remote git repos unless it has been added to the ssh-agent
 ## ssh-agent normally isn't started on boot
-## add the following lines to your "~/.bash_profile" to start ssh-agent (or just the last line if the agent is started by a system):
+## add the following lines to your "~/.bash_profile" to start the ssh-agent (or just the last line if the agent is started by a system):
 --------------------------------------------------------------------------------
 # ssh keys for remote git repos
 trap '[[ -n $SSH_AGENT_PID ]] && eval $(ssh-agent -k &> /dev/null)' 0
@@ -52,14 +52,10 @@ ssh-add ~/.ssh/id_rsa.git
 ## adjust "~/.bash_profile" and "~/.ssh/config" files accordingly
 ------------------------------------------------------------
 
-# clone the Molpro code:
-git clone molpro:Molpro molpro-pauli
-
-# patch the Molpro tree:
-cd molpro-pauli
+# patch the repo:
 git pull
 
-# accidentally deleted files (e.g. "lib/variable.registry") can be restored from a remote repo:
+# restore accidentally deleted files (e.g. "lib/variable.registry") from a remote repo:
 git checkout # lists deleted files
 git checkout lib/variable.registry
 
@@ -79,32 +75,55 @@ git checkout master
 git branch -D 2012
 
 # copy an "a.F90" file from a "source_br" branch into the "working_br" branch:
-git checkout working_br # if not already at working_br
+git checkout working_br # if not already at "working_br"
 git checkout source_br a.F90
 
 ------------------------------------------------------------
-# git operates on three levels:
-# (A) working directory → (B) staging area (index) → (C) git repo
-#	(A) is where we actually modify files
-#	(B) collects info on what will go in the next commit
-#	(C) collects all the data which will be copied with git clone
+# git operates on several levels:
+## (A) working tree → (B) staging area (index) → (C) local git repo → (D) remote git repo
+## (A) is where you actually modify files
+## (B) collects info on what will go in the next commit
+## (C) contains all history up to the last commit (it collects all the data which e.g. would be copied from the repo with "git clone")
+## (D) tracks the same project as (C), but resides somewhere else
 
-# show changes between (A) and (B), so the changes from last commit which are not yet staged for a commit:
+# the git workflow:
+## (1) you modify files in your working tree
+## (2) with "git add" you selectively add just the changes you want to be a part of a next commit, thus you stage the changes to the index: (A) → (B)
+## (3) with "git rm" you selectively remove files from the working tree and from the index
+## (4) with "git commit" you record the changes staged in the index to the git repo: (B) → (C)
+## if (2) doesn't involve a new file addition (just the file contents modification), (2)−(4) can be accomplished in a single step with "git commit -a": (A) → (B) → (C)
+## (5) with "git push" you record the changes to the remote repo: (C) → (D)
+
+# a file in a working tree can be in several states:
+## unmodified − it hasn't been changed relative to the last commit, it's in (A) and (C)
+## modified − it's been changed relative to the last commit but not yet staged, so it's in (A)
+## staged − its modification has been recorded in the index, so it's in (B)
+## committed − its modification has been recorded in the repo, so it's in (C)
+## tracked − it's in any of the above states
+## untracked − it hasn't been staged and its history is not recorded in (C), it's only in (A) (e.g. a newly created file)
+
+# show modified files:
 git diff
 
-# show changes between (B) and (C), so what's been added to the index but not yet committed:
+# show staged files (what will be committed with "git commit"):
 git diff --cached
 # or:
 git diff --staged
 
-# show changes between (A) and (C), so the changes from last commit:
+# show both modified and staged files (what will be committed with "git commit -a"):
 git diff HEAD
+
+# if you only use "git commit -a", you skip staging changes, thus "git diff" and "git diff HEAD" yield same results
+# however, if you add a new file, you need to stage it:
+git add new_file
+# and then commit it, thus you can't skip a staging part in this case
+# file deletion is automatically discovered by "git commit -a", thus in this case you can skip a staging part
 ------------------------------------------------------------
 
 # discard changes on a file in a working directory:
 git checkout -- file.F90
 
-# undo changes (e.g. "git pull" which led to merge conflicts), i.e. reset the index and working tree:
+# undo all changes in the index and in the tracked files in the working tree (e.g. "git pull" which led to merge conflicts), reverting them to the "HEAD" commit:
 git reset --hard HEAD
 
 ------------------------------------------------------------
@@ -115,10 +134,10 @@ git add new
 git mv -v old new
 
 # git tracks contents not files, so it detects a rename
-# if "git mv" is used, the index is updated automatically
+# if "git mv" is used, the index is updated automatically, thus a rename is staged
 
 # remember to commit a rename after renaming a file:
-git commit -a
+git commit
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -165,38 +184,40 @@ git add .
 ## record a current state as a first commit:
 git commit -m "initial commit"
 
-## possibly, you want to create a branch which you'd like to share through the remote git repo instead of working with a master branch:
-git checkout shared_br
+## you can create your own branch which you can share through the remote git repo instead of working with a default "master" branch:
+git checkout -b my_branch
+## creating a branch is very useful if lots of people work on the same code
 
 ## now you can add a remote git repo that the other users can access and through which you can share your changes
-
 ## initialize a bare git repo in a directory on a remote machine:
 [remote_machine]$ cd ~/git_repos/work_repo.git
 [remote_machine]$ git init --bare
 
-## it might be useful to add the name of the remote machine (e.g. "my_cluster") to your "~/.ssh/config"
+## it's useful to add the name (e.g. "my_cluster") and definition of the remote machine to the "~/.ssh/config" file
 
 ## go back to a working directory on your local computer and add the remote repo stored at "my_cluster":
 git remote add my_repo my_cluster:git_repos/work_repo.git
 
-## checkout your working branch and push it to the remote repo:
-git checkout shared_br
-git push -u my_repo shared_br
-## using "-u" makes "my_repo" and "shared_br" default options for argument-less "git push" and "git pull" commands
+## checkout your branch and push it to the remote repo:
+git checkout my_branch
+git push -u my_repo my_branch
+## using "-u" makes "my_repo" and "my_branch" default options for argument-less "git push" and "git pull" commands
 ## now you've got a history of your branch at the remote repo
-
-## you need to set the default clone branch at the remote repo if "shared_br" ≠ "master":
+## but "HEAD" at "my_repo" points to "refs/heads/master" ("master" branch) by default
+## if "my_branch" ≠ "master", you need to point "HEAD" to "my_branch":
 [remote_machine]$ cd ~/git_repos/work_repo.git
-[remote_machine]$ git symbolic-ref HEAD refs/heads/shared_br
+[remote_machine]$ git symbolic-ref HEAD refs/heads/my_branch
+## a default clone branch is what "HEAD" points to, thus this way you can change a default clone branch
+## on git severs (e.g. Bitbucket) a default clone branch can be changed via a web interface
 
 ## you can add more remote repos, e.g. use the Bitbucket website (where you log in in initialize a new repo via a web interface):
 git remote add bitbucket bitbucket:luke/molpro_lr_repo # the "bitbucket" defined above in the "~/.ssh/config" file
-git push bitbucket shared_br
+git push bitbucket my_branch
+## this way "bitbucket" contains only "my_branch", which we've just pushed
 
-## now you can share your work with others, you can add their public keys to your cluster and allow them to clone the code:
+## now you can share your work with others: you can add their public keys to your cluster or grant access via a web interface, and allow them to clone the code:
 git clone my_cluster:git_repos/work_repo.git my_work_dir
 ## of course, "my_cluster" needs to be substituted with the full remote machine address if not configured in the "~/.ssh/config" file
-## you can also use the Bitbucket website and grant access to the users using your Bitbucket account
 
 ## commit your changes and send them to a remote repo:
 git commit -a
@@ -206,7 +227,7 @@ git push
 git pull
 
 ## rename a git repo directory on a remote machine:
-mv -iv git_repos/{work_repo,super_repo}.git
+[remote_machine]$ mv -iv ~/git_repos/{work_repo,super_repo}.git
 ## you need to change the remote URL in your local working directory accordingly:
 git remote set-url my_repo my_cluster:git_repos/super_repo.git
 ------------------------------------------------------------
