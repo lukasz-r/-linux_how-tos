@@ -1501,6 +1501,10 @@ ls -il /scratch
 # moving a file is very fast since its data are not moved, just:
 ## a new (filename, inode number) entry is created in a new directory
 ## an old (filename, inode number) entry is deleted in an old directory
+# thus moving a file doesn't change anything in its inode nor data blocks (in particular, a number of links to its inode, so a number of its hard-linked files)
+# when renaming a file to a filename corresponding to an existing file pathname, the latter file is overwritten (removed and replaced with the former file):
+touch file{1,2}
+mv -iv !$ # "file2" overwritten with "file1"
 
 ------------------------------------------------------------
 # hard link:
