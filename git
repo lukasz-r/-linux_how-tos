@@ -52,13 +52,6 @@ ssh-add ~/.ssh/id_rsa.git
 ## adjust "~/.bash_profile" and "~/.ssh/config" files accordingly
 ------------------------------------------------------------
 
-# patch the repo:
-git pull
-
-# restore accidentally deleted files (e.g. "lib/variable.registry") from a remote repo:
-git checkout # lists deleted files
-git checkout lib/variable.registry
-
 # list branches: all, local, remote ones:
 git branch -a
 git branch -l
@@ -74,33 +67,33 @@ git checkout -b 2012 origin/2012.1
 git checkout master
 git branch -D 2012
 
-# copy an "a.F90" file from a "source_br" branch into the "working_br" branch:
-git checkout working_br # if not already at "working_br"
-git checkout source_br a.F90
-
 ------------------------------------------------------------
 # git operates on several levels:
 ## (A) working tree → (B) staging area (index) → (C) local git repo → (D) remote git repo
-## (A) is where you actually modify files
+## (A) is a working directory contents where you actually modify files
 ## (B) collects info on what will go in the next commit
 ## (C) contains all history up to the last commit (it collects all the data which e.g. would be copied from the repo with "git clone")
 ## (D) tracks the same project as (C), but resides somewhere else
 
 # the git workflow:
-## (1) you modify files in your working tree
-## (2) with "git add" you selectively add just the changes you want to be a part of a next commit, thus you stage the changes to the index: (A) → (B)
+## (1) you modify files in a working tree
+## (2) with "git add" you selectively add just the changes (new or modified files) you want to be a part of a next commit, thus you stage the changes to the index: (A) → (B)
 ## (3) with "git rm" you selectively remove files from the working tree and from the index
 ## (4) with "git commit" you record the changes staged in the index to the git repo: (B) → (C)
-## if (2) doesn't involve a new file addition (just the file contents modification), (2)−(4) can be accomplished in a single step with "git commit -a": (A) → (B) → (C)
+## if (2) doesn't involve new files addition (just the file contents modification), (2)−(4) can be accomplished in a single step with "git commit -a": (A) → (B) → (C)
 ## (5) with "git push" you record the changes to the remote repo: (C) → (D)
 
-# a file in a working tree can be in several states:
-## unmodified − it hasn't been changed relative to the last commit, it's in (A) and (C)
-## modified − it's been changed relative to the last commit but not yet staged, so it's in (A)
-## staged − its modification has been recorded in the index, so it's in (B)
-## committed − its modification has been recorded in the repo, so it's in (C)
-## tracked − it's in any of the above states
-## untracked − it hasn't been staged and its history is not recorded in (C), it's only in (A) (e.g. a newly created file)
+# a file in (A) is either:
+## tracked, then it can be:
+### unmodified (committed) − it hasn't been changed relative to the last commit, its same version is in (C)
+### modified − it's been changed relative to the last commit in (C), but not yet staged
+### staged − its modification has been recorded in the index, so it's also in (B)
+## untracked, since it:
+### is ignored due to rules in ".gitignore" (note that the rules don't affect already tracked files)
+### hasn't been staged and the last commit doesn't include this file (e.g. it's a newly created file)
+
+# show the working tree status:
+git status
 
 # show modified files:
 git diff
@@ -116,28 +109,56 @@ git diff HEAD
 # if you only use "git commit -a", you skip staging changes, thus "git diff" and "git diff HEAD" yield same results
 # however, if you add a new file, you need to stage it:
 git add new_file
-# and then commit it, thus you can't skip a staging part in this case
-# file deletion is automatically discovered by "git commit -a", thus in this case you can skip a staging part
-------------------------------------------------------------
+# and then commit it:
+git commit
+# thus you can't skip a staging part in this case
 
-# discard changes on a file in a working directory:
-git checkout -- file.F90
+# if a file is removed with
+rm file_del
+# it's no longer in (A) and is reported as deleted and not staged for commit
+# at this point you can restore a file (e.g. if you deleted it by accident):
+git checkout # lists deleted files
+git checkout file_del
+# but if you want to actually remove a file from a repo, stage its removal with:
+git rm file_del
+# which has the same effect regardless of whether or not the previous "rm file_del" command was used: the file is no longer in (A) and is reported as deleted and staged for commit, so commit the change:
+git commit
+# or do both of the above in one go:
+git commit -a
+# now the file's gone, but it's history up to a deletion is recorded in (C), thus "file_del" can be restored by checking it from a specific commit, e.g. from the one before its deletion (the penultimate one):
+git checkout HEAD^ file_del
+# "file_del" is now staged
 
-# undo all changes in the index and in the tracked files in the working tree (e.g. "git pull" which led to merge conflicts), reverting them to the "HEAD" commit:
+# untrack a tracked file (useful if you forgot to add something to ".gitignore" and accidentally staged or committed a file):
+git rm --cached file_ut
+# now "file_ut" is in still in (A) and its deletion is staged in (B), and you can commit the change:
+git commit
+# "file_ut" is now untracked
+
+# discard changes on a modified file:
+git checkout file_mod
+# discard changes on an already staged file:
+git reset HEAD file_mod # unstages a file, "file_mod" is now modified
+git checkout file_mod
+
+# undo all changes in the tracked files in the working tree and in the index (e.g. introduced with "git pull" which led to merge conflicts), reverting them to the last commit:
 git reset --hard HEAD
 
-------------------------------------------------------------
 # rename a file:
-mv -iv old new
-git add new
-# or:
+mv -iv file1 file2
+# now "file1" is deleted and "file2" is untracked, so we need to stage the changes:
+git rm file1
+git add file2
+# all three above commands can be replaced with:
 git mv -v old new
-
-# git tracks contents not files, so it detects a rename
-# if "git mv" is used, the index is updated automatically, thus a rename is staged
-
-# remember to commit a rename after renaming a file:
+# which stages a rename automatically
+# git tracks contents not files, so it detects a rename after those operations, now just commit the change:
 git commit
+
+# copy a file from the "source_br" branch into the "working_br" branch:
+git checkout working_br # if not already at "working_br"
+git checkout source_br file_cp
+# "file_cp" is now staged if its versions differ between the two branches
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -189,7 +210,7 @@ git checkout -b my_branch
 ## creating a branch is very useful if lots of people work on the same code
 
 ## now you can add a remote git repo that the other users can access and through which you can share your changes
-## initialize a bare git repo in a directory on a remote machine:
+## initialize a bare git repo (repo with only git objects and no working tree) in a directory on a remote machine:
 [remote_machine]$ cd ~/git_repos/work_repo.git
 [remote_machine]$ git init --bare
 
@@ -208,6 +229,7 @@ git push -u my_repo my_branch
 [remote_machine]$ cd ~/git_repos/work_repo.git
 [remote_machine]$ git symbolic-ref HEAD refs/heads/my_branch
 ## a default clone branch is what "HEAD" points to, thus this way you can change a default clone branch
+## the effect of the above command is the same as that of "git checkout my_branch", but the latter can't be run in a bare repo
 ## on git severs (e.g. Bitbucket) a default clone branch can be changed via a web interface
 
 ## you can add more remote repos, e.g. use the Bitbucket website (where you log in in initialize a new repo via a web interface):
@@ -225,6 +247,16 @@ git push
 
 ## get the newest version from the remote repo:
 git pull
+
+## go back to a specific commit:
+git checkout 5fdac
+## commit names are 40-byte SHA-1 hexadecimal strings, but it suffices to specify leading substring that is unique within the repo
+## now you're in a detached "HEAD" state: "HEAD" refers to a specific commit
+## normally "HEAD" refers to the branch, and always updates to the tip of the branch with new commits
+## new commits in a detached "HEAD" state also update "HEAD" to refer to the last commit, but when no branch nor tag are created in this development line, it will eventually be lost when switched to a named branch, thus it's better to create a branch:
+git checkout -b dev_branch # now "HEAD" refers to "dev_branch"
+## or you can go back to a specific branch from a detached "HEAD" state:
+git checkout my_branch # now "HEAD" refers to "my_branch"
 
 ## rename a git repo directory on a remote machine:
 [remote_machine]$ mv -iv ~/git_repos/{work_repo,super_repo}.git
