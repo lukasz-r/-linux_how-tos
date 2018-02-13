@@ -1529,12 +1529,17 @@ mv -iv !$ # "file2" overwritten with "file1"
 ------------------------------------------------------------
 # symbolic vs. hard links
 ------------------------------------------------------------
-## symbolic link − a file pointing to a file (target) somewhere in the filesystem
+## symbolic link − a file with an absolute or relative path to a file (target) in the filesystem
+## if a symbolic link's target doesn't exist, the link is broken/orphaned/dangling
+## to dereference a symbolic link − to follow the reference to the target rather than work with the link itself
+## to no-dereference a symbolic link − to work with the link itself
 ## symbolic link doesn't point to an inode and thus doesn't increase a link count of an inode
 ## symbolic links, contrary to hard links, can point to directories
-## since inodes are unique within a filesystem, hard links must be on the same filesystem, but symbolic links can point to target on different filesystems
+## since inodes are unique within a filesystem, hard links must be on the same filesystem, but symbolic links can point to targets on different filesystems
 ## deleting a symbolic link doesn't influence its target
-## deleting or moving a symbolic link target leaves a symbolic link broken/orphaned/dangling
+## a symbolic links breaks if:
+### its target is deleted or moved
+### it contains a relative path to a target and is moved
 ## the inode is removed and the corresponding data blocks (together with the disk space) are freed only when the inode's last filename (hard link) is removed (unlinked, with "rm" or "unlink" command)
 ## editing a file through its:
 ### symbolic link (e.g. via "vi symlink") never breaks the link
@@ -1566,7 +1571,7 @@ find ~/ -samefile a.txt
 # find regular files with multiple hard links:
 find -type f -links +1
 
-# get a full pathname to a file or a symbolic link:
+# get a full pathname to a file or resolve a symbolic link:
 readlink -f a.txt
 # or:
 realpath a.txt
