@@ -167,8 +167,10 @@ git clean -dn
 # actually remove them:
 git clean -df
 
-# remove all (including ignored) untracked files and directories from the working tree:
+# dry-run removing all (including ignored) untracked files and directories from the working tree:
 git clean -dxn
+# actually remove them:
+git clean -dxf
 ------------------------------------------------------------
 
 ------------------------------------------------------------
