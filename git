@@ -255,6 +255,9 @@ git clone my_cluster:git_repos/work_repo.git my_work_dir
 git add .
 ## but make sure your ".gitignore" properly takes care of files generated through the compilation process so that you don't stage those file as well with this command
 
+## stage an ignored file:
+git add -f ignored_file
+
 ## commit your changes and send them to a remote repo:
 git commit -a
 git push
