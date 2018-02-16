@@ -94,6 +94,8 @@ git branch -D 2012
 
 # show the working tree status:
 git status
+# also show individual files in untracked directories and ignored files:
+git status -uall --ignored
 
 # show modified files:
 git diff
@@ -159,6 +161,14 @@ git commit
 git checkout working_br # if not already at "working_br"
 git checkout source_br file_cp
 # "file_cp" is now staged if its versions differ between the two branches
+
+# dry-run removing non-ignored untracked files and directories from the working tree:
+git clean -dn
+# actually remove them:
+git clean -df
+
+# remove all (including ignored) untracked files and directories from the working tree:
+git clean -dxn
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -240,6 +250,10 @@ git push bitbucket my_branch
 ## now you can share your work with others: you can add their public keys to your cluster or grant access via a web interface, and allow them to clone the code:
 git clone my_cluster:git_repos/work_repo.git my_work_dir
 ## of course, "my_cluster" needs to be substituted with the full remote machine address if not configured in the "~/.ssh/config" file
+
+## if you've added multiple files and directories, you can stage them in one go:
+git add .
+## but make sure your ".gitignore" properly takes care of files generated through the compilation process so that you don't stage those file as well with this command
 
 ## commit your changes and send them to a remote repo:
 git commit -a
