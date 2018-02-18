@@ -1,3 +1,23 @@
+--------------------------------------------------------------------------------
+# basic Git configuration
+--------------------------------------------------------------------------------
+## global Git options are stored in "~/.gitconfig"
+## local Git options (specific to a repo) are stored in repo's ".git/config"
+
+## list variables set in config files:
+git config -l
+
+## list only global variables:
+git config --global -l
+
+## get the values of the variables matching a regex:
+git config --get-regexp mail
+
+## set the name and email associated with your commits:
+git config --global user.name "John Git"
+git config --global user.email johngit@example.com
+--------------------------------------------------------------------------------
+
 # clone a repo into a local directory:
 git clone git@www.molpro.net:Molpro molpro-pauli
 
@@ -31,11 +51,11 @@ git clone --recursive gitlab:dalton/dalton.git
 ------------------------------------------------------------
 # SSH keys and ssh-agent
 ------------------------------------------------------------
-## the key which is not in the standard location won't be seen by the remote git repos unless it has been added to the ssh-agent
+## the key which is not in the standard location won't be seen by the remote Git repos unless it has been added to the ssh-agent
 ## ssh-agent normally isn't started on boot
 ## add the following lines to your "~/.bash_profile" to start the ssh-agent (or just the last line if the agent is started by a system):
 --------------------------------------------------------------------------------
-# ssh keys for remote git repos
+# ssh keys for remote Git repos
 trap '[[ -n $SSH_AGENT_PID ]] && eval $(ssh-agent -k &> /dev/null)' 0
 eval $(ssh-agent)
 ssh-add ~/.ssh/id_rsa.git &> /dev/null
@@ -68,18 +88,18 @@ git checkout master
 git branch -D 2012
 
 ------------------------------------------------------------
-# git operates on several levels:
-## (A) working tree → (B) staging area (index) → (C) local git repo → (D) remote git repo
+# Git operates on several levels:
+## (A) working tree → (B) staging area (index) → (C) local Git repo → (D) remote Git repo
 ## (A) is a working directory contents where you actually modify files
 ## (B) collects info on what will go in the next commit
 ## (C) contains all history up to the last commit (it collects all the data which e.g. would be copied from the repo with "git clone")
 ## (D) tracks the same project as (C), but resides somewhere else
 
-# the git workflow:
+# the Git workflow:
 ## (1) you modify files in a working tree
 ## (2) with "git add" you selectively add just the changes (new or modified files) you want to be a part of a next commit, thus you stage the changes to the index: (A) → (B)
 ## (3) with "git rm" you selectively remove files from the working tree and from the index
-## (4) with "git commit" you record the changes staged in the index to the git repo: (B) → (C)
+## (4) with "git commit" you record the changes staged in the index to the Git repo: (B) → (C)
 ## if (2) doesn't involve new files addition (just the file contents modification), (2)−(4) can be accomplished in a single step with "git commit -a": (A) → (B) → (C)
 ## (5) with "git push" you record the changes to the remote repo: (C) → (D)
 
@@ -154,7 +174,7 @@ git add file2
 # all three above commands can be replaced with:
 git mv -v old new
 # which stages a rename automatically
-# git tracks contents not files, so it detects a rename after those operations, now just commit the change:
+# Git tracks contents not files, so it detects a rename after those operations, now just commit the change:
 git commit
 
 # copy a file from the "source_br" branch into the "working_br" branch:
@@ -201,9 +221,9 @@ git bisect reset
 ------------------------------------------------------------
 
 ------------------------------------------------------------
-# create a git repo for a working project:
+# create a Git repo for a working project:
 ------------------------------------------------------------
-## go to the working directory of your project and initialize a git repo:
+## go to the working directory of your project and initialize a Git repo:
 git init
 
 ## the name of the working directory is irrelevant and can be changed at any time
@@ -217,12 +237,12 @@ git add .
 ## record a current state as a first commit:
 git commit -m "initial commit"
 
-## you can create your own branch which you can share through the remote git repo instead of working with a default "master" branch:
+## you can create your own branch which you can share through the remote Git repo instead of working with a default "master" branch:
 git checkout -b my_branch
 ## creating a branch is very useful if lots of people work on the same code
 
-## now you can add a remote git repo that the other users can access and through which you can share your changes
-## initialize a bare git repo (repo with only git objects and no working tree) in a directory on a remote machine:
+## now you can add a remote Git repo that the other users can access and through which you can share your changes
+## initialize a bare Git repo (repo with only Git objects and no working tree) in a directory on a remote machine:
 [remote_machine]$ cd ~/git_repos/work_repo.git
 [remote_machine]$ git init --bare
 
@@ -242,7 +262,7 @@ git push -u my_repo my_branch
 [remote_machine]$ git symbolic-ref HEAD refs/heads/my_branch
 ## a default clone branch is what "HEAD" points to, thus this way you can change a default clone branch
 ## the effect of the above command is the same as that of "git checkout my_branch", but the latter can't be run in a bare repo
-## on git severs (e.g. Bitbucket) a default clone branch can be changed via a web interface
+## on Git severs (e.g. Bitbucket) a default clone branch can be changed via a web interface
 
 ## you can add more remote repos, e.g. use the Bitbucket website (where you log in in initialize a new repo via a web interface):
 git remote add bitbucket bitbucket:luke/molpro_lr_repo # the "bitbucket" defined above in the "~/.ssh/config" file
@@ -277,7 +297,7 @@ git checkout -b dev_branch # now "HEAD" refers to "dev_branch"
 ## or you can go back to a specific branch from a detached "HEAD" state:
 git checkout my_branch # now "HEAD" refers to "my_branch"
 
-## rename a git repo directory on a remote machine:
+## rename a Git repo directory on a remote machine:
 [remote_machine]$ mv -iv ~/git_repos/{work_repo,super_repo}.git
 ## you need to change the remote URL in your local working directory accordingly:
 git remote set-url my_repo my_cluster:git_repos/super_repo.git
