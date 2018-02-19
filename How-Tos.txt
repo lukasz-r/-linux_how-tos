@@ -3034,11 +3034,12 @@ $HOME/rsync_filter
 rsync -ahPvz --filter=". $HOME/rsync_filter" src dest
 # note that all files under, say, "src/yes" are updated: though the "+ src/**/" rule matches directories only, those files are not excluded (nor included) by any rule, no rule applies to them, so implicitly they are included
 
-# the trailing slash in the source:
+# the trailing slash in the source directory:
 rsync /run/CD/ .
-# avoids creating an additional directory (here: "/run/CD") at the destination (here: current directory), with the permissions of the source directory (here: "/run/CD") transferred to the destination directory (here: current directory), but:
+# avoids creating an additional directory (here: "CD") at the destination (here: ".", so a current directory), with the attributes of the source directory (here: "/run/CD") transferred to the destination directory (here: current directory), but:
 rsync /run/CD/* .
-# doesn't change the permissions of the destination directory (here: current directory), since "*" (here: in "/run/CD/*") is expanded by the shell to the listing of the source dir, but apart from that both variants have same result, thus the two commands have the same results:
+# doesn't change the attributes of the destination directory (here: current directory), since "/run/CD/*" is expanded by the shell to the listing of the source directory, but apart from that both variants have the same results if "dotglob" option is set (without it "*" won't expand into hidden files)
+# thus the two commands have the same results:
 rsync -av /src/foo /dest
 rsync -av /src/foo/ /dest/foo
 
