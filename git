@@ -282,6 +282,12 @@ git checkout 5fdac
 git checkout -b dev_branch # now "HEAD" refers to "dev_branch"
 ## you can go back to a specific branch from a detached "HEAD" state:
 git checkout my_branch # now "HEAD" refers to "my_branch"
+
+## list submodules in a repo:
+git submodule
+
+## initialize all submodules in a repo (e.g. if cloned without "--recursive" option):
+git submodule update --init --recursive
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
