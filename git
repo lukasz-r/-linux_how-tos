@@ -4,7 +4,7 @@
 ## global Git options are stored in "~/.gitconfig"
 ## local Git options (specific to a repo) are stored in repo's ".git/config"
 
-## list variables set in config files:
+## list all variables set in config files:
 git config -l
 
 ## list only global variables:
@@ -25,7 +25,10 @@ git clone git@www.molpro.net:Molpro molpro-pauli
 git clone --recursive git@gitlab.com:dalton/dalton.git
 
 # simplify URLs using the "~/.ssh/config" configuration file (provided the SSH private key is in "~/.ssh/id_rsa.git" and the corresponding SSH public key is in "~/.ssh/id_rsa.git.pub"):
---------------------------------------------------------------------------------
+------------------------------------------------------------
+~/.ssh/config
+------------------------------------------------------------
+(...)
 # Molpro
 Host molpro
 User git
@@ -43,23 +46,26 @@ Host gitlab
 User git
 HostName gitlab.com
 IdentityFile ~/.ssh/id_rsa.git
---------------------------------------------------------------------------------
+------------------------------------------------------------
 # the "IdentityFile" line is not needed when a standard location ("~/.ssh/id_rsa") key is used
 # clone a code using above definitions:
 git clone --recursive gitlab:dalton/dalton.git
 
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 # SSH keys and ssh-agent
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 ## the key which is not in the standard location won't be seen by the remote Git repos unless it has been added to the ssh-agent
 ## ssh-agent normally isn't started on boot
 ## add the following lines to your "~/.bash_profile" to start the ssh-agent (or just the last line if the agent is started by a system):
---------------------------------------------------------------------------------
+------------------------------------------------------------
+~/.bash_profile
+------------------------------------------------------------
+(...)
 # ssh keys for remote Git repos
 trap '[[ -n $SSH_AGENT_PID ]] && eval $(ssh-agent -k &> /dev/null)' 0
 eval $(ssh-agent)
 ssh-add ~/.ssh/id_rsa.git &> /dev/null
---------------------------------------------------------------------------------
+------------------------------------------------------------
 
 ## list the keys represented by the authentication agent:
 ssh-add -l
@@ -70,24 +76,9 @@ mv -iv ~/.ssh/id_rsa.{molpro,git}
 mv -iv ~/.ssh/id_rsa.{molpro,git}.pub
 ssh-add ~/.ssh/id_rsa.git
 ## adjust "~/.bash_profile" and "~/.ssh/config" files accordingly
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 
-# list branches: all, local, remote ones:
-git branch -a
-git branch -l
-git branch -r
-
-# switch to a "2002.6" branch:
-git checkout 2002.6
-
-# create a local "2012" branch to track a remote "origin/2012.1" branch:
-git checkout -b 2012 origin/2012.1
-
-# delete a local "2012" branch (first you need to switch to another branch):
-git checkout master
-git branch -D 2012
-
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 # Git operates on several levels:
 ## (A) working tree → (B) staging area (index) → (C) local Git repo → (D) remote Git repo
 ## (A) is a working directory contents where you actually modify files
@@ -191,11 +182,111 @@ git clean -df
 git clean -dxn
 # actually remove them:
 git clean -dxf
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 
-------------------------------------------------------------
+--------------------------------------------------------------------------------
+# creating a Git repo for a working project
+--------------------------------------------------------------------------------
+## go to the working directory of your project and initialize a Git repo:
+git init
+## the name of the working directory is irrelevant and can be changed at any time
+## you can name your project by editing the ".git/description" file, this name is used by some web interfaces
+
+## create a ".gitignore" file with the filter rules
+
+## add all the contents of the working directory (".") but ignored files to the repo:
+git add .
+
+## record a current state as a first commit:
+git commit -m "initial commit"
+
+## you can create your own branch which you can share through the remote Git repo instead of working with a default "master" branch:
+git checkout -b my_branch
+## creating a branch is very useful if lots of people work on the same code, so that people use their own branches for their contributions
+
+## now you can add a remote Git repo that the other users can access and through which you can share your changes
+## initialize a bare Git repo (repo with only Git objects and no working tree) in a directory on a remote machine:
+[remote_machine]$ cd ~/git_repos/work_repo.git
+[remote_machine]$ git init --bare
+## it's useful to add the name (e.g. "my_cluster") and definition of the remote machine to the "~/.ssh/config" file
+
+## go back to a working directory on your local computer and add "my_repo" remote repo at "my_cluster":
+git remote add my_repo my_cluster:git_repos/work_repo.git
+
+## switch to your branch and push it to the remote repo:
+git checkout my_branch
+git push -u my_repo my_branch
+## using "-u" makes "my_repo" and "my_branch" default options for argument-less "git push" and "git pull" commands
+
+## now you've got a history of your branch recorded at the remote repo
+## but "HEAD" at "my_repo" points to "refs/heads/master" ("master" branch) by default
+## if "my_branch" ≠ "master", you need to point "HEAD" to "my_branch":
+[remote_machine]$ cd ~/git_repos/work_repo.git
+[remote_machine]$ git symbolic-ref HEAD refs/heads/my_branch
+## a default clone branch is what "HEAD" points to, thus this way you can change a default clone branch
+## the effect of the above command is the same as that of "git checkout my_branch", but the latter can't be run in a bare repo since it doesn't contain a working tree
+## on Git severs (e.g. Bitbucket) a default clone branch can be changed via a web interface
+
+## you can add more remote repos, e.g. use the Bitbucket website (where you log in in initialize a new repo via a web interface):
+git remote add bitbucket bitbucket:luke/molpro_lr_repo # "bitbucket" defined above in the "~/.ssh/config" file
+git push bitbucket my_branch
+## this way "bitbucket" contains only "my_branch", which we've just pushed
+
+## you can rename a remote repo, especially when it's called "origin" (a default name given to a remote repo in a local cloned repo):
+git remote rename origin my_repo
+
+## you can rename a Git repo directory on a remote machine:
+[remote_machine]$ mv -iv ~/git_repos/{work_repo,super_repo}.git
+## you need to change the remote URL in your local repo accordingly:
+git remote set-url my_repo my_cluster:git_repos/super_repo.git
+
+## show remote repos:
+git remote -v
+
+## now you can share your work with others: you can add their public keys to your cluster or grant access via a web interface e.g. on your project Bitbucket website, and ask them to clone the code:
+git clone my_cluster:git_repos/work_repo.git my_work_dir
+## of course, "my_cluster" needs to be substituted with the full remote machine address if not configured in the "~/.ssh/config" file
+
+## if you've added multiple files and directories to your working tree, you can stage them in one go:
+git add .
+## but make sure your ".gitignore" properly takes care of files generated through the compilation process so that you don't stage those files as well with this command
+
+## stage an ignored file:
+git add -f ignored_file
+
+## commit your changes and send them to a remote repo:
+git commit -a
+git push
+
+## get the newest version from the remote repo:
+git pull
+
+## list branches: all, local, remote ones:
+git branch -a
+git branch -l
+git branch -r
+
+## create a local "2012" branch to track a remote "origin/2012.1" branch:
+git checkout -b 2012 origin/2012.1
+
+## delete a local "2012" branch (first you need to switch to another branch):
+git checkout master
+git branch -D 2012
+
+## go back to a specific commit:
+git checkout 5fdac
+## commit names are 40-byte SHA-1 hexadecimal strings, but it suffices to specify leading substring that is unique within the repo
+## now you're in a detached "HEAD" state: "HEAD" refers to a specific commit
+## normally "HEAD" refers to the branch, and always updates to the tip of the branch with new commits
+## new commits in a detached "HEAD" state also update "HEAD" to refer to the last commit, but when no branch nor tag are created in this development line, they will be eventually deleted by Git, thus it's better to create a branch:
+git checkout -b dev_branch # now "HEAD" refers to "dev_branch"
+## you can go back to a specific branch from a detached "HEAD" state:
+git checkout my_branch # now "HEAD" refers to "my_branch"
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
 # debugging: looking for a commit which introduced a bug
-------------------------------------------------------------
+--------------------------------------------------------------------------------
 ## a current revision (commit) is bad:
 git bisect start
 git bisect bad
@@ -218,87 +309,4 @@ git bisect log > bisect_log
 
 ## quit bisecting and go back to the commit checked out before "git bisect start":
 git bisect reset
-------------------------------------------------------------
-
-------------------------------------------------------------
-# create a Git repo for a working project:
-------------------------------------------------------------
-## go to the working directory of your project and initialize a Git repo:
-git init
-
-## the name of the working directory is irrelevant and can be changed at any time
-## you can name your repo by editing the ".git/description" file, this name is used by some web interfaces
-
-## create a ".gitignore" file with the filter rules
-
-## add the contents of the working directory to the repo:
-git add .
-
-## record a current state as a first commit:
-git commit -m "initial commit"
-
-## you can create your own branch which you can share through the remote Git repo instead of working with a default "master" branch:
-git checkout -b my_branch
-## creating a branch is very useful if lots of people work on the same code
-
-## now you can add a remote Git repo that the other users can access and through which you can share your changes
-## initialize a bare Git repo (repo with only Git objects and no working tree) in a directory on a remote machine:
-[remote_machine]$ cd ~/git_repos/work_repo.git
-[remote_machine]$ git init --bare
-
-## it's useful to add the name (e.g. "my_cluster") and definition of the remote machine to the "~/.ssh/config" file
-
-## go back to a working directory on your local computer and add the remote repo stored at "my_cluster":
-git remote add my_repo my_cluster:git_repos/work_repo.git
-
-## checkout your branch and push it to the remote repo:
-git checkout my_branch
-git push -u my_repo my_branch
-## using "-u" makes "my_repo" and "my_branch" default options for argument-less "git push" and "git pull" commands
-## now you've got a history of your branch at the remote repo
-## but "HEAD" at "my_repo" points to "refs/heads/master" ("master" branch) by default
-## if "my_branch" ≠ "master", you need to point "HEAD" to "my_branch":
-[remote_machine]$ cd ~/git_repos/work_repo.git
-[remote_machine]$ git symbolic-ref HEAD refs/heads/my_branch
-## a default clone branch is what "HEAD" points to, thus this way you can change a default clone branch
-## the effect of the above command is the same as that of "git checkout my_branch", but the latter can't be run in a bare repo
-## on Git severs (e.g. Bitbucket) a default clone branch can be changed via a web interface
-
-## you can add more remote repos, e.g. use the Bitbucket website (where you log in in initialize a new repo via a web interface):
-git remote add bitbucket bitbucket:luke/molpro_lr_repo # the "bitbucket" defined above in the "~/.ssh/config" file
-git push bitbucket my_branch
-## this way "bitbucket" contains only "my_branch", which we've just pushed
-
-## now you can share your work with others: you can add their public keys to your cluster or grant access via a web interface, and allow them to clone the code:
-git clone my_cluster:git_repos/work_repo.git my_work_dir
-## of course, "my_cluster" needs to be substituted with the full remote machine address if not configured in the "~/.ssh/config" file
-
-## if you've added multiple files and directories, you can stage them in one go:
-git add .
-## but make sure your ".gitignore" properly takes care of files generated through the compilation process so that you don't stage those file as well with this command
-
-## stage an ignored file:
-git add -f ignored_file
-
-## commit your changes and send them to a remote repo:
-git commit -a
-git push
-
-## get the newest version from the remote repo:
-git pull
-
-## go back to a specific commit:
-git checkout 5fdac
-## commit names are 40-byte SHA-1 hexadecimal strings, but it suffices to specify leading substring that is unique within the repo
-## now you're in a detached "HEAD" state: "HEAD" refers to a specific commit
-## normally "HEAD" refers to the branch, and always updates to the tip of the branch with new commits
-## new commits in a detached "HEAD" state also update "HEAD" to refer to the last commit, but when no branch nor tag are created in this development line, it will eventually be lost when switched to a named branch, thus it's better to create a branch:
-git checkout -b dev_branch # now "HEAD" refers to "dev_branch"
-## or you can go back to a specific branch from a detached "HEAD" state:
-git checkout my_branch # now "HEAD" refers to "my_branch"
-
-## rename a Git repo directory on a remote machine:
-[remote_machine]$ mv -iv ~/git_repos/{work_repo,super_repo}.git
-## you need to change the remote URL in your local working directory accordingly:
-git remote set-url my_repo my_cluster:git_repos/super_repo.git
-------------------------------------------------------------
+--------------------------------------------------------------------------------
