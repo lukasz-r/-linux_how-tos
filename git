@@ -273,6 +273,17 @@ git checkout -b 2012 origin/2012.1
 git checkout master
 git branch -D 2012
 
+## rename the "old_branch_name" branch you're on:
+git branch -m new_branch_name
+## now you need to delete the "old_branch_name" from a remote repo and push the "new_branch_name":
+git push my_repo :old_branch_name new_branch_name
+## but this will result in an error if "old_branch_name" is the default branch in a remote repo, then:
+git push my_repo new_branch_name
+## change a default branch in a remote repo to "new_branch_name", either with:
+[remote_machine]$ git symbolic-ref HEAD refs/heads/new_branch_name
+## or via a web interface, and finally:
+git push my_repo :old_branch_name
+
 ## go back to a specific commit:
 git checkout 5fdac
 ## commit names are 40-byte SHA-1 hexadecimal strings, but it suffices to specify leading substring that is unique within the repo
