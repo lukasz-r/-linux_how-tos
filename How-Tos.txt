@@ -1619,6 +1619,13 @@ filesystem structure
 ### use capitals and spaces in filenames for articles, books, films, pictures, etc. according to the language rules (e.g. "$HOME/Desktop/Articles/Molecular Mechanics", "$HOME/Desktop/Varieties/Movies/Polish Films/Ziemia obiecana.mkv")
 --------------------------------------------------------------------------------
 
+--------------------------------------------------------------------------------
+# my take on filenames:
+--------------------------------------------------------------------------------
+## use "_" in system, code and script filenames to mark spaces (e.g. "build_scripts", "regular_users_list")
+## use "-" to indicate software version (e.g. "openmpi-1.8.8", "molpro-2015", "molpro-pauli")
+--------------------------------------------------------------------------------
+
 # get info on the filesystem hierarchy:
 man hier
 
@@ -3035,13 +3042,18 @@ rsync -ahPvz --filter=". $HOME/rsync_filter" src dest
 # note that all files under, say, "src/yes" are updated: though the "+ src/**/" rule matches directories only, those files are not excluded (nor included) by any rule, no rule applies to them, so implicitly they are included
 
 # the trailing slash in the source directory:
-rsync /run/CD/ .
+rsync -av /run/CD/ .
 # avoids creating an additional directory (here: "CD") at the destination (here: ".", so a current directory), with the attributes of the source directory (here: "/run/CD") transferred to the destination directory (here: current directory), but:
-rsync /run/CD/* .
+rsync -av /run/CD/* .
 # doesn't change the attributes of the destination directory (here: current directory), since "/run/CD/*" is expanded by the shell to the listing of the source directory, but apart from that both variants have the same results if "dotglob" option is set (without it "*" won't expand into hidden files)
 # thus the two commands have the same results:
 rsync -av /src/foo /dest
 rsync -av /src/foo/ /dest/foo
+
+# using "." as the source directory makes rsync behave as if the trailing slash were present, thus all three commands have the same results:
+rsync -av src/ dest
+cd src && rsync -av . ../dest
+cd src && rsync -av ./ ../dest
 
 # make a list of files which would be replaced skipping existing files on the receiver:
 rsync -ahPvz --ignore-existing -n -i /media/luke /home &> log.txt
