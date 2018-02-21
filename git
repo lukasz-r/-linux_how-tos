@@ -284,6 +284,11 @@ git push my_repo new_branch_name
 ## or via a web interface, and finally:
 git push my_repo :old_branch_name
 
+## incorporates changes from "dev_branch" into "my_branch":
+git checkout my_branch
+git merge dev_branch
+## if merge is successful, it's automatically recorded as new commit
+
 ## go back to a specific commit:
 git checkout 5fdac
 ## commit names are 40-byte SHA-1 hexadecimal strings, but it suffices to specify leading substring that is unique within the repo
