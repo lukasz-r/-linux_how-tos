@@ -1,7 +1,9 @@
 ## Git
 	> why checking out a remote-tracking branch yields detached HEAD
+	https://stackoverflow.com/questions/25670173/why-does-git-tell-me-not-currently-on-any-branch-after-i-run-git-checkout-ori
 	> "-u" options in push and pull
 	> push/pull from a non-tracking branch
+	> stashing
 ## LVM
 	> thin provisioning
 	> virtual disks, any size can be given to thinly-provisioned volumes
