@@ -1,0 +1,7 @@
+## Git
+	> why checking out a remote-tracking branch yields detached HEAD
+	> "-u" options in push and pull
+	> push/pull from a non-tracking branch
+## LVM
+	> thin provisioning
+	> virtual disks, any size can be given to thinly-provisioned volumes
