@@ -518,6 +518,9 @@ echo $(tr "\n" "+" < file) 0 | bc
 # remove parts of a file after last dot (.) in each line:
 rev < file | cut -d "." -f 1 --complement | rev
 
+# print nth character of a string:
+echo axy10eRf | cut -c 7
+
 ================================================================================
 BASH
 ================================================================================
