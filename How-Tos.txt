@@ -2538,23 +2538,51 @@ Makefile
 # a general form of a rule:
 target : prerequisites
 	recipe
-# the recipe is run if target doesn't exist or prerequisites are more recent that the target
+# a recipe is run if a target doesn't exist or is older than any of the prerequisites
+
+# pattern rule − a rule with the "%" character in the target
+# static pattern rule − a pattern rule with multiple targets and prerequisite names derived from target names
+# implicit rule − a pre-defined or a user-defined non-static pattern rule
+# implicit rules usually make use of pre-defined variables, e.g.
+%.o : %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
 
 # F77, FFLAGS, FLIBS: legacy Fortran 77 variables
 # FC, FCFLAGS, FCLIBS: current Fortran variables
 
 # two types (flavours) of variables:
-## recursively expanded variables − defined with "=" and expanded only when the variable is referenced:
+## recursively expanded variables − defined with "=" and expanded only when a variable is referenced:
 CFLAGS = $(include_dirs) -O
 ## simply expanded variables − defined with ":=" and expanded already at the definition:
 foo := $(x) bar
 
-# some automatic variables:
-## $@ − filename of the target of the rule
-## $< − name of the first prerequisite
-## $* − stem with which a pattern rule matches: it matches the same thing as "%" (e.g. if there's a file "doc.tex" and we use "%.tex", "$*" matches "doc")
+# useful automatic variables:
+## $@ − a filename of a target of a rule
+## $< − a name of the first prerequisite
+## $^ − names of all prerequisites separated with spaces
+## $* − a stem matching the same string as "%" in a pattern rule
 
-# use pattern rules to define your own implicit rules if several files share the same recipe, e.g. create "*.tex" files from corresponding "*.awk" and "*.dat" files:
+# avoid repeating a recipe common for several rules for which prerequisites don't follow the same pattern (e.g. the number of prerequisites is different for different rules):
+-------------------------------------------------------
+Makefile
+-------------------------------------------------------
+targets := service.x group.x
+
+all : $(targets)
+
+service.x : service.c procinfo.c
+group.x : group.c
+
+$(targets) :
+	$(CC) $(CFLAGS) -o $@ $^
+
+.PHONY : clean
+
+clean :
+	rm -f ./*.x
+-------------------------------------------------------
+
+# avoid repeating a recipe common for several rules for which prerequisites follow the same pattern: use pattern rules to define your own implicit rules, e.g. create "*.tex" files from corresponding "*.awk" and "*.dat" files:
 -------------------------------------------------------
 Makefile
 -------------------------------------------------------
@@ -2570,16 +2598,16 @@ all : $(targets)
 clean :
 	rm -f ./*{.aux,log,tex}
 -------------------------------------------------------
-# note that in above example we have to first list "*.dat" files and substitute "*.dat" with "*.tex" to obtain the list of targets as there might not be any "*.tex" files ("make clean" removes them)
+# note that in the above example we have to first list "*.dat" files and substitute "*.dat" with "*.tex" to obtain a list of targets since there might not be any "*.tex" files ("make clean" removes them)
 
-# use static pattern rules to override implicit rules for some files, e.g. for "big.dat" and "little.dat" which are made with "special_big.awk" and "special_little.awk" instead of "big.awk" and "little.awk":
+# use static pattern rules to override implicit rules for some files, e.g. for "big.dat" and "little.dat" which are made with "special_big.awk" and "special_little.awk" rather than with "big.awk" and "little.awk" files:
 %.dat : %.awk %.txt
 	./$< $*.txt > $@
 
 big.dat little.dat : %.dat : special_%.awk %.txt
 	./$< $*.txt > $@
 
-# use target-specific variables with pattern rules if a recipe depends on target name:
+# use target-specific variables with pattern rules if a recipe depends on a target name:
 -------------------------------------------------------
 Makefile
 -------------------------------------------------------
@@ -2599,7 +2627,7 @@ mst.eps : plots_info := "marital status"
 %.eps : %.txt plots.plt
 	gnuplot -c plots.plt $< $@ $(shell awk '/^X/ {print NR}' $<)
 
-# to remake certain files if Makefile changed, put Makefile as a prerequisite to a rule:
+# to make sure certain files are remade if "Makefile" has changed, put "Makefile" as a prerequisite to a rule:
 -------------------------------------------------------
 Makefile
 -------------------------------------------------------
@@ -2617,9 +2645,9 @@ pdf : $(pdf_files)
 %.pdf : %.eps
 	epstopdf $<
 -------------------------------------------------------
-# note that
+# note that using
 all : $(eps_files) Makefile
-# instead of placing "Makefile" in a "%.eps" rule won't work since "all" is a default rule and not a filename, and there is no rule with "Makefile" as a target, whereas "%.eps" rule actually creates files checked against Makefile when it's a prerequisite
+# instead of placing "Makefile" in a "%.eps" rule won't work since "all" is a first and thus a default rule, not a filename, and there is no rule with "Makefile" as a target, whereas "%.eps" rule actually creates files which are checked against a "Makefile" prerequisite
 
 ================================================================================
 Maxima
