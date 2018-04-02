@@ -1174,6 +1174,10 @@ sudo tune2fs -m 0 -L ŁR_Seagate /dev/sdb1
 sudo umount /dev/sdb1
 sudo fsck -vcck /dev/sdb1
 
+# check if a directory is a mountpoint:
+usb_disk=~/my_disk
+mountpoint -q "$usb_disk" && echo "$usb_disk is a mountpoint"
+
 --------------------------------------------------------------------------------
 # redundant array of independent disks (RAID)
 --------------------------------------------------------------------------------

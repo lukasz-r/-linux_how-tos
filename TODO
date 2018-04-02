@@ -3,6 +3,7 @@
 	https://stackoverflow.com/questions/25670173/why-does-git-tell-me-not-currently-on-any-branch-after-i-run-git-checkout-ori
 	> "-u" options in push and pull
 	> push/pull from a non-tracking branch
+	> when staging proves useful: committing changes only for some files
 	> stashing
 ## LVM
 	> thin provisioning
