@@ -567,6 +567,13 @@ done
 "$HOME/foo/bar{1,2,3}"
 # construct won't expand (except for "$HOME" expansion) as curly brackets are in double quotes
 
+# use array variables to store results of a brace expansion:
+back_dirs=(~luke/{Documents,Pictures}) # RIGHT!!!
+echo "${back_dirs[@]}"                 # /home/luke/Documents /home/luke/Pictures
+back_dirs=~luke/{Documents,Pictures}   # WRONG!!!
+echo "$back_dirs"                      # /home/luke/{Documents,Pictures}
+# brace expansion produces a list, and a scalar variable can't hold a list
+
 # "$@" expands to script arguments as separate words: "$1" "$2" ... "${n}", so
 for arg in "$@"; do
 	ls -all $arg # WRONG!!!

@@ -10,4 +10,6 @@
 ## vim
 	> :%s/sth/else/gci or I
 
+## port forwarding for tunnels and email
+
 ## service tags with dmidecode
