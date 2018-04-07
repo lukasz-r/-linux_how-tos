@@ -1646,6 +1646,18 @@ filesystem structure
 ## use "-" to indicate software version (e.g. "openmpi-1.8.8", "molpro-2015", "molpro-pauli")
 --------------------------------------------------------------------------------
 
+--------------------------------------------------------------------------------
+# my take on compilation and installation directory names:
+--------------------------------------------------------------------------------
+## on clusters:
+### "/opt/$name/$name-$ver/build_$compiler" − directory to compile a source
+### "/opt/$name/$name-$ver-install" − directory to install binaries and libraries
+### where e.g. name=openmpi, ver=git, compiler=intel
+## on a laptop:
+### "$HOME/$name/$name-$ver/build_$compiler" and "$HOME/$name/$name-$ver-install"
+## keep development files (source, test jobs, etc.) in "$HOME/$name_dev" directory
+--------------------------------------------------------------------------------
+
 # get info on the filesystem hierarchy:
 man hier
 
