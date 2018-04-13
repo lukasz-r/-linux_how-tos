@@ -521,7 +521,7 @@ rev < file | cut -d "." -f 1 --complement | rev
 # print nth character of a string:
 echo axy10eRf | cut -c 7
 
-# note that "cut" doesn't reorder fields, thus "cut -f1,2" and "cut -f2,1" are equivalent
+# note that "cut" doesn't reorder fields, thus "cut -f 1,2" and "cut -f 2,1" are equivalent
 
 ================================================================================
 BASH
