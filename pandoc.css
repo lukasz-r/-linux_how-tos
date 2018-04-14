@@ -1,0 +1,29 @@
+body {
+    margin: auto;
+    padding-right: 1em;
+    padding-left: 1em;
+    max-width: 70em;
+    font-family: Verdana, sans-serif;
+    font-size: 140%;
+    color: #333;
+}
+
+h1 {
+	border-top: 6px solid black;
+	border-bottom: 6px solid black
+}
+
+h2 {
+	border-top: 4px solid black;
+	border-bottom: 4px solid black
+}
+
+h3 {
+	border-top: 3px solid black;
+	border-bottom: 3px solid black
+}
+
+code {
+    font-family: monospace;
+    font-size: 140%;
+}

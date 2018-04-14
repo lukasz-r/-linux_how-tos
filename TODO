@@ -8,6 +8,7 @@
 ## LVM
 	> thin provisioning
 	> virtual disks, any size can be given to thinly-provisioned volumes
+	> external LVM disk should be plugged before any other disk to avoid I/O errors
 ## vim
 	> :%s/sth/else/gci or I
 
