@@ -168,34 +168,63 @@ git diff --staged
 git diff HEAD
 ```
 
-# if you only use "git commit -a", you skip staging changes, thus "git diff" and "git diff HEAD" yield same results
-# however, if you add a new file, you need to stage it:
+# adding files
+
++ if you only use `git commit -a`, you skip staging changes, thus `git diff` and `git diff HEAD` yield same results
+
++ however, if you add a new file, you need to stage it:
+```bash
 git add new_file
-# and then commit it:
+```
+	and then commit it:
+```bash
 git commit
-# thus you can't skip a staging part in this case
+```
++ thus you can't skip a staging part in this case
 
-# if a file is removed with
+# removing files
+
++ if a file is removed with
+```bash
 rm file_del
-# it's no longer in (A) and is reported as deleted and not staged for commit
-# at this point you can restore a file (e.g. if you deleted it by accident):
-git checkout # lists deleted files
-git checkout file_del
-# but if you want to actually remove a file from a repo, stage its removal with:
-git rm file_del
-# which has the same effect regardless of whether or not the previous "rm file_del" command was used: the file is no longer in (A) and is reported as deleted and staged for commit, so commit the change:
-git commit
-# or do both of the above in one go:
-git commit -a
-# now the file's gone, but it's history up to a deletion is recorded in (C), thus "file_del" can be restored by checking it from a specific commit, e.g. from the one before its deletion (the penultimate one):
-git checkout HEAD^ file_del
-# "file_del" is now staged
+```
+	it's no longer in <#Git_wt_l> and is reported as deleted and not staged for commit
 
-# untrack a tracked file (useful if you forgot to add something to ".gitignore" and accidentally staged or committed a file):
-git rm --cached file_ut
-# now "file_ut" is in still in (A) and its deletion is staged in (B), and you can commit the change:
++ at this point you can restore a file (e.g. if you deleted it by accident):
+```bash
+git checkout file_del
+```
+	(`git checkout` alone lists deleted files)
+
++ but if you want to actually remove a file from a repo, stage its removal with:
+```bash
+git rm file_del
+```
+	which has the same effect regardless of whether or not the `rm file_del` command was used previously: the file is no longer in <#Git_wt_l> and is reported as deleted and staged for commit, so you can commit the change:
+```bash
 git commit
-# "file_ut" is now untracked
+```
+	or do both of the above in one go:
+```bash
+git commit -a
+```
++ now the file's gone from the <#Git_wt_l>, but it's history up to a deletion is recorded in the <#Git_lr_l>, thus `file_del` can be restored by checking it from a specific commit, e.g. from the one before its deletion (the penultimate one):
+```bash
+git checkout HEAD^ file_del
+```
+	`file_del` is now staged
+
+# untracking a file
+
++ untrack a tracked file (useful if you forgot to add something to `.gitignore` and accidentally staged or committed a file):
+```bash
+git rm --cached file_ut
+```
++ now `file_ut` is in still in <#Git_wt_l> and its deletion is staged in <#Git_sa_l>, and you can commit the change:
+```bash
+git commit
+```
+	`file_ut` is now untracked
 
 # discard changes on a modified file:
 git checkout file_mod
