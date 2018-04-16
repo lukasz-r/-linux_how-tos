@@ -1,6 +1,21 @@
 
 # Git
 
+## getting help
+
++ print a list of useful guides:
+```bash
+git help -g
+```
+
++ useful guides:
+```bash
+man gittutorial
+man gittutorial-2
+man giteveryday
+man gitglossary
+```
+
 ## basic Git configuration
 
 + global Git options are stored in `~/.gitconfig`
@@ -78,46 +93,80 @@ git submodule
 git submodule update --init --recursive
 ```
 
---------------------------------------------------------------------------------
-# Git operates on several levels:
-## (A) working tree → (B) staging area (index) → (C) local Git repo → (D) remote Git repo
-## (A) is a working directory contents where you actually modify files
-## (B) collects info on what will go in the next commit
-## (C) contains all history up to the last commit (it collects all the data which e.g. would be copied from the repo with "git clone")
-## (D) tracks the same project as (C), but resides somewhere else
+## working tree, staging area and repos
 
-# the Git workflow:
-## (1) you modify files in a working tree
-## (2) with "git add" you selectively add just the changes (new or modified files) you want to be a part of a next commit, thus you stage the changes to the index: (A) → (B)
-## (3) with "git rm" you selectively remove files from the working tree and from the index
-## (4) with "git commit" you record the changes staged in the index to the Git repo: (B) → (C)
-## if (2) doesn't involve new files addition (just the file contents modification), (2)−(4) can be accomplished in a single step with "git commit -a": (A) → (B) → (C)
-## (5) with "git push" you record the changes to the remote repo: (C) → (D)
+<#define Git_wt|__working tree__>
+<#define Git_wt_l|[<#Git_wt>](#Git_wt)>
+<#define Git_sa|__staging area__>
+<#define Git_sa_l|[<#Git_sa>](#Git_sa)>
+<#define Git_lr| __local repo__>
+<#define Git_lr_l|[<#Git_lr>](#Git_lr)>
+<#define Git_rr| __remote repo__>
+<#define Git_rr_l|[<#Git_rr>](#Git_rr)>
 
-# a file in (A) is either:
-## tracked, then it can be:
-### unmodified (committed) − it hasn't been changed relative to the last commit, its same version is in (C)
-### modified − it's been changed relative to the last commit in (C), but not yet staged
-### staged − its modification has been recorded in the index, so it's also in (B)
-## untracked, since it:
-### is ignored due to rules in ".gitignore" (note that the rules don't affect already tracked files)
-### hasn't been staged and the last commit doesn't include this file (e.g. it's a newly created file)
++ Git operates on several levels: <br>
+	[<#Git_wt>](#Git_wt) → [<#Git_sa> (__index__)](#Git_sa) → [<#Git_lr>](#Git_lr) → [<#Git_rr>](#Git_rr)
+	+ <#Git_wt><a name="Git_wt"></a> is a working directory contents where you actually modify files
+	+ <#Git_sa><a name="Git_sa"></a> collects info on what will go in the next commit
+	+ <#Git_lr><a name="Git_lr"></a> contains all history up to the last commit (it collects all the data which e.g. would be copied from the repo with "git clone")
+	+ <#Git_rr><a name="Git_rr"></a> tracks the same project as (C), but resides somewhere else
 
-# show the working tree status:
++ the Git workflow:
+	#. you modify files in the <#Git_wt_l>
+	#. with `git add` you selectively add just the changes (new or modified files) you want to be a part of a next commit, thus you stage the changes to the index: <br>
+	<#Git_wt_l> → <#Git_sa_l>
+	#. with `git rm` you selectively remove files from the <#Git_wt_l> and from the <#Git_sa_l>
+	#. with `git commit` you record the changes staged in the <#Git_sa_l> to the <#Git_lr_l>: <br>
+	<#Git_sa_l> → <#Git_lr_l>
+	#. if step 2. doesn't involve new files addition (just the file contents modification), steps 2.---4. can be accomplished in a single step with `git commit -a`: <br>
+	<#Git_wt_l> → <#Git_sa_l> → <#Git_lr_l>
+	#. with `git push` you record the changes to the <#Git_rr_l>: <br>
+	<#Git_lr_l> → <#Git_rr_l>
+
++ a file in the <#Git_wt_l> is either:
+
+	+ tracked, then it can be:
+	
+		+ unmodified (committed) --- it hasn't been changed relative to the last commit, its same version is in the <#Git_lr_l>
+		
+		+ modified --- it's been changed relative to the last commit in the <#Git_lr_l>, but not yet staged
+		
+		+ staged --- its modification has been recorded in the <#Git_sa_l>, so it's also in the <#Git_sa_l>
+	
+	+ untracked, since it:
+		
+		+ is ignored due to the rules in `.gitignore` (note that the rules don't affect already tracked files)
+		
+		+ hasn't been staged and the last commit doesn't include this file (e.g. it's a newly created file)
+
++ show the working tree status:
+```bash
 git status
-# also show individual files in untracked directories and ignored files:
+```
+
+	also show individual files in untracked directories and ignored files:
+```bash
 git status -uall --ignored
+```
 
-# show modified files:
++ show modified files:
+```bash
 git diff
+```
 
-# show staged files (what will be committed with "git commit"):
++ show staged files (what will be committed with `git commit`):
+```bash
 git diff --cached
-# or:
+```
+	or:
+```bash
 git diff --staged
+```
 
-# show both modified and staged files (what will be committed with "git commit -a"):
++ show both modified and staged files (what will be committed with `git commit -a`):
+```bash
 git diff HEAD
+```
 
 # if you only use "git commit -a", you skip staging changes, thus "git diff" and "git diff HEAD" yield same results
 # however, if you add a new file, you need to stage it:

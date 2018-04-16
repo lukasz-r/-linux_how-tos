@@ -12,10 +12,13 @@ $(md_main_file) : $(md_files)
 	cat $^ > $@
 
 $(target) : $(md_main_file) pandoc.css Makefile
-	pandoc $< -sS --toc -c pandoc.css \
-		-f markdown+auto_identifiers+blank_before_header+backtick_code_blocks+fenced_code_attributes \
+	gpp -H $< | pandoc -sS --toc -c pandoc.css \
+		-f markdown+auto_identifiers+blank_before_header+backtick_code_blocks+fenced_code_attributes+fancy_lists+example_lists+abbreviations \
 		--highlight-style=zenburn -mathjax \
 		-o $@
+
+view : $(target)
+	xdg-open $(target)
 
 .PHONY : clean
 
