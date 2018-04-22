@@ -122,18 +122,34 @@ __register__<a name="vim_register"></a>
 
 + turn off the highlighted search results: `:nohls`
 
-+ search for multiple patterns, e.g. double spaces, whitespace characters at the end of a line, and double line breaks:
-```
-/  \|\s$\|\n\n\n
-```
++ search for a pattern case-insensitively: `/\\cPattern`
 
-	(`\|` separates patterns)
-	
++ search for a pattern case-sensitively: `/\\CPattern`
+
+\define{vim_spat}{  \|\s$\|\n\n\n}
+
++ search for multiple patterns, e.g. double spaces, whitespace characters at the end of a line, and double line breaks: `/\vim_spat`
+
+	(`\\|` separates patterns)
+
 	turn the avove search into a custom command in `~/.vimrc`:
 ```
-com SearchMess /  \|\s$\|\n\n\n
+com SearchMess /\vim_spat
 ```
 such a command might be then invoked with: `:SearchMess`
+
+\define{vim_spat}{\(_l\)\([|>]\)}
+\define{vim_rpat}{\1\inked\2}
+
++ search for the `_l|` and `_l>` strings: `/_l[|>]`
+
+	now we'll replace `_l` into `_linked` in the above strings using the most recently searched pattern and backreferences:
+
+	+ we repeat the search adding the groups via `\(` and `\)` around `_l` and `[|>]`: `\vim_spat`
+
+	+ we use `:%s//replace_pattern/g` to refer to the most recently searched pattern, and `\\1`, `\\2`, etc. to refer to strings matched inside `\\(` and `\\)`: `%s//\vim_rpat/g`
+
++ the `E488: Trailing characters` error is usually caused when the unescaped separator (e.g. `\`) is used in the pattern --- in that case either escape the separator (e.g. `\\`), or use a different separator (e.g. `#`: `:s#/>$#}#g`)
 
 + make multiple substitutions:
 ```
@@ -183,7 +199,7 @@ such a command might be then invoked with: `:SearchMess`
 + insert the `list: ` string starting in a given column: [select a visual block](#vim_visual_mode) starting in the given column and: `Ilist: <ESC>`
 
 + add the `.` character at the end of [selected lines](#vim_visual_mode): `norm A.`
-	
+
 	(`norm A.` executes insert-mode command `A.`)
 
 ## external commands
@@ -202,7 +218,7 @@ such a command might be then invoked with: `:SearchMess`
 
 	(`:p` means a file pathname)
 
-+ insert an output of a command into the current buffer: `:r !free -h` 
++ insert an output of a command into the current buffer: `:r !free -h`
 
 + insert an external file contents into the current buffer: `:r file.txt`
 
@@ -225,7 +241,7 @@ such a command might be then invoked with: `:SearchMess`
 ## editing multiple files
 
 + open multiple files:
-	+  `vim -o ./*.txt` (split horizontally)
+	+ `vim -o ./*.txt` (split horizontally)
 	+ `vim -O ./*.txt` (split vertically)
 	+ `vim -p ./*.txt` (using tabs)
 
@@ -245,7 +261,7 @@ such a command might be then invoked with: `:SearchMess`
 
 + note that switching buffers doesn't switch between windows nor tabs, but switches a file in a current window if several files are open
 
-+ go to a next buffer: `:bn` 
++ go to a next buffer: `:bn`
 
 + go to a previous buffer: `:bp`
 

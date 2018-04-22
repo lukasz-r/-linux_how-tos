@@ -41,6 +41,10 @@ git config --get-regexp mail
 git config --global user.name "John Git"
 git config --global user.email johngit@example.com
 ```
+	but you can always set the author when you commit via:
+```bash
+git commit --author="John Git Jr. johngitjunior@example.com"
+```
 
 ## cloning a repo
 
@@ -95,48 +99,48 @@ git submodule update --init --recursive
 
 ## working tree, staging area and repos
 
-<#define Git_wt|__working tree__>
-<#define Git_wt_l|[<#Git_wt>](#Git_wt)>
-<#define Git_sa|__staging area__>
-<#define Git_sa_l|[<#Git_sa>](#Git_sa)>
-<#define Git_lr| __local repo__>
-<#define Git_lr_l|[<#Git_lr>](#Git_lr)>
-<#define Git_rr| __remote repo__>
-<#define Git_rr_l|[<#Git_rr>](#Git_rr)>
+\define{Git_wt}{__working tree__}
+\define{Git_wt_linked}{[\Git_wt](#Git_wt)}
+\define{Git_sa}{__staging area__}
+\define{Git_sa_linked}{[\Git_sa](#Git_sa)}
+\define{Git_lr}{__local repo__}
+\define{Git_lr_linked}{[\Git_lr](#Git_lr)}
+\define{Git_rr}{__remote repo__}
+\define{Git_rr_linked}{[\Git_rr](#Git_rr)}
 
 + Git operates on several levels: <br>
-	[<#Git_wt>](#Git_wt) → [<#Git_sa> (__index__)](#Git_sa) → [<#Git_lr>](#Git_lr) → [<#Git_rr>](#Git_rr)
-	+ <#Git_wt><a name="Git_wt"></a> is a working directory contents where you actually modify files
-	+ <#Git_sa><a name="Git_sa"></a> collects info on what will go in the next commit
-	+ <#Git_lr><a name="Git_lr"></a> contains all history up to the last commit (it collects all the data which e.g. would be copied from the repo with "git clone")
-	+ <#Git_rr><a name="Git_rr"></a> tracks the same project as (C), but resides somewhere else
+	\Git_wt_linked → \Git_sa_linked (__index__) → \Git_lr_linked → \Git_rr_linked
+	+ \Git_wt<a name="Git_wt"></a> is a working directory contents where you actually modify files
+	+ \Git_sa<a name="Git_sa"></a> collects info on what will go in the next commit
+	+ \Git_lr<a name="Git_lr"></a> contains all history up to the last commit (it collects all the data which e.g. would be copied from the repo with "git clone")
+	+ \Git_rr<a name="Git_rr"></a> tracks the same project as (C), but resides somewhere else
 
 + the Git workflow:
-	#. you modify files in the <#Git_wt_l>
+	#. you modify files in the \Git_wt_linked
 	#. with `git add` you selectively add just the changes (new or modified files) you want to be a part of a next commit, thus you stage the changes to the index: <br>
-	<#Git_wt_l> → <#Git_sa_l>
-	#. with `git rm` you selectively remove files from the <#Git_wt_l> and from the <#Git_sa_l>
-	#. with `git commit` you record the changes staged in the <#Git_sa_l> to the <#Git_lr_l>: <br>
-	<#Git_sa_l> → <#Git_lr_l>
+	\Git_wt_linked → \Git_sa_linked
+	#. with `git rm` you selectively remove files from the \Git_wt_linked and from the \Git_sa_linked
+	#. with `git commit` you record the changes staged in the \Git_sa_linked to the \Git_lr_linked: <br>
+	\Git_sa_linked → \Git_lr_linked
 	#. if step 2. doesn't involve new files addition (just the file contents modification), steps 2.---4. can be accomplished in a single step with `git commit -a`: <br>
-	<#Git_wt_l> → <#Git_sa_l> → <#Git_lr_l>
-	#. with `git push` you record the changes to the <#Git_rr_l>: <br>
-	<#Git_lr_l> → <#Git_rr_l>
+	\Git_wt_linked → \Git_sa_linked → \Git_lr_linked
+	#. with `git push` you record the changes to the \Git_rr_linked: <br>
+	\Git_lr_linked → \Git_rr_linked
 
-+ a file in the <#Git_wt_l> is either:
++ a file in the \Git_wt_linked is either:
 
 	+ tracked, then it can be:
-	
-		+ unmodified (committed) --- it hasn't been changed relative to the last commit, its same version is in the <#Git_lr_l>
-		
-		+ modified --- it's been changed relative to the last commit in the <#Git_lr_l>, but not yet staged
-		
-		+ staged --- its modification has been recorded in the <#Git_sa_l>, so it's also in the <#Git_sa_l>
-	
+
+		+ unmodified (committed) --- it hasn't been changed relative to the last commit, its same version is in the \Git_lr_linked
+
+		+ modified --- it's been changed relative to the last commit in the \Git_lr_linked, but not yet staged
+
+		+ staged --- its modification has been recorded in the \Git_sa_linked, so it's also in the \Git_sa_linked
+
 	+ untracked, since it:
-		
+
 		+ is ignored due to the rules in `.gitignore` (note that the rules don't affect already tracked files)
-		
+
 		+ hasn't been staged and the last commit doesn't include this file (e.g. it's a newly created file)
 
 + show the working tree status:
@@ -168,11 +172,16 @@ git diff --staged
 git diff HEAD
 ```
 
-# adding files
-
 + if you only use `git commit -a`, you skip staging changes, thus `git diff` and `git diff HEAD` yield same results
 
-+ however, if you add a new file, you need to stage it:
++ show modifications for a specific file:
+```bash
+git diff Makefile
+```
+
+# adding files
+
++ if you add a new file and want Git to track it, you need to stage its addition:
 ```bash
 git add new_file
 ```
@@ -180,7 +189,7 @@ git add new_file
 ```bash
 git commit
 ```
-+ thus you can't skip a staging part in this case
++ thus a staging part can't be skipped in the case of a file addition
 
 # removing files
 
@@ -188,7 +197,7 @@ git commit
 ```bash
 rm file_del
 ```
-	it's no longer in <#Git_wt_l> and is reported as deleted and not staged for commit
+	it's no longer in \Git_wt_linked and is reported as deleted and not staged for commit
 
 + at this point you can restore a file (e.g. if you deleted it by accident):
 ```bash
@@ -200,7 +209,7 @@ git checkout file_del
 ```bash
 git rm file_del
 ```
-	which has the same effect regardless of whether or not the `rm file_del` command was used previously: the file is no longer in <#Git_wt_l> and is reported as deleted and staged for commit, so you can commit the change:
+	which has the same effect regardless of whether or not the `rm file_del` command was used previously: the file is no longer in \Git_wt_linked and is reported as deleted and staged for commit, so you can commit the change:
 ```bash
 git commit
 ```
@@ -208,7 +217,7 @@ git commit
 ```bash
 git commit -a
 ```
-+ now the file's gone from the <#Git_wt_l>, but it's history up to a deletion is recorded in the <#Git_lr_l>, thus `file_del` can be restored by checking it from a specific commit, e.g. from the one before its deletion (the penultimate one):
++ now the file's gone from the \Git_wt_linked, but it's history up to a deletion is recorded in the \Git_lr_linked, thus `file_del` can be restored by checking it from a specific commit, e.g. from the one before its deletion (the penultimate one):
 ```bash
 git checkout HEAD^ file_del
 ```
@@ -220,7 +229,7 @@ git checkout HEAD^ file_del
 ```bash
 git rm --cached file_ut
 ```
-+ now `file_ut` is in still in <#Git_wt_l> and its deletion is staged in <#Git_sa_l>, and you can commit the change:
++ now `file_ut` is in still in \Git_wt_linked and its deletion is staged in \Git_sa_linked, and you can commit the change:
 ```bash
 git commit
 ```
@@ -358,7 +367,7 @@ git push
 ## reflog is an equivalent of a BASH history, which is specific for a session
 ## reflog is rotated just like a BASH history
 ## commit logs record a commit ancestry chain: what and when was committed
-## commit logs are shared among repos and are never deleted, 
+## commit logs are shared among repos and are never deleted,
 ## thus reflog stores more information than commit logs for their time span
 
 ## show the reflog for "HEAD":
