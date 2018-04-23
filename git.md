@@ -179,7 +179,7 @@ git diff HEAD
 git diff Makefile
 ```
 
-# adding files
+## adding files
 
 + if you add a new file and want Git to track it, you need to stage its addition:
 ```bash
@@ -191,7 +191,7 @@ git commit
 ```
 + thus a staging part can't be skipped in the case of a file addition
 
-# removing files
+## removing files
 
 + if a file is removed with
 ```bash
@@ -223,7 +223,7 @@ git checkout HEAD^ file_del
 ```
 	`file_del` is now staged
 
-# untracking a file
+## untracking files
 
 + untrack a tracked file (useful if you forgot to add something to `.gitignore` and accidentally staged or committed a file):
 ```bash
@@ -235,14 +235,23 @@ git commit
 ```
 	`file_ut` is now untracked
 
-# discard changes on a modified file:
+## discarding file modifications
+
++ discard changes on a modified file:
+```bash
 git checkout file_mod
-# discard changes on an already staged file:
+```
+
++ discard changes on an already staged file:
+```bash
 git reset HEAD file_mod # unstages a file, "file_mod" is now modified
 git checkout file_mod
+```
 
-# undo all changes in the tracked files in the working tree and in the index (e.g. introduced with "git pull" which led to merge conflicts), reverting them to the last commit:
++ undo all changes in the tracked files in the working tree and in the index (e.g. introduced with "git pull" which led to merge conflicts), reverting them to the last commit:
+```bash
 git reset --hard HEAD
+```
 
 # rename a file:
 mv -iv file1 file2
@@ -260,15 +269,32 @@ git checkout working_br # if not already at "working_br"
 git checkout source_br file_cp
 # "file_cp" is now staged if its versions differ between the two branches
 
-# dry-run removing non-ignored untracked files and directories from the working tree:
-git clean -dn
-# actually remove them:
-git clean -df
+## clean-up
 
-# dry-run removing all (including ignored) untracked files and directories from the working tree:
++ dry-run removing non-ignored untracked files and directories from the working tree:
+```bash
+git clean -dn
+```
+	
+	actually remove them:
+```bash
+git clean -df
+```
+
++ dry-run removing all (including ignored) untracked files and directories from the working tree:
+```bash
 git clean -dxn
-# actually remove them:
+```
+
+	actually remove them:
+```bash
 git clean -dxf
+```
+
+	also remove directories with `.git` subdirectory:
+```bash
+git clean -dxff
+```
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------

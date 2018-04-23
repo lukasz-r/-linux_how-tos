@@ -634,14 +634,16 @@ find -iname "*.pdf"
 ### globbing is not performed for variable assignment:
 pattern=a*
 ### assigns literal "a*" to the "pattern" variable
-### extended globs: perform some operations on all but "*.dat" and "*.txt" files, use "!(pattern-list)":
+### extended globs: perform some operations on all but "*.dat" and "*.txt" files and directories: use "!(pattern-list)":
 shopt -s extglob
 for file in !(*.dat|*.txt); do
 	stat "$file"
 done
-### so, to delete all files but "file.txt", use:
+### note that "*!(.dat|.txt)" is wrong since "*" already matches all filenames, including those with "dat" and "txt" extensions, and the remaining null string is always matched by "!(.dat|.txt)", thus all files and directories are matched with this pattern
+### to delete all "file.*" files but "file.txt", use:
 shopt -s extglob
-rm -rf !(file.txt)
+rm -rf file.!(txt)
+### note that "!(file.txt)" would match all files and directories except for "file.txt", and "file!(.txt)" would e.g. match "file_new.txt"
 ### to match all files with names beginning with a non-digit followed by a digit followed by a non-digit (e.g. "a0_img.jpg"), use
 for file in [^0-9][0-9][^0-9]*; do
 	stat "$file"

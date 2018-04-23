@@ -84,7 +84,7 @@ __register__<a name="vim_register"></a>
 
 + paste the text after the cursor: `p`
 
-+ paste the text before the cursor: `P`
++ paste the text before the cursor: `P` (useful to insert a copied line before the first line)
 
 + display the contents of all numbered and named registers: `:reg`
 
@@ -101,6 +101,8 @@ __register__<a name="vim_register"></a>
 ## selecting, deleting and replacing text
 
 + select all text in a file: `ggVG`
+
++ select a word under the cursor: `viw`
 
 + delete everything from a given line to the end of a file: `dG`
 
@@ -213,6 +215,8 @@ such a command might be then invoked with: `:SearchMess`
 + execute a shell command: `:!ls`, `:!man bash`, etc.
 
 + repeat the last shell command (very useful with `make`): `:!!`
+
++ make a currently edited file executable: `:!chmod +x %`
 
 + execute a currently edited file: `:!./%` or: `:!%:p`
 
