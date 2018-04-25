@@ -40,6 +40,10 @@ pdftk A=A.pdf B=B.pdf cat A2-endS A1S B1-endS output output.pdf
 pdf-stapler cat input.pdf 1-endD output.pdf
 ```
 
+## cropping
+
++ crop (and rotate, if needed) a PDF file: `krop input.pdf`
+
 ## conversion
 
 + convert several images into a single PDF file:
