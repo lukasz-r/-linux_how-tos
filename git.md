@@ -420,6 +420,17 @@ git show my_branch~2 # grandparent (following only first parents in case of merg
 
 ## more on specifying revisions:
 man git-rev-parse
+
++ show commit logs by author matching a pattern:
+```bash
+git log --author=andreas
+```
+
++ show commit logs by commit message matching a pattern:
+```bash
+git log -i --grep=regular
+```
+
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
