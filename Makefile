@@ -1,5 +1,5 @@
 # Markdown files in the order they enter the documentation
-md_files := printing.md vim.md ssh.md git.md pandoc.md
+md_files := pdf.md printing.md vim.md ssh.md git.md pandoc.md
 
 # target HTML file
 target := index.html

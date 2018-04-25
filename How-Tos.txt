@@ -2855,45 +2855,6 @@ sudo dnf install openmpi{,-devel}
 module load mpi/openmpi-x86_64
 
 ================================================================================
-PDF
-================================================================================
-# remove the first page from a PDF file:
-pdftk input.pdf cat 2-end output output.pdf
-# or:
-qpdf input.pdf --pages input.pdf 2-z -- output.pdf
-
-# join two PDF files:
-qpdf input1.pdf --pages input1.pdf input2.pdf -- output.pdf
-
-# join selected pages from two PDF files:
-qpdf input1.pdf --pages input1.pdf 1 input2.pdf 3,5-z -- out.pdf
-
-# create a PDF file combining pages from "A.pdf" and "B.pdf" files:
-# "A.pdf"'s pages from 2 to last then page 1, plus "B.pdf"'s pages from 1 to last
-# rotate all pages by 180 degrees
-pdftk A=A.pdf B=B.pdf cat A2-endS A1S B1-endS output output.pdf
-
-# convert several images into a single PDF file:
-convert *.jpg out.pdf
-
-# convert a password-protected PDF file into passwordless one:
-# if password known:
-pdftk input.pdf input_pw password cat output output.pdf
-# or:
-qpdf --decrypt --password=password input.pdf output.pdf
-# if password unknown:
-gs -sOutputFile=output.pdf -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -c .setpdfwrite -f input.pdf
-
-# convert a text file into a PDF file:
-pandoc file.txt -f markdown+hard_line_breaks -t html5 -o file.pdf
-
-# convert a PDF file into a text file (e.g. for spell checking):
-pdftotext file.pdf file.txt
-
-# convert a PDF file into black-and-white format:
-gs -sOutputFile=out.pdf -q -sDEVICE=pdfwrite -sColorConversionStrategy=Gray -dProcessColorModel=/DeviceGray -dCompatibilityLevel=1.4 -dNOPAUSE -dBATCH input.pdf
-
-================================================================================
 remind
 ================================================================================
 # useful system variables:
