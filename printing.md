@@ -1,7 +1,6 @@
 # printing
 
 \define{printing_CUPS_linked}{[CUPS](#printing_CUPS)}
-
 __CUPS (common Unix printing system)__<a name="printing_CUPS"></a>
 
 : a printing system allowing a computer to run as a print server
