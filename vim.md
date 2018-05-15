@@ -1,5 +1,6 @@
 
-# vim
+\define{vim}{__vim__}
+# \vim
 
 ## opening and saving files
 
@@ -19,7 +20,7 @@ __buffer__<a name="vim_buffer"></a>
 
 ## most useful vim modes
 
-+ normal (command) mode --- a default mode after __vim__ starts:
++ normal (command) mode --- a default mode after \vim starts:
 	+ `<ESC>`: usually enters the mode
 	+ `5w`: move forward 5 words
 	+ `5b`: move backward 5 words
@@ -67,13 +68,18 @@ __buffer__<a name="vim_buffer"></a>
 
 ## clipboards and registers
 
-__register__<a name="vim_register"></a>
+\define{vim_register}{__register__}
+\define{vim_register_linked}{[__register__](#vim_register)}
+\vim_register<a name="vim_register"></a>
 
-: a space in memory used by __vim__ to store some text
+: a space in memory used by \vim to store some text
+
+\define{vim_primclip}{__primary clipboard__}
+\define{vim_primclip_linked}{[\vim_primclip](#vim_primclip)}
 
 + in Linux there two independent clipboards:
-	+ primary clipboard (copy-on-select, pasted with middle mouse button)
-	+ system clipboard (copy with `<CTRL>+c`, paste with `<CTRL>+v`)
+	+ \vim_primclip (copy-on-select, pasted with middle mouse button)
+	+ __system clipboard__ (copy with `<CTRL>+c`, paste with `<CTRL>+v`)
 
 + by default, `y` (yank) and `d` (delete) copy to, and `p` (paste) pastes from an unnamed [register](#vim_register)
 + primary clipboard is the `*` register in __vimx__ (hint: star is select)
@@ -112,7 +118,11 @@ __register__<a name="vim_register"></a>
 
 + delete from the cursor to the end of a word: `dw`
 
-+ delete a word under the cursor and type the `new` word: `ciwnew`
++ delete a word under the cursor and type the `new` word (_change inner word, then type_ `new`): `ciwnew`
+
++ delete a current line and start inserting text in it (switch to an insert mode): `cc`
+
++ delete a current line (turn it into a blank line): `0D` or: `cc<ESC>`
 
 + delete lines containing a specific pattern: `:g/some_pattern/d`
 
