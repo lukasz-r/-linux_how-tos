@@ -1,5 +1,14 @@
 # Markdown files in the order they enter the documentation
-md_files := pdf.md printing.md vim.md ssh.md git.md pandoc.md
+md_files := \
+	mc.md \
+	images_edition.md \
+	wget.md \
+	pdf.md \
+	printing.md \
+	vim.md \
+	ssh.md \
+	git.md \
+	pandoc.md
 
 # target HTML file
 target := index.html
@@ -13,8 +22,8 @@ $(md_main_file) : $(md_files)
 
 $(target) : $(md_main_file) pandoc.css Makefile
 	gpp -T $< | pandoc -sS --toc -c pandoc.css \
-		-f markdown+auto_identifiers+blank_before_header+backtick_code_blocks+fenced_code_attributes+fancy_lists+example_lists+abbreviations \
-		--highlight-style=espresso -mathjax \
+		-f markdown+auto_identifiers+blank_before_header+backtick_code_blocks+fenced_code_attributes+fancy_lists+example_lists+abbreviations+tex_math_dollars \
+		--highlight-style=espresso --mathjax \
 		-o $@
 
 view : $(target)
