@@ -1,5 +1,6 @@
 
-# Git
+\define{Git}{__Git__}
+# \Git
 
 ## getting help
 
@@ -16,10 +17,10 @@ man giteveryday
 man gitglossary
 ```
 
-## basic Git configuration
+## basic \Git configuration
 
-+ global Git options are stored in `~/.gitconfig`
-+ local Git options (specific to a repo) are stored in repo's `.git/config`
++ global \Git options are stored in `~/.gitconfig`
++ local \Git options (specific to a repo) are stored in repo's `.git/config`
 
 + list all variables set in config files:
 ```bash
@@ -108,14 +109,14 @@ git submodule update --init --recursive
 \define{Git_rr}{__remote repo__}
 \define{Git_rr_linked}{[\Git_rr](#Git_rr)}
 
-+ Git operates on several levels: <br>
++ \Git operates on several levels: <br>
 	\Git_wt_linked → \Git_sa_linked (__index__) → \Git_lr_linked → \Git_rr_linked
 	+ \Git_wt<a name="Git_wt"></a> is a working directory contents where you actually modify files
 	+ \Git_sa<a name="Git_sa"></a> collects info on what will go in the next commit
 	+ \Git_lr<a name="Git_lr"></a> contains all history up to the last commit (it collects all the data which e.g. would be copied from the repo with "git clone")
 	+ \Git_rr<a name="Git_rr"></a> tracks the same project as (C), but resides somewhere else
 
-+ the Git workflow:
++ the \Git workflow:
 	#. you modify files in the \Git_wt_linked
 	#. with `git add` you selectively add just the changes (new or modified files) you want to be a part of a next commit, thus you stage the changes to the index: <br>
 	\Git_wt_linked → \Git_sa_linked
@@ -181,7 +182,7 @@ git diff Makefile
 
 ## adding files
 
-+ if you add a new file and want Git to track it, you need to stage its addition:
++ if you add a new file and want \Git to track it, you need to stage its addition:
 ```bash
 git add new_file
 ```
@@ -253,21 +254,62 @@ git checkout file_mod
 git reset --hard HEAD
 ```
 
-# rename a file:
+## renaming files
+
++ renaming a file with `mv`:
+```bash
 mv -iv file1 file2
-# now "file1" is deleted and "file2" is untracked, so we need to stage the changes:
+```
+
++ marks `file1` as deleted and `file2` as untracked in Git, so we need to stage the changes:
+```bash
 git rm file1
 git add file2
-# all three above commands can be replaced with:
-git mv -v old new
-# which stages a rename automatically
-# Git tracks contents not files, so it detects a rename after those operations, now just commit the change:
-git commit
+```
 
-# copy a file from the "source_br" branch into the "working_br" branch:
-git checkout working_br # if not already at "working_br"
++ all the three above commands can be replaced with:
+```bash
+git mv -v file1 file2
+```
+	which stages a rename automatically
+
++ \Git tracks contents not files, so it detects a rename after those operations, now just commit the change:
+```bash
+git commit
+```
+
+## comparing branches
+
++ copy a file from the `source_br` branch into the `working_br` branch:
+```bash
+git checkout working_br # if not already at working_br
 git checkout source_br file_cp
-# "file_cp" is now staged if its versions differ between the two branches
+```
+	`file_cp` is now staged if its versions differ between the two branches
+
++ show changes to the `file` file from the `old_branch` branch into the `new_branch` branch:
+```bash
+git diff old_branch new_branch file
+```
+	+ the path to a `file` has to be relative to a current directory
+
+	+ the following yield the same results:
+	```bash
+	git diff old_branch..new_branch file
+	```
+	```bash
+	git checkout branch_new
+	git diff old_branch file
+	```
+	```bash
+	git checkout branch_new
+	git diff old_branch.. file
+	```
+
++ list files changed between the `old_branch` and `new_branch` branches:
+```bash
+git diff old_branch new_branch --name-status
+```
 
 ## clean-up
 
@@ -275,7 +317,7 @@ git checkout source_br file_cp
 ```bash
 git clean -dn
 ```
-	
+
 	actually remove them:
 ```bash
 git clean -df
@@ -295,88 +337,136 @@ git clean -dxf
 ```bash
 git clean -dxff
 ```
---------------------------------------------------------------------------------
 
---------------------------------------------------------------------------------
-# creating a Git repo for a working project
---------------------------------------------------------------------------------
-## go to the working directory of your project and initialize a Git repo:
+## creating and sharing a \Git repo for a working project
+
+### initialization
+
++ go to the working directory of your project and initialize a \Git repo:
+```bash
 git init
-## a "master" branch is created by default and "HEAD" points to that branch
-## the name of the working directory is irrelevant and can be changed at any time
-## you can name your project by editing the ".git/description" file, this name is used by some web interfaces
+```
+	+ a `master` branch is created by default and `HEAD` points to that branch
 
-## create a ".gitignore" file with the filter rules
+	+ the name of the working directory is irrelevant and can be changed at any time
 
-## add all the contents of the working directory (".") but ignored files to the repo:
+	+ you can name your project by editing the `.git/description` file, this name is used by some web interfaces
+
++ create a `.gitignore` file with the filter rules
+
++ add all the contents of the working directory (`.`) but ignored files to the repo:
+```bash
 git add .
+```
 
-## record a current state as a first commit:
++ record a current state as a first commit:
+```bash
 git commit -m "initial commit"
+```
 
-## you can create your own branch which you can share through the remote Git repo instead of working with a default "master" branch:
++ you can create your own branch which you can share through the remote \Git repo instead of working with a default `master` branch:
+```bash
 git checkout -b my_branch
-## creating a branch is very useful if lots of people work on the same code, so that people use their own branches for their contributions
+```
 
-## now you can add a remote Git repo that the other users can access and through which you can share your changes
-## initialize a bare Git repo (repo with only Git objects and no working tree) in a directory on a remote machine:
+	+ creating a branch is very useful if lots of people work on the same code, so that people use their own branches for their contributions
+
+### remote repos
+
++ you can add a remote \Git repo that the other users can access and through which you can share your changes
+
++ initialize a bare \Git repo (repo with only \Git objects and no working tree) in a directory on a remote machine:
+```bash
 [remote_machine]$ cd ~/git_repos/work_repo.git
 [remote_machine]$ git init --bare
-## it's useful to add the name (e.g. "my_cluster") and definition of the remote machine to the "~/.ssh/config" file
+```
++ it's useful to add the name (e.g. `my_cluster`) and definition of the remote machine to the `~/.ssh/config` file
 
-## go back to a working directory on your local computer and add "my_repo" remote repo at "my_cluster":
++ go back to a working directory on your local computer and add `my_repo` remote repo at `my_cluster`:
+```bash
 git remote add my_repo my_cluster:git_repos/work_repo.git
+```
 
-## switch to your branch and push it to the remote repo:
++ switch to your branch and push it to the remote repo:
+```bash
 git checkout my_branch
 git push -u my_repo my_branch
-## using "-u" makes "my_repo" and "my_branch" default options for argument-less "git push" and "git pull" commands for "my_branch", i.e. a "my_repo/my_branch" upstream branch is created (see below)
+```
++ using `-u` makes `my_repo` and `my_branch` default options for argument-less `git push` and `git pull` commands for `my_branch`, i.e. a `my_repo/my_branch` upstream branch is created (see below)
 
-## now you've got a history of your branch recorded at the remote repo
-## but "HEAD" at "my_repo" points to "master" branch by default
-## if "my_branch" ≠ "master", you need to switch an avtive branch at the remote repo to "my_branch":
++ now you've got a history of your branch recorded at the remote repo
+
++ but `HEAD` at `my_repo` points to `master` branch by default
+
++ if `my_branch` ≠ `master`, you need to switch an active branch at the remote repo to `my_branch`:
+```bash
 [remote_machine]$ cd ~/git_repos/work_repo.git
 [remote_machine]$ git symbolic-ref HEAD refs/heads/my_branch
-## note that "git checkout my_branch" can't be run in a bare repo since it doesn't contain a working tree, so the above command must be used
-## on Git severs (e.g. Bitbucket) a default clone branch (an active branch in a remote repo) can be changed via a web interface
+```
++ note that `git checkout my_branch` can't be run in a bare repo since it doesn't contain a working tree, so the above command must be used
 
-## you can add more remote repos, e.g. use the Bitbucket website (where you log in in initialize a new repo via a web interface):
-git remote add bitbucket bitbucket:luke/molpro_lr_repo # "bitbucket" defined above in the "~/.ssh/config" file
+\define{Git_Bitbucket}{[Bitbucket](https://bitbucket.org/)}
+
++ on \Git severs (e.g. \Git_Bitbucket) a default clone branch (an active branch in a remote repo) can be changed via a web interface
+
++ you can add more remote repos, e.g. use the \Git_Bitbucket website (where you log in in initialize a new repo via a web interface):
+```bash
+git remote add bitbucket bitbucket:luke/molpro_lr_repo # bitbucket defined in the ~/.ssh/config file
 git push bitbucket my_branch
-## this way "bitbucket" contains only "my_branch", which we've just pushed
+```
++ this way the `bitbucket` remote repo contains only the `my_branch` branch, which we've just pushed
 
-## you can rename a remote repo, especially when it's called "origin" (a default name given to a remote repo in a local cloned repo):
++ you can rename a remote repo, especially when it's called `origin` (a default name given to a remote repo in a local cloned repo):
+```bash
 git remote rename origin my_repo
+```
 
-## you can rename a Git repo directory on a remote machine:
++ you can rename a \Git repo directory on a remote machine:
+```bash
 [remote_machine]$ mv -iv ~/git_repos/{work_repo,super_repo}.git
-## you need to change the remote URL in your local repo accordingly:
+```
++ you need to change the remote URL in your local repo accordingly:
+```bash
 git remote set-url my_repo my_cluster:git_repos/super_repo.git
+```
 
-## show remote repos:
++ show remote repos:
+```bash
 git remote -v
+```
 
-## list references in a remote repo:
++ list references in a remote repo:
+```bash
 git ls-remote my_repo
+```
 
-## now you can share your work with others: you can add their public keys to your cluster or grant access via a web interface e.g. on your project Bitbucket website, and ask them to clone the code:
++ now you can share your work with others: you can add their public keys to your cluster or grant access via a web interface e.g. on your project \Git_Bitbucket website, and ask them to clone the code:
+```bash
 git clone my_cluster:git_repos/work_repo.git my_work_dir
-## of course, "my_cluster" needs to be substituted with the full remote machine address if not configured in the "~/.ssh/config" file
+```
 
-## if you've added multiple files and directories to your working tree, you can stage them in one go:
++ of course, `my_cluster` needs to be substituted with the full remote machine address if not configured in the `~/.ssh/config` file
+
+## committing the changes
+
++ if you've added multiple files and directories to your working tree, you can stage them in one go:
+```bash
 git add .
-## but make sure your ".gitignore" properly takes care of files generated through the compilation process so that you don't stage those files as well with this command
+```
 
-## stage an ignored file:
++ but make sure your `.gitignore` properly takes care of files generated through the compilation process so that you don't stage those files as well with this command
+
++ stage an ignored file:
+```bash
 git add -f ignored_file
+```
 
-## commit your changes and send them to a remote repo:
++ commit your changes and send them to a remote repo:
+```bash
 git commit -a
 git push
+```
 
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
 # development logs
 --------------------------------------------------------------------------------
 ## branch ref points to the tip of a branch (a most recent commit)
@@ -421,14 +511,19 @@ git show my_branch~2 # grandparent (following only first parents in case of merg
 ## more on specifying revisions:
 man git-rev-parse
 
-+ show commit logs by author matching a pattern:
++ show commits by an author matching a pattern:
 ```bash
 git log --author=andreas
 ```
 
-+ show commit logs by commit message matching a pattern:
++ show commits by a commit message matching a pattern:
 ```bash
 git log -i --grep=regular
+```
+
++ show files modified by an author matching a pattern:
+```bash
+git log --name-only --author=andreas
 ```
 
 --------------------------------------------------------------------------------
@@ -447,12 +542,12 @@ git branch --merged
 ## remote-tracking branch − a branch following changes in a branch at a remote repo
 ## tracking branch − a branch checkout out of a remote-tracking branch, so a branch following changes in a remote-tracking branch
 ## upstream branch − a remote-tracking branch followed by a tracking branch
-## local branch − a non remote-tracking branch in a local Git repo (it's tracking if it has an upstream branch, or non-tracking otherwise)
-## remote branch − a branch at a remote Git repo
-## in fact all non-remote branches exist locally, but Git makes a distinction between remote-tracking and local branches
+## local branch − a non remote-tracking branch in a local \Git repo (it's tracking if it has an upstream branch, or non-tracking otherwise)
+## remote branch − a branch at a remote \Git repo
+## in fact all non-remote branches exist locally, but \Git makes a distinction between remote-tracking and local branches
 
-## a remote-tracking branch ref is "refs/remotes/my_repo/my_branch": it tracks "my_branch" at "my_repo", and is referred to as "my_repo/my_branch" in Git commands
-## a local branch ref is "refs/heads/my_branch", and is referred to as "my_branch" in Git commands
+## a remote-tracking branch ref is "refs/remotes/my_repo/my_branch": it tracks "my_branch" at "my_repo", and is referred to as "my_repo/my_branch" in \Git commands
+## a local branch ref is "refs/heads/my_branch", and is referred to as "my_branch" in \Git commands
 ## a branch name can contain slashes (e.g. "release/2016"), thus "my_repo/my_branch" might include multiple slashes
 ## "branch.my_branch.remote" and "branch.my_branch.merge" variables define an upstream branch for a "my_branch" tracking branch
 ## an upstream branch is referred to as "@{u}" from its tracking branches:
