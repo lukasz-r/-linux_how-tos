@@ -10,7 +10,7 @@ ssh-keygen
 
 + authentication keys can be added to the `$HOME/.ssh/authorized_keys` file on a remote machine to authorise password-less logins:
 
-	+ add your public key to a remote machine:
+	+ add your public keys to a remote machine:
 	```bash
 	ssh-copy-id erwin
 	```
