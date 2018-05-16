@@ -3,11 +3,28 @@
 
 ##  SSH keys and ssh-agent
 
++ generate an authentication key:
+```bash
+ssh-keygen
+```
+
++ authentication keys can be added to the `$HOME/.ssh/authorized_keys` file on a remote machine to authorise password-less logins:
+
+	+ add your public key to a remote machine:
+	```bash
+	ssh-copy-id erwin
+	```
+
+	+ add a public key from a specific file (e.g. sent over an email) to a remote machine:
+	```bash
+	ssh-copy-id -f -i ~/Desktop/id_rsa.pub erwin
+	```
+
 + the key which is not in the standard location won't be seen by the remote machines (e.g. [Git](#git) repos) unless it has been added to the `ssh-agent`
 
 + `ssh-agent` normally isn't started on boot
 
-+ add the following lines to your `~/.bash_profile` to start the `ssh-agent` (or just the last line if the agent is started by a system):
++ to start the `ssh-agent`, add the following lines to your `~/.bash_profile` (or just the last line if the agent is started by a system):
 ```bash
 # ssh keys for remote Git repos
 trap '[[ -n $SSH_AGENT_PID ]] && eval $(ssh-agent -k &> /dev/null)' 0
@@ -48,7 +65,7 @@ ssh userB@machineB -L 5900:machineC:5900
 # and then on machine A:
 vncviewer localhost:5900
 
-# use SSH config file for connceting to machine C behind a gateway B from your local machine A:
+# use SSH config file for connecting to machine C behind a gateway B from your local machine A:
 -------------------------------------------------------
 $HOME/.ssh/config
 -------------------------------------------------------
