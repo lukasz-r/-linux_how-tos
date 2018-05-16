@@ -1,5 +1,6 @@
 # Markdown files in the order they enter the documentation
 md_files := \
+	date.md \
 	mc.md \
 	images_edition.md \
 	wget.md \
