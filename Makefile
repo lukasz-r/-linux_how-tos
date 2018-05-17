@@ -6,6 +6,7 @@ md_files := \
 	wget.md \
 	pdf.md \
 	printing.md \
+	text_file_operations.md \
 	vim.md \
 	ssh.md \
 	git.md \
