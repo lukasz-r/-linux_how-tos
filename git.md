@@ -179,7 +179,14 @@ git diff HEAD
 ```bash
 git diff Makefile
 ```
+## ignoring files
 
++ files to be ignored by \Git are specified in the `.gitignore` file
+
++ ignore a symbolic link to a directory: don't put `/` (trailing slash) after its name:
+```bash
+Books
+```
 ## adding files
 
 + if you add a new file and want \Git to track it, you need to stage its addition:
