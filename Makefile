@@ -1,32 +1,44 @@
-# Markdown files in the order they enter the documentation
-md_files := \
-	date.md \
-	mc.md \
-	images_edition.md \
-	wget.md \
-	pdf.md \
-	printing.md \
-	text_file_operations.md \
-	vim.md \
-	ssh.md \
-	git.md \
-	pandoc.md
+# the "some_chapter" chapter main file is "some_chapter.md", additional files are placed in the "some_chapter" directory
+
+# chapter titles in the order they enter the documentation
+chapters := \
+	time_date \
+	archives \
+	mc \
+	Makefile \
+	job_scheduling \
+	images_edition \
+	Wget \
+	PDF \
+	printing \
+	text_file_operations \
+	Vim \
+	SSH \
+	Git \
+	Pandoc
+
+# CSS style sheet file:
+CSS_file := style.css
+
+# Markdown files for all chapters
+md_files := defs.md $(chapters:=.md)
 
 # target HTML file
 target := index.html
 
+# Markdown file collecting all chapters
 md_main_file := How-Tos.md
 
 all : $(target)
 
-$(md_main_file) : $(md_files)
-	cat $^ > $@
+$(md_main_file) : $(md_files) Makefile
+	cat $(md_files) | gpp -T > $@
 
-$(target) : $(md_main_file) pandoc.css Makefile
-	gpp -T $< | pandoc -sS --toc -c pandoc.css \
+$(target) : $(md_main_file) $(CSS_file)
+	pandoc -sSp --toc -c $(CSS_file) \
 		-f markdown+auto_identifiers+blank_before_header+backtick_code_blocks+fenced_code_attributes+fancy_lists+example_lists+abbreviations+tex_math_dollars \
 		--highlight-style=espresso --mathjax \
-		-o $@
+		-o $@ $<
 
 view : $(target)
 	xdg-open $(target)

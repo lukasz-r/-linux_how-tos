@@ -1,26 +1,36 @@
 
-\define{vim}{__vim__}
-# \vim
+\define{Vim}{__Vim__}
+# \Vim
+
+## \getting_help
+
++ start a \Vim tutor:
+
+	```bash
+	vimtutor
+	```
++ help in a \Vim:
+
+	+ `:h p`: get help about the `p` command
+
+	+ `:h CTRL-f`: get help about the `<CTRL>+f` shortcut
 
 ## opening and saving files
 
-__buffer__<a name="vim_buffer"></a>
+\define{Vim_buffer_linked}{[__buffer__](#Vim_buffer)}
+__buffer__<a name="Vim_buffer"></a>
 
 : an area of memory used to hold text read from a file or a newly created text
 
-+ `:h p`: get help about the `p` command
-
-+ `:h CTRL-f`: get help about the `<CTRL>+f` shortcut
-
-+ save a file (write the whole [buffer](#vim_buffer) to the current file): `:w`
++ save a file (write the whole \Vim_buffer_linked to the current file): `:w`
 
 + reload a file: `:e`
 
 + exit all edited files without saving changes: `:qa!`
 
-## most useful vim modes
+## most useful \Vim modes
 
-+ normal (command) mode --- a default mode after \vim starts:
++ normal (command) mode --- a default mode after \Vim starts:
 	+ `<ESC>`: usually enters the mode
 	+ `5w`: move forward 5 words
 	+ `5b`: move backward 5 words
@@ -42,7 +52,7 @@ __buffer__<a name="vim_buffer"></a>
 	+ `G`: go to the end of a file
 	+ `.`: repeat last normal-mode change
 
-+ insert mode --- a mode to insert text into the buffer:
++ insert mode --- a mode to insert text into the \Vim_buffer_linked:
 	+ `a`: start inserting the text after the cursor
 	+ `i`: start inserting the text before the cursor
 	+ `A`: start inserting the text at the end of the line
@@ -68,22 +78,28 @@ __buffer__<a name="vim_buffer"></a>
 
 ## clipboards and registers
 
-\define{vim_register}{__register__}
-\define{vim_register_linked}{[__register__](#vim_register)}
-\vim_register<a name="vim_register"></a>
+\define{Vim_register_linked}{[__register__](#Vim_register)}
+__register__<a name="Vim_register"></a>
 
-: a space in memory used by \vim to store some text
+: a space in memory used by \Vim to store some text
 
-\define{vim_primclip}{__primary clipboard__}
-\define{vim_primclip_linked}{[\vim_primclip](#vim_primclip)}
+\define{Vim_prim_clip}{__primary clipboard__}
+\define{Vim_prim_clip_linked}{[\Vim_prim_clip](#Vim_prim_clip)}
+\define{Vim_sys_clip}{__system clipboard__}
+\define{Vim_sys_clip_linked}{[\Vim_sys_clip](#Vim_sys_clip)}
 
 + in Linux there two independent clipboards:
-	+ \vim_primclip (copy-on-select, pasted with middle mouse button)
-	+ __system clipboard__ (copy with `<CTRL>+c`, paste with `<CTRL>+v`)
 
-+ by default, `y` (yank) and `d` (delete) copy to, and `p` (paste) pastes from an unnamed [register](#vim_register)
-+ primary clipboard is the `*` register in __vimx__ (hint: star is select)
-+ system clipboard is the `+` register in __vimx__ (hint: `<CTRL>+c`)
+	+ \Vim_prim_clip<a name="Vim_prim_clip"></a> (copy-on-select, pasted with middle mouse button)
+
+	+ \Vim_sys_clip<a name="Vim_sys_clip"></a> (copy with `<CTRL>+c`, paste with `<CTRL>+v`)
+
++ by default, `y` (yank) and `d` (delete) copy to, and `p` (paste) pastes from an unnamed \Vim_register_linked
+
++ \Vim_prim_clip_linked is the `*` \Vim_register_linked in __vimx__ (hint: star is select)
+
++ \Vim_sys_clip_linked is the `+` \Vim_register_linked in __vimx__ (hint: `<CTRL>+c`)
+
 + __vimx__ in Fedora is from __vim-X11__ package
 
 + copy a word under the cursor (_yank inner word_): `yiw`
@@ -140,13 +156,13 @@ __buffer__<a name="vim_buffer"></a>
 
 \define{vim_spat}{  \|\s$\|\n\n\n}
 
-+ search for multiple patterns, e.g. double spaces, whitespace characters at the end of a line, and double line breaks: `/\vim_spat`
++ search for multiple patterns, e.g. double spaces, whitespace characters at the end of a line, and double line breaks: `/\Vim_spat`
 
 	(`\\|` separates patterns)
 
 	turn the avove search into a custom command in `~/.vimrc`:
 ```
-com SearchMess /\vim_spat
+com SearchMess /\Vim_spat
 ```
 such a command might be then invoked with: `:SearchMess`
 
@@ -157,9 +173,9 @@ such a command might be then invoked with: `:SearchMess`
 
 	now we'll replace `_l` into `_linked` in the above strings using the most recently searched pattern and backreferences:
 
-	+ we repeat the search adding the groups via `\(` and `\)` around `_l` and `[|>]`: `\vim_spat`
+	+ we repeat the search adding the groups via `\(` and `\)` around `_l` and `[|>]`: `\Vim_spat`
 
-	+ we use `:%s//replace_pattern/g` to refer to the most recently searched pattern, and `\\1`, `\\2`, etc. to refer to strings matched inside `\\(` and `\\)`: `%s//\vim_rpat/g`
+	+ we use `:%s//replace_pattern/g` to refer to the most recently searched pattern, and `\\1`, `\\2`, etc. to refer to strings matched inside `\\(` and `\\)`: `%s//\Vim_rpat/g`
 
 + the `E488: Trailing characters` error is usually caused when the unescaped separator (e.g. `\`) is used in the pattern --- in that case either escape the separator (e.g. `\\`), or use a different separator (e.g. `#`: `:s#/>$#}#g`)
 
@@ -184,7 +200,25 @@ such a command might be then invoked with: `:SearchMess`
 
 ### __vim-surround__ plugin
 
++ surround a current word in backticks: `` ysiw` ``
+
 + surround a current line in backticks: `` yss` ``
+
++ to avoid repeating typing long character sequences, use [macros](#macros)
+
+## macros
+
++ record typed characters into the `a` register for further repetition: `` qaysiw`q ``
+
+	+ `qa` starts recording into the `a` register
+
+	+ `` ysiw` `` are the characters recorded into the register
+
+	+ `q` stops recording
+
++ execute the contents of the `a` register: `@@a`
+
+	+ the previous `@@a` can be repeated with `@@@@`
 
 ## sorting and reversing lines
 
@@ -192,7 +226,7 @@ such a command might be then invoked with: `:SearchMess`
 
 + reverse all lines in a file: `:g/^/m0`
 
-	`^` matches the start of a line and thus all lines in a buffer, `m0` moves each matched line to the beginning of a buffer
+	`^` matches the start of a line and thus all lines in a \Vim_buffer_linked, `m0` moves each matched line to the beginning of a \Vim_buffer_linked
 
 	or select everything with `ggVG` and: `:!tac`
 
@@ -232,9 +266,9 @@ such a command might be then invoked with: `:SearchMess`
 
 	(`:p` means a file pathname)
 
-+ insert an output of a command into the current buffer: `:r !free -h`
++ insert an output of a command into the current \Vim_buffer_linked: `:r !free -h`
 
-+ insert an external file contents into the current buffer: `:r file.txt`
++ insert an external file contents into the current \Vim_buffer_linked: `:r file.txt`
 
 ## encoding
 
@@ -271,13 +305,13 @@ such a command might be then invoked with: `:SearchMess`
 
 + go to a window below: `<CTRL>+w↓`
 
-+ list all buffers: `:ls`
++ list all \Vim_buffer_linked\plural: `:ls`
 
-+ note that switching buffers doesn't switch between windows nor tabs, but switches a file in a current window if several files are open
++ note that switching \Vim_buffer_linked\plural doesn't switch between windows nor tabs, but switches a file in a current window if several files are open
 
-+ go to a next buffer: `:bn`
++ go to a next \Vim_buffer_linked: `:bn`
 
-+ go to a previous buffer: `:bp`
++ go to a previous \Vim_buffer_linked: `:bp`
 
 + go to a next tab: `gt`
 

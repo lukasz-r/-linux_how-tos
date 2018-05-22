@@ -2,7 +2,7 @@
 \define{Git}{__Git__}
 # \Git
 
-## getting help
+## \getting_help
 
 + print a list of useful guides:
 ```bash
