@@ -236,6 +236,8 @@ such a command might be then invoked with: `:SearchMess`
 
 + indent [selected lines](#vim_visual_mode): `>`
 
++ indent [selected lines](#vim_visual_mode) by two levels: `2>`
+
 + comment [selected lines](#vim_visual_mode) with `# `: `:s/^/# /` or [select a visual block](#vim_visual_mode) starting in the leftmost column and: `I# <ESC>`
 
 ## more on inserting text
