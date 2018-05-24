@@ -2,28 +2,93 @@
 # archives
 
 \define{gzip}{__gzip__}
-## \gzip
+\define{bzip2}{__bzip2__}
+\define{xz}{__xz__}
+\define{zip}{__zip__}
+\define{rar}{__rar__}
+\define{tar}{__tar__}
+\define{dar}{__dar__}
+\define{archives_compression_decompression}{compression and decompression (extraction)}
 
-+ unpack a \gzip archive:
+## \archives_compression_decompression of files: \gzip, \bzip2, \xz
+
+### \getting_help
+
+```bash
+man gzip
+info gzip
+man bzip2
+man xz
+```
+
+### basic usage
+
++ \gzip, \bzip2, \xz and related tools compress and expand files, not directories
+
++ upon compression, filenames are appended with the appropriate extension:
+
+	+ `.gz` for \gzip
+
+	+ `.bz2` for \bzip2
+
+	+ `.xz` for \xz
+
++ compress a file:
 
 	```bash
-	gunzip -k archive.gz
+	gzip file.txt
+	bzip2 file.txt
+	xz file.txt
 	```
 
-\define{zip}{__zip__}
-## \zip
+	+ \gzip can compress all files under the directory recursively:
 
-+ create the \zip archive from the files in `~/docs` without saving the pathname structure:
+		```bash
+		gzip -r dir
+		```
+
++ print the compressed file contents to the standard output:
+
+	```bash
+	zcat file.txt.gz
+	bzcat file.txt.bz2
+	xzcat file.txt.xz
+	```
+
++ decompresses a file:
+
+	```bash
+	gunzip file.txt.gz
+	bunzip2 file.txt.bz2
+	unxz file.txt.xz
+	```
+
++ decompresses a file and keep an input file:
+
+	```bash
+	gunzip -k file.txt.gz
+	```
+
+	all above commands accept the `-k` option to keep an input file
+
+## \archives_compression_decompression of files and directories: \zip, \rar, \tar, \dar
+
+### \zip
+
++ create the `pics.zip` \zip archive from the files in `~/docs` without saving the pathname structure:
 
 	```bash
 	zip -j pics ~/docs/*
 	```
 
-+ create a __cbz__ comic book archive:
+\define{archives_cbarchive}{comic book archive from images in the `comic_book` directory}
++ create a __cbz__ \archives_cbarchive:
 
 	```bash
 	zip -j comic_book.cbz comic_book/*
 	```
+
+	\zip usually creates sligtly smaller comic book archives than \rar
 
 + list \zip archive contents:
 
@@ -43,8 +108,7 @@
 	unzip archive.zip -d dest
 	```
 
-\define{rar}{__rar__}
-## \rar
+### \rar
 
 + create a \rar archive:
 
@@ -52,7 +116,7 @@
 	rar a archive.rar dir file1 file2
 	```
 
-+ create a __cbr__ comic book archive:
++ create a __cbr__ \archives_cbarchive:
 
 	```bash
 	rar a -ep comic_book.cbr comic_book/*
@@ -70,17 +134,16 @@
 	unrar e archive.rar dest
 	```
 
-\define{tar}{__tar__}
-## \tar
+### \tar
 
-### \getting_help
+#### \getting_help
 
 ```bash
 man tar
 info tar
 ```
 
-### compression and extraction
+#### \archives_compression_decompression
 
 + \tar archives (`*.tar` files) are collections of files
 
@@ -161,7 +224,7 @@ info tar
 
 + short \tar_tarball_linked extensions: `*.tgz`, `*.tbz`, `*.txz`
 
-+ extract a \tar_tarball_linked to the "dest" directory:
++ extract a \tar_tarball_linked to the `dest` directory:
 
 	```bash
 	tar xvzf archive.tar.gz -C dest
@@ -227,16 +290,15 @@ info tar
 	tar xvzf archive.tar.gz --strip-components=2
 	```
 
-\define{dar}{__dar__}
-## \dar
+### \dar
 
-### \getting_help
+#### \getting_help
 
 ```bash
 man dar
 ```
 
-### compression and extraction
+#### \archives_compression_decompression
 
 + \dar archives are meant for backup
 
@@ -266,7 +328,7 @@ man dar
 	dar -x archive -v -R dest
 	```
 
-### backup
+#### backup
 
 + backup directory to a remote host over \SSH in at most 10M slices:
 
