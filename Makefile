@@ -35,7 +35,7 @@ $(md_main_file) : $(md_files) Makefile
 	cat $(md_files) | gpp -T > $@
 
 $(target) : $(md_main_file) $(CSS_file)
-	pandoc -sSp --toc -c $(CSS_file) \
+	pandoc -sSp --toc --toc-depth=4 -c $(CSS_file) \
 		-f markdown+auto_identifiers+blank_before_header+backtick_code_blocks+fenced_code_attributes+fancy_lists+example_lists+abbreviations+tex_math_dollars \
 		--highlight-style=espresso --mathjax \
 		-o $@ $<
