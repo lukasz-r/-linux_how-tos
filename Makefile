@@ -6,6 +6,7 @@ chapters := \
 	archives \
 	mc \
 	Makefile \
+	package_management \
 	job_scheduling \
 	images_edition \
 	Wget \

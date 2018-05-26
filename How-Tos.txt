@@ -2652,29 +2652,6 @@ pkg load miscellaneous
 eps0 = physical_constant("electric constant")
 
 ================================================================================
-package management: dnf / apt
-================================================================================
-# dnf uses rpm
-# apt uses dpkg
-
-# list files installed by a package:
-rpm -ql gnuplot
-dpkg -L gnuplot
-
-# list files provided by a package regardless of whether it's installed or not:
-dnf repoquery -l gnuplot
-apt-file list gnuplot
-
-# list packages providing a command:
-dnf provides autoconf
-apt-file search autoreconf
-
-# install an Open MPI package and load a corresponding module:
-sudo dnf install environment-modules
-sudo dnf install openmpi{,-devel}
-module load mpi/openmpi-x86_64
-
-================================================================================
 remind
 ================================================================================
 # useful system variables:
