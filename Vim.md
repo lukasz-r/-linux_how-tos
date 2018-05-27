@@ -2,6 +2,26 @@
 \define{Vim}{__Vim__}
 # \Vim
 
+\define{Vim_buffer}{__buffer__}
+\define{Vim_buffer_linked}{[\Vim_buffer](#Vim_buffer)}
+
+\define{\Vim_selection{text}}{[__<wbr>\text<wbr>__](#Vim_visual_mode)}
+
+\define{Vim_register}{__register__}
+\define{Vim_register_linked}{[\Vim_register](#Vim_register)}
+
+\define{Vim_prim_clip}{__primary clipboard__}
+\define{Vim_prim_clip_linked}{[\Vim_prim_clip](#Vim_prim_clip)}
+
+\define{Vim_sys_clip}{__system clipboard__}
+\define{Vim_sys_clip_linked}{[\Vim_sys_clip](#Vim_sys_clip)}
+
+\define{Vim_search_pattern}{__search pattern__}
+\define{Vim_search_pattern_linked}{[\Vim_search_pattern](#Vim_search_pattern)}
+
+\define{Vim_search_string}{__search string__}
+\define{Vim_search_string_linked}{[\Vim_search_string](#Vim_search_string)}
+
 ## \getting_help
 
 + start a \Vim tutor:
@@ -17,8 +37,7 @@
 
 ## opening and saving files
 
-\define{Vim_buffer_linked}{[__buffer__](#Vim_buffer)}
-__buffer__<a name="Vim_buffer"></a>
+\Vim_buffer<a name="Vim_buffer"></a>
 
 : an area of memory used to hold text read from a file or a newly created text
 
@@ -30,63 +49,97 @@ __buffer__<a name="Vim_buffer"></a>
 
 ## most useful \Vim modes
 
-+ normal (command) mode --- a default mode after \Vim starts:
++ __normal (command) mode__ --- a default mode after \Vim starts:
+
 	+ `<ESC>`: usually enters the mode
+
 	+ `5w`: move forward 5 words
+
 	+ `5b`: move backward 5 words
+
 	+ `)`: move forward a sentence
+
 	+ `(`: move backward a sentence
+
 	+ `}`: move forward a paragraph
+
 	+ `{`: move backward a paragraph
+
 	+ `<CTRL>+f`: move forward a page
+
 	+ `<CTRL>+b`: move backward a page
+
 	+ `fc`: move forward to the `c` character (`f` means `find`)
+
 	+ `Fc`: move backward to the `c` character
+
 	+ `;`: repeat the forward move
+
 	+ `,`: repeat the backward move
+
 	+ `0`: move to the first character of the line
+
 	+ `^`: move to the first non-blank character of the line
+
 	+ `%`: jump to the corresponding item, e.g. a matching bracket
+
 	+ `gg`: go the beginning of a file
+
 	+ `10G`: go to the 10th line
+
 	+ `G`: go to the end of a file
+
+	+ `/word`: search forward for `word`
+
+	+ `n`: repeat the latest search forward
+
+	+ `N`: repeat the latest search backward
+
 	+ `.`: repeat last normal-mode change
 
-+ insert mode --- a mode to insert text into the \Vim_buffer_linked:
++ __insert mode__ --- a mode to insert text into the \Vim_buffer_linked:
+
 	+ `a`: start inserting the text after the cursor
+
 	+ `i`: start inserting the text before the cursor
+
 	+ `A`: start inserting the text at the end of the line
+
 	+ `I`: start inserting the text before the first non-blank in the line
+
+	+ `o`: add an empty line below and start inserting the text
+
+	+ `O`: add an empty line above and start inserting the text
+
 	+ `120i-<ESC>`: insert the `-` character 120 times
 
-+ replace mode --- a mode similar to an insert mode, but typing replaces existing characters:
++ __replace mode__ --- a mode similar to an insert mode, but typing replaces existing characters:
+
 	+ `R`: start replacing characters
 
-+ visual mode<a name="vim_visual_mode"></a> --- a mode for navigation and manipulation of text selections:
++ __visual mode__<a name="Vim_visual_mode"></a> --- a mode for navigation and manipulation of text selections:
+
 	+ `v`: select characters continuously
+
 	+ `V`: select lines
+
 	+ `<CTRL>+v`: select blocks
+
 	+ `gv`: restore the previous visual selection
 
-+ command-line mode --- a mode for entering editor commands at the bottom of the window:
++ __command-line mode__ --- a mode for entering editor commands at the bottom of the window:
+
 	+ `:h :q`: get help on the `:q` command
-	+ `/word`: search forward for `word`
-	+ `n`: repeat the latest search forward
-	+ `N`: repeat the latest search backward
+
 	+ `:10`: go to the 10th line
-	+ `@:`: repeat last command-line-mode command
+
+	+ `:@@:`: repeat last command-line-mode command
 
 ## clipboards and registers
 
-\define{Vim_register_linked}{[__register__](#Vim_register)}
-__register__<a name="Vim_register"></a>
+\Vim_register<a name="Vim_register"></a>
 
 : a space in memory used by \Vim to store some text
-
-\define{Vim_prim_clip}{__primary clipboard__}
-\define{Vim_prim_clip_linked}{[\Vim_prim_clip](#Vim_prim_clip)}
-\define{Vim_sys_clip}{__system clipboard__}
-\define{Vim_sys_clip_linked}{[\Vim_sys_clip](#Vim_sys_clip)}
 
 + in Linux there two independent clipboards:
 
@@ -108,11 +161,11 @@ __register__<a name="Vim_register"></a>
 
 + paste the text before the cursor: `P` (useful to insert a copied line before the first line)
 
-+ display the contents of all numbered and named registers: `:reg`
++ display the contents of all numbered and named \Vim_register_linked\plural: `:reg`
 
-+ paste the text from register `x` after the cursor: `"xp`
++ paste the text from \Vim_register_linked `x` after the cursor: `"xp`
 
-+ copy [selection](#vim_visual_mode) to a system clipboard: `"+y`
++ copy \Vim_selection{selection} to a system clipboard: `"+y`
 
 + copy a current line to a system clipboard: `V"+y`
 
@@ -120,11 +173,13 @@ __register__<a name="Vim_register"></a>
 
 + paste system clipboard contents: `"+p`
 
-## selecting, deleting and replacing text
+## selecting text
 
 + select all text in a file: `ggVG`
 
 + select a word under the cursor: `viw`
+
+## deleting text
 
 + delete everything from a given line to the end of a file: `dG`
 
@@ -146,19 +201,61 @@ __register__<a name="Vim_register"></a>
 
 	to only list the lines that would be deleted, remove `/d` in the above commands
 
-	above commands can also be applied to a [selection](#vim_visual_mode)
+	above commands can also be applied to a \Vim_selection{selection}
+
+## searching and replacing
+
++ general form of a substitue command: `:[range]s/pattern/string/[flags]`
+
+	+ \Vim_search_pattern<a name="Vim_search_pattern"></a>: what to look for
+
+	+ \Vim_search_string<a name="Vim_search_string"></a>: how to replace what's been found
+
+### special characters
+
++ some characters in the \Vim_search_pattern_linked and \Vim_search_string_linked:
+
+	+ are taken literally, but have special meaning when preceded with `\`
+
+	+ have a special meaning without `\` before them
+
++ the `magic` options decides if a specific character is taken literally or not
+
++ it's best to keep this option unchanged at its default value, thus all searches are performed with the `magic` option
+
+	character  | matches
+	-----------|----------------------------------
+	`\n`       | \newline
+	`$`        | \EOL
+	`*`        | 0 or more of the preceding item
+	`\=`, `\?` | 0 or 1 of the preceding item
+	`\+`       | 1 or more of the preceding item
+	`\{n,m}`   | $n$ to $m$ of the preceding item
+
+	: __examples of characters in the \Vim_search_pattern_linked with the `magic` option__
+
+	character | meaning
+	----------|----------------------------------------------------------
+	`\r`      | \newline
+	`&`       | the whole matched pattern
+	`\2`      | the pattern matched in the second pair of `\(...\)` in the \Vim_search_pattern_linked
+	`\=`      | the remainder is interpreted as an expression
+
+	: __examples of characters in the \Vim_search_string_linked with the `magic` option__
+
+### search examples
+
++ search for a pattern case-insensitively: `/\cPattern`
+
++ search for a pattern case-sensitively: `/\CPattern`
 
 + turn off the highlighted search results: `:nohls`
 
-+ search for a pattern case-insensitively: `/\\cPattern`
-
-+ search for a pattern case-sensitively: `/\\CPattern`
-
-\define{vim_spat}{  \|\s$\|\n\n\n}
+\define{Vim_spat}{  \|\s$\|\n\n\n}
 
 + search for multiple patterns, e.g. double spaces, whitespace characters at the end of a line, and double line breaks: `/\Vim_spat`
 
-	(`\\|` separates patterns)
+	(`\|` separates patterns)
 
 	turn the avove search into a custom command in `~/.vimrc`:
 ```
@@ -166,8 +263,20 @@ com SearchMess /\Vim_spat
 ```
 such a command might be then invoked with: `:SearchMess`
 
-\define{vim_spat}{\(_l\)\([|>]\)}
-\define{vim_rpat}{\1\inked\2}
+### replacement examples
+
++ find strings of 120 `-` characters: `/-\{120}`
+
+	now replace just found strings with strings of `=` characters of the same length: `:%s//\=repeat("=", strlen(submatch(0)))/g`
+
+	+ `:%s//string/g` refers to the most recently searched pattern
+
++ add one newline to \Vim_selection{selected lines}: `:s/$/\r/g`
+
++ replace two consecutive newlines with a single newline in the \Vim_selection{selected lines}: `:s/\n\n/\r/g`
+
+\define{Vim_spat}{\(_l\)\([|>]\)}
+\define{Vim_rpat}{\1\inked\2}
 
 + search for the `_l|` and `_l>` strings: `/_l[|>]`
 
@@ -175,9 +284,9 @@ such a command might be then invoked with: `:SearchMess`
 
 	+ we repeat the search adding the groups via `\(` and `\)` around `_l` and `[|>]`: `\Vim_spat`
 
-	+ we use `:%s//replace_pattern/g` to refer to the most recently searched pattern, and `\\1`, `\\2`, etc. to refer to strings matched inside `\\(` and `\\)`: `%s//\Vim_rpat/g`
+	+ we use `\1`, `\2`, etc. to refer to strings matched inside `\(` and `\)`: `%s//\Vim_rpat/g`
 
-+ the `E488: Trailing characters` error is usually caused when the unescaped separator (e.g. `\`) is used in the pattern --- in that case either escape the separator (e.g. `\\`), or use a different separator (e.g. `#`: `:s#/>$#}#g`)
++ the `E488: Trailing characters` error is usually caused when the unescaped separator (e.g. `\`) is used in the pattern --- in that case either escape the separator (use `\\`), or use a different separator (e.g. `#`: `:s#/>$#}#g`)
 
 + make multiple substitutions:
 ```
@@ -186,17 +295,17 @@ such a command might be then invoked with: `:SearchMess`
 
 	(`|` separates commands)
 
-+ replace whitespace in the [selected](#vim_visual_mode) lines with tabs: `:s/\s\+/\t/g`
++ replace whitespace in the \Vim_selection{selected} lines with tabs: `:s/\s\+/\t/g`
 
 	(`:s/\s\+/\t/g` replaces one or more whitespace characters in a row, i.e. continouos whitespace, with a tab, whereas `:s/\s/\t/g` replaces each whitespace character with a tab, so there might be multipe tabs between words after replacement)
 
-+ remove whitespace in the beginning of the [selected lines](#vim_visual_mode): `:s/^\s\+`
++ remove whitespace in the beginning of the \Vim_selection{selected lines}: `:s/^\s\+`
 
 	(`\s` selects whitespace)
 
-+ replace [selected](#vim_visual_mode) characters with `.`: `:r.`
++ replace \Vim_selection{selected} characters with `.`: `:r.`
 
-+ make a [selection](#vim_visual_mode) uppercase: `U`, lowercase: `u`
++ make a \Vim_selection{selection} uppercase: `U`, lowercase: `u`
 
 ### __vim-surround__ plugin
 
@@ -222,7 +331,7 @@ such a command might be then invoked with: `:SearchMess`
 
 ## sorting and reversing lines
 
-+ sort [selected lines](#vim_visual_mode) case-insensitively: `:sort i`
++ sort \Vim_selection{selected lines} case-insensitively: `:sort i`
 
 + reverse all lines in a file: `:g/^/m0`
 
@@ -230,23 +339,23 @@ such a command might be then invoked with: `:SearchMess`
 
 	or select everything with `ggVG` and: `:!tac`
 
-+ reverse [selected lines](#vim_visual_mode) in a file: `:!tac`
++ reverse \Vim_selection{selected lines} in a file: `:!tac`
 
 ## indentation and comments
 
-+ indent [selected lines](#vim_visual_mode): `>`
++ indent \Vim_selection{selected lines}: `>`
 
-+ indent [selected lines](#vim_visual_mode) by two levels: `2>`
++ indent \Vim_selection{selected lines} by two levels: `2>`
 
-+ comment [selected lines](#vim_visual_mode) with `# `: `:s/^/# /` or [select a visual block](#vim_visual_mode) starting in the leftmost column and: `I# <ESC>`
++ comment \Vim_selection{selected lines} with `# `: `:s/^/# /` or \Vim_selection{select a visual block} starting in the leftmost column and: `I# <ESC>`
 
 ## more on inserting text
 
 + insert regular quotes (`"..."`) instead of smart quotes in a `*.tex` file: `\"` and then erase `\`
 
-+ insert the `list: ` string starting in a given column: [select a visual block](#vim_visual_mode) starting in the given column and: `Ilist: <ESC>`
++ insert the `list: ` string starting in a given column: \Vim_selection{select a visual block} starting in the given column and: `Ilist: <ESC>`
 
-+ add the `.` character at the end of [selected lines](#vim_visual_mode): `norm A.`
++ add the `.` character at the end of \Vim_selection{selected lines}: `norm A.`
 
 	(`norm A.` executes insert-mode command `A.`)
 
