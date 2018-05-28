@@ -48,12 +48,25 @@ man apt-get
 	apt-file search autoreconf
 	```
 
-+ install an __Open MPI__ package and load a corresponding module (\Fedora only):
++ install an __Open MPI__ package and load a corresponding \modulefile (\Fedora only):
 
 	```bash
 	sudo dnf install environment-modules
 	sudo dnf install openmpi{,-devel}
-	module load mpi/openmpi-x86_64
+	module add mpi/openmpi-x86_64
+	```
+
+	to load a \modulefile automatically by the shell, use:
+
+	```bash
+	module initadd mpi/openmpi-x86_64
+	```
+
+	if you get the `Cannot find a 'module load' command in any of the 'bash' startup files`, error, run:
+
+	```bash
+	echo "module add null" >> ~/.bash_profile
+	module initadd mpi/openmpi-x86_64
 	```
 
 + enable \RedHat __Developer Toolset__ in \RedHatEL:

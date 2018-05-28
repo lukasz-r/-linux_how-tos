@@ -5,3 +5,5 @@
 \define{newline}{__newline__}
 
 \define{EOL}{__end of line__}
+
+\define{modulefile}{__modulefile__}
