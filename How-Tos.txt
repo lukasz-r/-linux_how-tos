@@ -585,7 +585,7 @@ for arg in "$@"; do
 	ls -all "$arg" # RIGHT!!!
 done
 
-# double quotes for variable assignment and "[[ ... ]]" are not necessary since word splitting doesn't take place:
+# double quotes for variable assignment, case construct, and "[[ ... ]]" are not necessary since word splitting doesn't take place:
 var=$file # RIGHT!!!
 var="$file" # ALSO RIGHT!!!
 PATH=$PATH:$HOME/scripts # RIGHT!!!
@@ -593,6 +593,8 @@ PATH="$PATH:$HOME/scripts" # ALSO RIGHT!!!
 fullpath=$(readlink -f -- "$file") # RIGHT!!!
 fullpath="$(readlink -f -- "$file")" # ALSO RIGHT!!!
 # note that "--" means end of options, useful if there's a file beginning with "-"
+case $1 in # RIGHT!!!
+case "$1" in # ALSO RIGHT!!!
 [[ -d $dir ]] && ls -d "$dir" # RIGHT!!!
 [[ -d "$dir" ]] && ls -d "$dir" # ALSO RIGHT!!!
 
