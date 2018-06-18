@@ -265,7 +265,7 @@ such a command might be then invoked with: `:SearchMess`
 
 ### replacement examples
 
-+ find strings of 120 `-` characters: `/-\{120}`
++ find strings of 120 `-` characters: `/-\{120\}`
 
 	now replace just found strings with strings of `=` characters of the same length: `:%s//\=repeat("=", strlen(submatch(0)))/g`
 
