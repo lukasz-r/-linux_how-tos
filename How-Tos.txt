@@ -2253,6 +2253,9 @@ texdoc longtable
 # list package manuals matching a string:
 texdoc -s babel
 
+# open the comprehensive LaTeX symbol list:
+texdoc symbols-a4
+
 # useful "Makefile" to compile a LaTeX document into PDF with the SyncTeX reverse search:
 -------------------------------------------------------
 Makefile
