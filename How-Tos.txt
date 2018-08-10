@@ -935,6 +935,9 @@ ${text,,}
 ${text^}
 ## convert a string to uppercase:
 ${text^^}
+## convert first letter of each word in a filename to uppercase:
+file_words=( $file )
+echo "${file_words[@]^}"
 
 # substring expansion: "${parameter:offset}" or "${parameter:offset:length}", offset counted from 0:
 text="abc456"
