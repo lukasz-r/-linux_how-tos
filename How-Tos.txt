@@ -936,12 +936,15 @@ ${text^}
 ## convert a string to uppercase:
 ${text^^}
 ## convert first character of each word in a filename to uppercase:
-file_words=( $file )
-echo "${file_words[@]^}"
+file_words=($file)
+echo "${file_words[*]^}"
+## note that:
+### "${file_words[@]}" expands each array element to a separate word: "${file_words[0]}" "${file_words[1]}" ...
+### "${file_words[*]}" expands to a single word: "${file_words[0]} ${file_words[1]} ...", thus this construct is appropriate for filename changes
 ## convert first character of each word not beginning with "u" in a filename to uppercase:
 shopt -s extglob
-file_words=( $file )
-echo "${file_words[@]^!(u)}"
+file_words=($file)
+echo "${file_words[*]^!(u)}"
 
 # substring expansion: "${parameter:offset}" or "${parameter:offset:length}", offset counted from 0:
 text="abc456"
