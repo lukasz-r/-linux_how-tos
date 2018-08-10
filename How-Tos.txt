@@ -935,7 +935,7 @@ ${text,,}
 ${text^}
 ## convert a string to uppercase:
 ${text^^}
-## convert first letter of each word in a filename to uppercase:
+## convert first character of each word in a filename to uppercase:
 file_words=( $file )
 echo "${file_words[@]^}"
 
