@@ -938,6 +938,10 @@ ${text^^}
 ## convert first character of each word in a filename to uppercase:
 file_words=( $file )
 echo "${file_words[@]^}"
+## convert first character of each word not beginning with "u" in a filename to uppercase:
+shopt -s extglob
+file_words=( $file )
+echo "${file_words[@]^!(u)}"
 
 # substring expansion: "${parameter:offset}" or "${parameter:offset:length}", offset counted from 0:
 text="abc456"
