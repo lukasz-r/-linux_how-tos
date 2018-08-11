@@ -95,6 +95,19 @@ info make
 	`FC`, `FCFLAGS`, `FCLIBS` | current Fortran variables   |
 	`PC`                      | Pascal compiler             | `pc`
 
+	+ \Makefile_impl_vars_linked can be overwritten in the \Makefile itself, or directly on its invocation:
+
+		```bash
+		make FC=ifort
+		```
+
+		or from the environment:
+
+		```bash
+		export FC=ifort
+		make
+		```
+
 ## grouping targets and prerequisites
 
 + avoid repeating a recipe common for several rules for which prerequisites don't follow the same pattern (e.g. the number of prerequisites is different for different rules):
