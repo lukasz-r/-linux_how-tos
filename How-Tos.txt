@@ -1969,6 +1969,10 @@ mmv -rv "[0-9][0-9]_*" "#3"
 
 ## remove " (sth)" from filenames:
 mmv -n '* (*)*' '#1#3'
+
+## remove "Ford Fiesta - " leading string from all filenames und capitalize first character after the string:
+mmv -v "Ford Fiesta - ?*" "#u1#2"
+## e.g. "Ford Fiesta - rear.jpg" is renamed into "Rear.jpg"
 --------------------------------------------------------------------------------
 
 ================================================================================
