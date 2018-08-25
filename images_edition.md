@@ -73,12 +73,19 @@ convert f1.jpg f2.jpg +append f.jpg
 ```
 
 + join two jpegs together through ppm file:
-```bash
-djpeg f1.jpg > f1.ppm
-djpeg f2.jpg > f2.ppm
-pnmcat -leftright f1.ppm f2.ppm > f.ppm
-cjpeg f.ppm > f.jpg
-```
+
+	```bash
+	djpeg f1.jpg > f1.ppm
+	djpeg f2.jpg > f2.ppm
+	pnmcat -leftright f1.ppm f2.ppm > f.ppm
+	cjpeg f.ppm > f.jpg
+	```
+
++ create a PDF file from multiple images:
+
+	```bash
+	img2pdf --output out.pdf Image*.jpg
+	```
 
 ## creating and adding elements to images
 
