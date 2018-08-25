@@ -256,10 +256,35 @@ git reset HEAD file_mod # unstages a file, "file_mod" is now modified
 git checkout file_mod
 ```
 
-+ undo all changes in the tracked files in the working tree and in the index (e.g. introduced with "git pull" which led to merge conflicts), reverting them to the last commit:
-```bash
-git reset --hard HEAD
-```
++ undo all changes in the tracked files in the working tree and in the index (e.g. introduced with `git pull` which led to merge conflicts), reverting them to the last commit:
+
+	```bash
+	git reset --hard HEAD
+	```
+
+## discarding commits
+
++ change a most recent commit message:
+
+	```bash
+	git commit --amend
+	```
+
+	the command can be used to undo a most recent commit after adding modifications that should have gone in that commit: in the end you end up with a single commit
+
++ undo a most recent commit without changing the files (most recently committed changes go to where they were before the last commit: \Git_wt_linked or \Git_sa_linked):
+
+	```bash
+	git reset --soft HEAD^
+	```
+
+	after adding modifications you can then start with the discarded commit message:
+
+	```bash
+	git commit -c ORIG_HEAD
+	```
+
+	this has the same effect as running `git commit --amend` after adding modifications
 
 ## renaming files
 
