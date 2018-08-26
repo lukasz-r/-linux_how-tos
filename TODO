@@ -9,6 +9,7 @@
 	> thin provisioning
 	> virtual disks, any size can be given to thinly-provisioned volumes
 	> external LVM disk should be plugged before any other disk to avoid I/O errors
+	> lvextend with forgotten "-r": use fsadm then
 ## vim
 	> :%s/sth/else/gci or I
 
@@ -17,3 +18,11 @@
 ## service tags with dmidecode
 
 ## including files with gpp with proper tabulation
+
+## rsync: timestamps only (rsync -t --size-only)
+
+## ffmpeg: ffmpeg -i input.mkv -vf "scale=iw/2:ih/2" half_the_frame_size.mkv to rescale (use "scale=1200:-1" to keep aspcet ratio)
+## ffmpeg -i "Egzorcysta - 202 - Kurierzy.mkv" -b:v 800k -vf "scale=1200:-1" out202-ffmpeg.mkv
+## ffmpeg -i "Egzorcysta - 202 - Kurierzy.mkv" -b:v 800k -vf "scale=1200:-2" out202-ffmpeg.mkv if height not divisible by 2
+
+## BASH: mapfile built-in: mapfile -t -O 1 ep_titles < $ep_list_file
