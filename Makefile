@@ -6,10 +6,12 @@ chapters := \
 	archives \
 	mc \
 	Makefile \
+	SELinux \
 	package_management \
 	job_scheduling \
 	images_edition \
 	Wget \
+	web_server \
 	PDF \
 	printing \
 	text_file_operations \
