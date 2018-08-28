@@ -75,6 +75,12 @@ man xz
 
 ### \zip
 
++ create the `~/archive.zip` \zip archive from files and directories recursively:
+
+	```bash
+	zip -r ~/archive dir file1 file2
+	```
+
 + create the `pics.zip` \zip archive from the files in `~/docs` without saving the pathname structure:
 
 	```bash
@@ -110,10 +116,10 @@ man xz
 
 ### \rar
 
-+ create a \rar archive:
++ create the `~/archive.rar` \rar archive from files and directories recursively:
 
 	```bash
-	rar a archive.rar dir file1 file2
+	rar a -r ~/archive dir file1 file2
 	```
 
 + create a __cbr__ \archives_cbarchive:
