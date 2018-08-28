@@ -1992,21 +1992,40 @@ locate -i finance
 # case-insensitively search for files containing "1zł", "5zł", etc. in their name:
 locate -i "*[0-9]zł*"
 
-# list files which have exactly 664 permissions:
+--------------------------------------------------------------------------------
+# permissions with find
+--------------------------------------------------------------------------------
+## file permissions: n₁n₂n₃
+
+## "-perm m₁m₂m₃":     n₁ = m₁ ∧ n₂ = m₂ ∧ n₃ = m₃
+## "\! -perm m₁m₂m₃":  n₁ ≠ m₁ ∨ n₂ ≠ m₂ ∨ n₃ ≠ m₃
+
+## "-perm -m₁m₂m₃":    n₁ ≥ m₁ ∧ n₂ ≥ m₂ ∧ n₃ ≥ m₃
+## "\! -perm -m₁m₂m₃": n₁ < m₁ ∨ n₂ < m₂ ∨ n₃ < m₃
+
+## "-perm /m₁m₂m₃":    n₁ ≥ m₁ ∨ n₂ ≥ m₂ ∨ n₃ ≥ m₃
+## "\! -perm /m₁m₂m₃": n₁ < m₁ ∧ n₂ < m₂ ∧ n₃ < m₃
+
+## list files which have exactly 664 permissions:
 find -perm 664
 
-# list files which have 664 permissions and possibly other extra permission bits set (so e.g. file with 777 permissions is matched, but 770 is not):
+## list files which have 664 permissions and possibly other extra permission bits set (so e.g. file with 777 permissions is matched, but 770 is not):
 find -perm -664
-# "-perm m₁m₂m₃" matches files with n₁n₂n₃ permissions for which n₁ ≥ m₁, n₂ ≥ m₂ and n₃ ≥ m₃
 
-# list files which are writable by somebody (owner, group or others):
+## list files which are writable by somebody (owner, group or others):
 find -perm /222
 
-# list files with special permissions, i.e. SUID, SGID or sticky bit set:
+## list files at least readable by others (any n₁ and any n₂ and n₃ ≥ 4, thus n₁ ≥ 0 ∧ n₂ ≥ 0 ∧ n₃ ≥ 4):
+find -perm -004
+## now list files not readable by others [n₃ < 4, note that this corresponds to (n₁ < 0 ∨ n₂ < 0 ∨ n₃ < 4) == (0 ∨ 0 ∨ n₃ < 4) == (n₃ < 4) since both n₁ and n₂ are never negative]:
+find \! -perm -004
+
+## list files with special permissions, i.e. SUID, SGID or sticky bit set:
 find -perm /7000
 
-# list files which have SUID or SGID bit set:
+## list files which have SUID or SGID bit set:
 find -perm /6000
+--------------------------------------------------------------------------------
 
 # list files from oldest to newest by modification time:
 find -printf "%T@ %p\n" | sort -n
