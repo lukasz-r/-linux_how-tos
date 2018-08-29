@@ -1711,7 +1711,18 @@ stat file
 ## b₃ − read bit
 # a bit is either 0 or 1, so the highest binary value of the triad is 111, which corresponds to:
 ## m = 1 * 2⁰ + 1 * 2¹ + 1 * 2² = 7
-# so it suffices to use octal numbers to represent the permissions (all numbers ≤ 7 have the same decimal and octal representations)
+# octal numbers are used to represent the permissions:
+## all numbers ≤ 7 have the same decimal and octal representations
+## let's see how two bit triads convert to octal numbers:
+### 111111 → 77
+### 000111 → 7 ≡ 07
+### 110110 → 66
+## similarly for three bit triads:
+### 111111111 → 777
+### 100100100 → 444
+## similarly for four, five, etc. bit triads
+## so we can convert each bit triad separately into a decimal number and compose the resulting numbers into an octal number
+## octal numbers are thus a natural choice to represent the bit triad values compactly
 # execute bit: 001 ⇒ m = 1
 # write bit: 010 ⇒ m = 2
 # read bit: 100 ⇒ m = 4
