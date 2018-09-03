@@ -566,16 +566,34 @@ git log --name-only --author=andreas
 		git log --follow rename2numbers
 		```
 
+		or:
+
+		```bash
+		tig rename2numbers
+		```
+
 	+ also show patches:
 
 		```bash
 		git log --follow -p rename2numbers
 		```
 
+		or:
+
+		```bash
+		gitk rename2numbers
+		```
+
 	+ show info on each line in a file:
 
 		```bash
 		git blame rename2numbers
+		```
+
+		or:
+
+		```bash
+		tig blame rename2numbers
 		```
 --------------------------------------------------------------------------------
 
