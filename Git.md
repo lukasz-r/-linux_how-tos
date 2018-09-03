@@ -558,6 +558,25 @@ git log -i --grep=regular
 git log --name-only --author=andreas
 ```
 
++ show specific file modification history:
+
+	+ briefly list commits:
+
+		```bash
+		git log --follow rename2numbers
+		```
+
+	+ also show patches:
+
+		```bash
+		git log --follow -p rename2numbers
+		```
+
+	+ show info on each line in a file:
+
+		```bash
+		git blame rename2numbers
+		```
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
