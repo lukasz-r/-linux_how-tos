@@ -310,32 +310,51 @@ git mv -v file1 file2
 git commit
 ```
 
-## comparing branches
+## comparing branches and commits
 
 + copy a file from the `source_br` branch into the `working_br` branch:
-```bash
-git checkout working_br # if not already at working_br
-git checkout source_br file_cp
-```
+
+	```bash
+	git checkout working_br # if not already at working_br
+	git checkout source_br file_cp
+	```
+
 	`file_cp` is now staged if its versions differ between the two branches
 
 + show changes to the `file` file from the `old_branch` branch into the `new_branch` branch:
-```bash
-git diff old_branch new_branch file
-```
+
+	```bash
+	git diff old_branch new_branch file
+	```
+
 	+ the path to a `file` has to be relative to a current directory
 
-	+ the following yield the same results:
+	+ the following sets of commands yield the same results:
+
+		+
+
+			```bash
+			git diff old_branch..new_branch file
+			```
+
+		+
+
+			```bash
+			git checkout branch_new
+			git diff old_branch file
+			```
+
+		+
+
+			```bash
+			git checkout branch_new
+			git diff old_branch.. file
+			```
+
++ show changes to the `README.md` file between previously and most recently checked commits (e.g. useful to see if any changes to the build scripts are needed after `git pull`):
+
 	```bash
-	git diff old_branch..new_branch file
-	```
-	```bash
-	git checkout branch_new
-	git diff old_branch file
-	```
-	```bash
-	git checkout branch_new
-	git diff old_branch.. file
+	git diff HEAD@@{1} README.md
 	```
 
 + list files changed between the `old_branch` and `new_branch` branches:
