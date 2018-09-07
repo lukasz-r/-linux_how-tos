@@ -264,13 +264,21 @@ git checkout file_mod
 
 ## discarding commits
 
++ note that:
+
+	+ `git reset <commit>` resets things as they we at the `<commit>`
+
+	+ `git revert <commit>` undoes the `<commit>`
+
+### unpublished commits
+
 + change a most recent commit message:
 
 	```bash
 	git commit --amend
 	```
 
-	the command can be used to undo a most recent commit after adding modifications that should have gone in that commit: in the end you end up with a single commit
+	the command can also be used to undo a most recent commit after adding modifications that should have gone in that commit: in the end you end up with a single commit
 
 + undo a most recent commit without changing the files (most recently committed changes go to where they were before the last commit: \Git_wt_linked or \Git_sa_linked):
 
@@ -278,13 +286,33 @@ git checkout file_mod
 	git reset --soft HEAD^
 	```
 
-	after adding modifications you can then start with the discarded commit message:
+	after adding modifications you can start with the discarded commit message:
 
 	```bash
 	git commit -c ORIG_HEAD
 	```
 
 	this has the same effect as running `git commit --amend` after adding modifications
+
++ undo a most recent commit and reset the files to the parent commit state (all modifications since the parent commit are lost):
+
+	```bash
+	git reset --hard HEAD^
+	```
+
+	+ an undone commit can still be retrieved for some $90$ days using reflogs
+
+### published commits
+
++ undo a most recent commit that has already been pushed:
+
+	```bash
+	git revert HEAD
+	```
+
+	+ \Git_wt_linked needs to be clean
+
+	+ the command creates a new commit undoing a most recent commit: this is necessary so that after publishing the new commit with `git push`, other users can have the commit undone with the new commit through `git pull`
 
 ## renaming files
 
@@ -357,10 +385,19 @@ git commit
 	git diff HEAD@@{1} README.md
 	```
 
++ show a file at a specific commit:
+
+	```bash
+	git show HEAD~2:time_date.md
+	```
+
+	+ of course, `time_date.md` file will be shown as it was in a committed state, uncommitted modifications won't be shown
+
 + list files changed between the `old_branch` and `new_branch` branches:
-```bash
-git diff old_branch new_branch --name-status
-```
+
+	```bash
+	git diff old_branch new_branch --name-status
+	```
 
 ## clean-up
 
