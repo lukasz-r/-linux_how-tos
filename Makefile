@@ -4,6 +4,7 @@
 chapters := \
 	time_and_date \
 	archives \
+	compilers_and_libraries \
 	mc \
 	Makefile \
 	SELinux \
