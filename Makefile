@@ -2,7 +2,7 @@
 
 # chapter titles in the order they enter the documentation
 chapters := \
-	time_date \
+	time_and_date \
 	archives \
 	mc \
 	Makefile \
