@@ -534,6 +534,12 @@ BASH
 ## lowercase for:
 ### variables local to a script ("src_dir=/opt/ga")
 
+# use curly brackets in case of the naming clash:
+c_compiler=icc
+c_compiler_version=14
+echo $c_compiler_$c_compiler_version     # 14
+echo ${c_compiler}_${c_compiler_version} # icc_14
+
 # the lists in BASH are formed by a word splitting based on the "IFS" variable (which is usually <space><tab><newline>), e.g.
 file1 file2 "file 3"
 # expands to three words; you can loop through list elements:
