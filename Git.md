@@ -179,6 +179,7 @@ git diff HEAD
 ```bash
 git diff Makefile
 ```
+
 ## ignoring files
 
 + files to be ignored by \Git are specified in the `.gitignore` file
@@ -187,6 +188,7 @@ git diff Makefile
 ```bash
 Books
 ```
+
 ## adding files
 
 + if you add a new file and want \Git to track it, you need to stage its addition:
@@ -230,6 +232,49 @@ git commit -a
 git checkout HEAD^ file_del
 ```
 	`file_del` is now staged
+
+## renaming files
+
++ renaming a file with `mv`:
+
+	```bash
+	mv -iv file1 file2
+	```
+
+	marks `file1` as deleted and `file2` as untracked in Git, so we need to stage the changes:
+
+	```bash
+	git rm file1
+	git add file2
+	```
+
++ all the three above commands can be replaced with:
+
+	```bash
+	git mv -v file1 file2
+	```
+
+	which stages a rename automatically
+
++ the rename can be undone with:
+
+	```bash
+	git reset HEAD file2
+	git reset HEAD file1
+	git checkout file1
+	rm file2
+	```
+
+	or simply:
+
+	```bash
+	git mv -v file2 file1
+	```
+
++ \Git tracks contents not files, so it detects a rename after those operations, now just commit the change:
+```bash
+git commit
+```
 
 ## untracking files
 
@@ -313,30 +358,6 @@ git checkout file_mod
 	+ \Git_wt_linked needs to be clean
 
 	+ the command creates a new commit undoing a most recent commit: this is necessary so that after publishing the new commit with `git push`, other users can have the commit undone with the new commit through `git pull`
-
-## renaming files
-
-+ renaming a file with `mv`:
-```bash
-mv -iv file1 file2
-```
-
-+ marks `file1` as deleted and `file2` as untracked in Git, so we need to stage the changes:
-```bash
-git rm file1
-git add file2
-```
-
-+ all the three above commands can be replaced with:
-```bash
-git mv -v file1 file2
-```
-	which stages a rename automatically
-
-+ \Git tracks contents not files, so it detects a rename after those operations, now just commit the change:
-```bash
-git commit
-```
 
 ## comparing branches and commits
 
