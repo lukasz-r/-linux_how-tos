@@ -534,11 +534,18 @@ BASH
 ## lowercase for:
 ### variables local to a script ("src_dir=/opt/ga")
 
+# start and stop exporting variables:
+set -a
+CC=icc
+CXX=icpc
+FC=ifort
+set +a
+
 # use curly brackets in case of the naming clash:
-c_compiler=icc
-c_compiler_version=14
-echo $c_compiler_$c_compiler_version     # 14
-echo ${c_compiler}_${c_compiler_version} # icc_14
+CC=icc
+CC_VERSION=14
+echo $CC_$CC_VERSION     # 14
+echo ${CC}_${CC_VERSION} # icc_14
 
 # the lists in BASH are formed by a word splitting based on the "IFS" variable (which is usually <space><tab><newline>), e.g.
 file1 file2 "file 3"
