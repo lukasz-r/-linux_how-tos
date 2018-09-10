@@ -534,6 +534,22 @@ BASH
 ## lowercase for:
 ### variables local to a script ("src_dir=/opt/ga")
 
+# running commands:
+ls /tmp
+## no slash ("/") in the command ("ls"), shell looks for the "ls" file in directories contained in "PATH" and executes it using the first path found
+/usr/bin/ls /tmp
+## slash ("/") in the command ("/usr/bin/ls"), shell executes the "/usr/bin/ls" file without any search through the "PATH"
+
+# sourcing files:
+. file
+or:
+source file
+## no slash ("/") in the filename ("file"), shell looks for the "file" file in directories contained in "PATH" and executes commands from the file in the current shell using the first path found
+. ./file
+or:
+source ./file
+## slash ("/") in the filename ("./file"), so shell executes commands from the file in the current directory in the current shell without any search through the "PATH"
+
 # start and stop exporting variables:
 set -a
 CC=icc
