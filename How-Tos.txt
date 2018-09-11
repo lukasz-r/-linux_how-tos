@@ -569,12 +569,6 @@ CXX=icpc
 FC=ifort
 set +a
 
-# use curly brackets in case of the naming clash:
-CC=icc
-CC_VERSION=14
-echo $CC_$CC_VERSION     # 14
-echo ${CC}_${CC_VERSION} # icc_14
-
 # the lists in BASH are formed by a word splitting based on the "IFS" variable (which is usually <space><tab><newline>), e.g.
 file1 file2 "file 3"
 # expands to three words; you can loop through list elements:
@@ -609,6 +603,12 @@ done
 # note that
 "$HOME/foo/bar{1,2,3}"
 # construct won't expand (except for "$HOME" expansion) as curly brackets are in double quotes
+
+# use curly brackets with variable expansion when concatenating variables with a character allowed in variable names (alphanumeric or underscore character):
+CC=icc
+CC_VERSION=14
+echo $CC_$CC_VERSION   # 14 ("CC_" variable not defined)
+echo ${CC}_$CC_VERSION # icc_14
 
 # use array variables to store results of a brace expansion:
 back_dirs=(~luke/{Documents,Pictures}) # RIGHT!!!
