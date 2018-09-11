@@ -62,21 +62,21 @@ git clone --recursive git@gitlab.com:dalton/dalton.git
 	```bash
 	# Molpro
 	Host molpro
-	User git
-	HostName www.molpro.net
-	IdentityFile ~/.ssh/id_rsa.git
+		HostName www.molpro.net
+		User git
+		IdentityFile ~/.ssh/id_rsa.git
 
 	# Bitbucket
 	Host bitbucket
-	User git
-	HostName bitbucket.org
-	IdentityFile ~/.ssh/id_rsa.git
+		HostName bitbucket.org
+		User git
+		IdentityFile ~/.ssh/id_rsa.git
 
 	# GitLab
 	Host gitlab
-	User git
-	HostName gitlab.com
-	IdentityFile ~/.ssh/id_rsa.git
+		HostName gitlab.com
+		User git
+		IdentityFile ~/.ssh/id_rsa.git
 	```
 
 	the `IdentityFile` line is not needed when a standard location (`~/.ssh/id_rsa`) key is used
