@@ -534,11 +534,23 @@ BASH
 ## lowercase for:
 ### variables local to a script ("src_dir=/opt/ga")
 
+# shell builtin command (shell builtin) is provided by the shell and is executed directly in the shell itself (e.g. ".", "source"), and can affect the state of the shell (e.g. a current directory, therefore "cd" needs to be a shell builtin)
+# get help on the "shopt" builtin:
+help shopt
+# external command is provided by an external program and is loaded and executed by the shell (e.g. "ls", "stat")
+# get help on the "stat" command:
+man stat
+# show the full path of the "stat" command:
+which stat
+# shell builtins work much faster than external programs
+
 # running commands:
 ls /tmp
-## no slash ("/") in the command ("ls"), shell looks for the "ls" file in directories contained in "PATH" and executes it using the first path found
+## no slash ("/") in the command ("ls"), it's not a shell builtin, shell looks for the "ls" file in directories contained in "PATH" and executes it using the first path found
 /usr/bin/ls /tmp
 ## slash ("/") in the command ("/usr/bin/ls"), shell executes the "/usr/bin/ls" file without any search through the "PATH"
+./file
+## same thing as above (the "file" file is in the current directory)
 
 # sourcing files:
 . file
