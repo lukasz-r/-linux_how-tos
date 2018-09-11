@@ -1693,15 +1693,14 @@ filesystem structure
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-# my take on compilation and installation directory names:
+# my take on build and installation directory names:
 --------------------------------------------------------------------------------
-## on clusters:
-### "/opt/$name/$name-$ver/build_$compiler" − directory to compile a source
-### "/opt/$name/$name-$ver-install" − directory to install binaries and libraries
-### where e.g. name=openmpi, ver=git, compiler=intel
-## on a laptop:
-### "$HOME/$name/$name-$ver/build_$compiler" and "$HOME/$name/$name-$ver-install"
-## keep development files (source, test jobs, etc.) in "$HOME/$name_dev" directory
+## src_dir=$HOME/$name/$name-git (if from Git) or src_dir=$HOME/$name/$name-src-$ver (if downloaded directly) − directory to keep the source
+## bld_dir=$src_dir/build-$suffix − directory to build a software from source
+## inst_dir=$HOME/$name/$name-$suffix (locally) or inst_dir=/opt/$name/$name-$suffix (globally) − directory to install binaries and libraries
+## jobs_dir=$HOME/$name/${name}_jobs − directory to keep input files
+## scr_dir=/scratch/$USER/$name − scratch dirctory
+## e.g. suffix=${branch//\//-}_${CC}-${CC_VERSION}_${FC}-${FC_VERSION}, name=nwchem, branch=release-6-8
 --------------------------------------------------------------------------------
 
 # get info on the filesystem hierarchy:
