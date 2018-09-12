@@ -50,26 +50,22 @@ git commit --author="John Git Jr. johngitjunior@example.com"
 ## cloning a repo
 
 + clone a repo into a local directory:
-```bash
-git clone git@www.molpro.net:Molpro molpro-pauli
-```
-+ clone a repo containing other repos (submodules) into its default directory:
-```bash
-git clone --recursive git@gitlab.com:dalton/dalton.git
-```
-+ simplify URLs using the `~/.ssh/config` configuration file (provided the SSH private key is in `~/.ssh/id_rsa.git` and the corresponding SSH public key is in `~/.ssh/id_rsa.git.pub`): `~/.ssh/config`:
 
 	```bash
-	# Molpro
-	Host molpro
-		HostName www.molpro.net
-		User git
-		IdentityFile ~/.ssh/id_rsa.git
+	git clone git@@www.molpro.net:Molpro molpro-pauli
+	```
 
++ clone a repo containing other repos (submodules) into its default directory:
+
+	```bash
+	git clone --recursive git@@gitlab.com:dalton/dalton.git
+	```
+
++ if \SSH keys are in non-standard location: the \SSH private key is in `~/.ssh/id_rsa.git`, and the corresponding public key is in `~/.ssh/id_rsa.git.pub`), use `~/.ssh/config` configuration file to pass the locations:
+
+	```bash
 	# Bitbucket
-	Host bitbucket
-		HostName bitbucket.org
-		User git
+	Host bitbucket.org
 		IdentityFile ~/.ssh/id_rsa.git
 
 	# GitLab
@@ -79,12 +75,21 @@ git clone --recursive git@gitlab.com:dalton/dalton.git
 		IdentityFile ~/.ssh/id_rsa.git
 	```
 
-	the `IdentityFile` line is not needed when a standard location (`~/.ssh/id_rsa`) key is used
+	cloning then reads:
 
-	with such a definition, cloning reads:
-```bash
-git clone --recursive gitlab:dalton/dalton.git
-```
+	```bash
+	git clone git@@bitbucket.org:luke/sapt.git
+	```
+
+	and
+
+	```bash
+	git clone --recursive gitlab:dalton/dalton.git
+	```
+
+	+ note that the settings for `Bitbucket` are preferred since they don't modify the \URL as in the case of `GitLab`, so you can simply copy the \URL directly from the repo's webpage
+
+	+ if you copy the \URL from the `GitLab` webpage and paste it into the command: `git clone --recursive git@@gitlab.com:dalton/dalton.git`, a standard-location key is used and you're refused access to the repo
 
 ## submodules
 
