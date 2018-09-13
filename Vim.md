@@ -197,11 +197,11 @@
 
 + delete lines containing a specific pattern: `:g/some_pattern/d`
 
-	delete lines NOT containing a specific pattern: `:g!/some_pattern/d` or: `:v/some_pattern/d`
+	delete lines __not__ containing a specific pattern: `:g!/some_pattern/d` or: `:v/some_pattern/d`
 
-	to only list the lines that would be deleted, remove `/d` in the above commands
+	+ to only list the lines that would be deleted, remove `/d` in the above commands
 
-	above commands can also be applied to a \Vim_selection{selection}
+	+ above commands can also be applied to a \Vim_selection{selection}
 
 ## searching and replacing
 
@@ -305,7 +305,9 @@ such a command might be then invoked with: `:SearchMess`
 
 + replace \Vim_selection{selected} characters with `.`: `:r.`
 
-+ make a \Vim_selection{selection} uppercase: `U`, lowercase: `u`
++ make a \Vim_selection{selection} uppercase: `U`, lowercase: `u`, toggle the case: `~`
+
++ turn all instances of `FILTER_FILE` into lowercase: `:%s/FILTER_FILE/\L&/g`
 
 ### __vim-surround__ plugin
 
