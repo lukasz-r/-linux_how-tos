@@ -2,6 +2,7 @@
 
 # chapter titles in the order they enter the documentation
 chapters := \
+	BASH \
 	time_and_date \
 	archives \
 	compilers_and_libraries \
