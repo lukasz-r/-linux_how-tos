@@ -1,41 +1,128 @@
 
 # BASH
 
-# good practices for variable capitalization in scripts:
-## uppercase for:
-### environment variables ("PAGER", "EDITOR", etc.) and internal shell variables ("SHELL", "BASH_VERSION", etc.)
-### exported variables ("export BLAS_LIB=...")
-### constants ("PI=3.14")
-## lowercase for:
-### variables local to a script ("src_dir=/opt/ga")
+## \getting_help
 
-# shell builtin command (shell builtin) is provided by the shell and is executed directly in the shell itself (e.g. ".", "source"), and can affect the state of the shell (e.g. a current directory, therefore "cd" needs to be a shell builtin)
-# get help on the "shopt" builtin:
-help shopt
-# external command is provided by an external program and is loaded and executed by the shell (e.g. "ls", "stat")
-# get help on the "stat" command:
-man stat
-# show the full path of the "stat" command:
-which stat
-# shell builtins work much faster than external programs
+	```bash
+	info bash
+	```
 
-# running commands:
-ls /tmp
-## no slash ("/") in the command ("ls"), it's not a shell builtin, shell looks for the "ls" file in directories contained in "PATH" and executes it using the first path found
-/usr/bin/ls /tmp
-## slash ("/") in the command ("/usr/bin/ls"), shell executes the "/usr/bin/ls" file without any search through the "PATH"
-./file
-## same thing as above (the "file" file is in the current directory)
+## case of variable names
 
-# sourcing files:
-. file
-or:
-source file
-## no slash ("/") in the filename ("file"), shell looks for the "file" file in directories contained in "PATH" and executes commands from the file in the current shell using the first path found
-. ./file
-or:
-source ./file
-## slash ("/") in the filename ("./file"), so shell executes commands from the file in the current directory in the current shell without any search through the "PATH"
++ good practices for variable capitalization in scripts:
+
+	+ uppercase for:
+
+		+ environment variables (`PAGER`, `EDITOR`, etc.) and internal shell variables (`SHELL`, `BASH_VERSION`, etc.)
+
+		+ exported variables (`export BLAS_LIB=...`)
+
+		+ constants (`PI=3.14`)
+
+	+ lowercase for:
+
+		+ variables local to a script (`src_dir=/opt/ga`)
+
+## error handling
+
++ example of terribly bad scripting:
+
+	```bash
+	cd dir
+	rm *
+	```
+
+	+ if `dir` doesn't exist, all files in the current directory are removed
+
+	+ no action should be performed if `dir` doesn't exist
+
+## shell builtins
+
++ shell builtin command (shell builtin) is provided by the shell and is executed directly in the shell itself (e.g. `.`, `source`), and can affect the state of the shell (e.g. a current directory, therefore `cd` needs to be a shell builtin)
+
++ get help on the `shopt` builtin: `help shopt`
+
++ external command is provided by an external program and is loaded and executed by the shell (e.g. `ls`, `stat`)
+
++ get help on the `stat` command: `man stat`
+
++ show the full path of the `stat` command: `which stat`
+
++ shell builtins work much faster than external programs
+
+## running commands
+
++ `ls /tmp`: no slash (`/`) in the command (`ls`), it's not a shell builtin, shell looks for the `ls` file in directories contained in `PATH` and executes it using the first path found
+
++ `/usr/bin/ls /tmp`: slash (`/`) in the command (`/usr/bin/ls`), shell executes the `/usr/bin/ls` file without any search through the `PATH`
+
++ `./file`: same thing as above (the `file` file is in the current directory)
+
+## sourcing files
+
++ `. file` or `source file`: no slash (`/`) in the filename (`file`), shell looks for the `file` file in directories contained in `PATH` and executes commands from the file in the current shell using the first path found
+
++ `. ./file` or `source ./file`: slash (`/`) in the filename (`./file`), so shell executes commands from the file in the current directory in the current shell without any search through the `PATH`
+
+## shell grammar
+
++ pipeline: `command1 | command2`
+
+	send stdout of `command1` to stdin of `command2`
+
+	+ each command in a pipeline is executed in a subshell
+
+	+ funny example: `echo a | echo` prints nothing, since `echo` (see `help echo`) sends its argument to stdout, ignoring stdin
+
++ list: one or more pipelines separated with `;`, `&`, `&&`, or `||`
+
++ compound command:
+
+	+ `(list)`: list executed in a subshell
+
+	+ `{ list; }`: list executed in a current shell
+
++ examples:
+
+	+
+
+		```bash
+		a=1
+		a=2 && echo -n $a | tee out.txt
+		echo -n $a
+		```
+
+		outputs `22` since a list is composed of `a=2` assignment performed in a current shell, and `echo -n $a | tee out.txt` pipeline
+
+	+
+
+		```bash
+		a=1
+		{ a=2 && echo -n $a; } | tee out.txt
+		echo -n $a
+		```
+
+		outputs `21` since the pipeline's `{ a=2 && echo -n $a; }` compound command is executed in a subshell, so it can't change the state of the shell
+
+	+
+
+		```bash
+		a=1
+		{ a=2; echo -n $a; }
+		echo -n $a
+		```
+
+		outputs `22` since `{ a=2; echo -n $a; }` is executed in a current shell
+
+	+
+
+		```bash
+		a=1
+		(a=2; echo -n $a)
+		echo -n $a
+		```
+
+		outputs `21` since `(a=2; echo -n $a)` is executed in a subshell
 
 # start and stop exporting variables:
 set -a
