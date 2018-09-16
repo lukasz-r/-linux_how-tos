@@ -66,15 +66,29 @@
 
 ## shell grammar
 
-+ pipeline: `command1 | command2`
++ pipeline:
 
-	send stdout of `command1` to stdin of `command2`
+	`command1 | command2`: send stdout of `command1` to stdin of `command2` through a pipe (`|`)
+
+	`command1 |& command2`: also send stderr
+
+	+ it's the stdout of the command on the left that is sent, not its arguments, e.g. `echo a | echo` prints nothing, since `echo` (see `help echo`) sends its arguments, not stdin, to stdout
 
 	+ each command in a pipeline is executed in a subshell
 
-	+ funny example: `echo a | echo` prints nothing, since `echo` (see `help echo`) sends its argument to stdout, ignoring stdin
+	+ e.g. `find ~/Documents/ -ctime -5 | sort`
 
 + list: one or more pipelines separated with `;`, `&`, `&&`, or `||`
+
+	+ `command &`: `command` executed in a subshell in the background
+
+	+ commands separated by `;` are executed sequentially
+
+	+ AND list: `command1 && command2`: `command2` executed only if `command1` returns a zero exit status
+
+	+ OR list: `command1 || command2`: `command2` executed only if `command1` returns a non-zero exit status
+
+	+ e.g. `cd "$dir" && rm -fv ./* | tee ../out.txt`
 
 + compound command:
 
@@ -88,41 +102,41 @@
 
 		```bash
 		a=1
-		a=2 && echo -n $a | tee out.txt
-		echo -n $a
+		a=2 && echo -n "$a" | tee out.txt
+		echo -n "$a"
 		```
 
-		outputs `22` since a list is composed of `a=2` assignment performed in a current shell, and `echo -n $a | tee out.txt` pipeline
+		outputs `22` since a list is composed of `a=2` assignment performed in a current shell, and `echo -n "$a" | tee out.txt` pipeline
 
 	+
 
 		```bash
 		a=1
-		{ a=2 && echo -n $a; } | tee out.txt
-		echo -n $a
+		{ a=2 && echo -n "$a"; } | tee out.txt
+		echo -n "$a"
 		```
 
-		outputs `21` since the pipeline's `{ a=2 && echo -n $a; }` compound command is executed in a subshell, so it can't change the state of the shell
+		outputs `21` since the `{ a=2 && echo -n "$a"; }` compound command is executed in a subshell since it's a part of a pipeline, so it can't change the state of the shell
 
 	+
 
 		```bash
 		a=1
-		{ a=2; echo -n $a; }
-		echo -n $a
+		{ a=2; echo -n "$a"; }
+		echo -n "$a"
 		```
 
-		outputs `22` since `{ a=2; echo -n $a; }` is executed in a current shell
+		outputs `22` since the `{ a=2; echo -n "$a"; }` compound command is executed in a current shell
 
 	+
 
 		```bash
 		a=1
-		(a=2; echo -n $a)
-		echo -n $a
+		(a=2; echo -n "$a")
+		echo -n "$a"
 		```
 
-		outputs `21` since `(a=2; echo -n $a)` is executed in a subshell
+		outputs `21` since the `(a=2; echo -n "$a")` compound command is executed in a subshell
 
 # start and stop exporting variables:
 set -a
