@@ -11,6 +11,7 @@ chapters := \
 	SELinux \
 	package_management \
 	job_scheduling \
+	image_metadata \
 	images_edition \
 	Wget \
 	web_server \
