@@ -13,6 +13,8 @@
 ## vim
 	> :%s/sth/else/gci or I
 
+## sed: editing multiple files in-place always changes timestamps!
+
 ## port forwarding for tunnels and email
 
 ## service tags with dmidecode
