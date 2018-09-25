@@ -305,9 +305,19 @@ such a command might be then invoked with: `:SearchMess`
 
 + replace \Vim_selection{selected} characters with `.`: `:r.`
 
-+ make a \Vim_selection{selection} uppercase: `U`, lowercase: `u`, toggle the case: `~`
+#### case conversion
 
-+ turn all instances of `FILTER_FILE` into lowercase: `:%s/FILTER_FILE/\L&/g`
++ convert a \Vim_selection{selection}:
+
+	+ to uppercase: `U`
+
+	+ to lowercase: `u`
+
+	+ toggle the case: `~`
+
++ convert all instances of `FILTER_FILE` to lowercase: `:%s/FILTER_FILE/\L&/g`
+
++ convert first characters of words in a \Vim_selection{selection} to uppercase: `:s/\<./\u&/g`
 
 ### __vim-surround__ plugin
 
