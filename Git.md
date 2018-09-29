@@ -316,7 +316,7 @@ git checkout file_mod
 
 + note that:
 
-	+ `git reset <commit>` resets things as they we at the `<commit>`
+	+ `git reset <commit>` resets things to the `<commit>` state
 
 	+ `git revert <commit>` undoes the `<commit>`
 
