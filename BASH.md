@@ -215,6 +215,14 @@ case "$1" in # ALSO RIGHT!!!
 [[ -d $dir ]] && ls -d "$dir" # RIGHT!!!
 [[ -d "$dir" ]] && ls -d "$dir" # ALSO RIGHT!!!
 
++ double quotes aren't necessary associative array subscripts:
+
+	```bash
+	sub="nice animal"
+	declare -A table
+	table[$sub]=cat
+	```
+
 # don't use double quotes with variables holding command options: if a variable is null, it is retained and passed explicitly as '' when quoted, but is removed when unquoted (desired behaviour), so:
 rsync -ahPvz "$OPTS" src dest # WRONG!!!
 # the above leads to problems if $OPTS is null, so always use
