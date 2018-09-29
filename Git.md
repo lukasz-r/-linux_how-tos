@@ -364,6 +364,28 @@ git checkout file_mod
 
 	+ the command creates a new commit undoing a most recent commit: this is necessary so that after publishing the new commit with `git push`, other users can have the commit undone with the new commit through `git pull`
 
++ move back to a specific commit on the `master` branch both locally and remotely:
+
+	+ make sure which commit to move back to, using `git log --oneline --graph --decorate` or `tig` followed by `git show <commit>` --- e.g. we'll go back to a second parent of a current commit (`@@^2`) resulting from a merge
+
+	+ go back to a commit locally:
+
+		```bash
+		git reset --hard @@^2
+		```
+
+	+ you can add modifications and add them to the current commit with `git commit --amend`
+
+	+ push the `master` branch to the `gitlab` \Git_rr_linked to overwrite a remote branch:
+
+		```bash
+		git push gitlab +master
+		```
+
+		+ the commmand is safer than `git push -f` which pushes all local branches and overwrites corresponding remote branches
+
+		+ the command might fail if a remote branch is protected --- to push it you need to unprotect it first, and you'd better protect it back afterwards
+
 ## comparing branches and commits
 
 + copy a file from the `source_br` branch into the `working_br` branch:
