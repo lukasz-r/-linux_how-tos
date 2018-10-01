@@ -76,9 +76,9 @@
 
 ## sourcing files
 
-+ using `.` or `source` bultin: `. filename` or `source filename` reads commands from `filename` and executes them __in the current shell__, thus all variables and functions are inherited and the state of the current shell can be modified
++ using `.` or `source` bultin (`. filename` or `source filename`, `.` is more portable than `source`) makes shell read and execute commands from `filename` __in the current shell__, thus all variables and functions are inherited and the state of the current shell can be modified
 
-+ source the script instead of executing it if you want the script to modify the current shell state, e.g. set or change some variables, or if the scripts needs all variables and functions set in the current shell, not only the exported ones
++ source the script (`. ./script.sh`) instead of executing it (`./script.sh`) if you want the script to modify the current shell state, e.g. set or change some variables, or if the scripts needs all variables and functions set in the current shell, not only the exported ones
 
 + examples:
 
