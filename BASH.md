@@ -52,17 +52,39 @@
 
 ## running commands
 
-+ `ls /tmp`: no slash (`/`) in the command (`ls`), it's not a shell builtin, shell looks for the `ls` file in directories contained in `PATH` and executes it using the first path found
++ if the command name has no slashes, the shell tries to locate an object by that name in the following order:
 
-+ `/usr/bin/ls /tmp`: slash (`/`) in the command (`/usr/bin/ls`), shell executes the `/usr/bin/ls` file without any search through the `PATH`
+	+ a function
 
-+ `./file`: same thing as above (the `file` file is in the current directory)
+	+ a shell builtin
+
+	+ a file in directories contained in `PATH`
+
+	the search stops once a match is found
+
++ if the command name contains slashes, no search is performed
+
++ the command is executed __in the separate shell__, thus it inherits only exported variables and functions and can't modify the state of the current shell
+
++ examples:
+
+	+ `ls /tmp`: no slash (`/`) in the command (`ls`), it's not a shell builtin, shell looks for the `ls` file in directories contained in `PATH` and executes it using the first path found
+
+	+ `/usr/bin/ls /tmp`: slash (`/`) in the command (`/usr/bin/ls`), shell executes the `/usr/bin/ls` file without any search through the `PATH`
+
+	+ `./file`: same thing as above (the `file` file is in the current directory)
 
 ## sourcing files
 
-+ `. file` or `source file`: no slash (`/`) in the filename (`file`), shell looks for the `file` file in directories contained in `PATH` and executes commands from the file in the current shell using the first path found
++ using `.` or `source` bultin: `. filename` or `source filename` reads commands from `filename` and executes them __in the current shell__, thus all variables and functions are inherited and the state of the current shell can be modified
 
-+ `. ./file` or `source ./file`: slash (`/`) in the filename (`./file`), so shell executes commands from the file in the current directory in the current shell without any search through the `PATH`
++ source the script instead of executing it if you want the script to modify the current shell state, e.g. set or change some variables, or if the scripts needs all variables and functions set in the current shell, not only the exported ones
+
++ examples:
+
+	+ `. file` or `source file`: no slash (`/`) in the filename (`file`), shell looks for the `file` file in directories contained in `PATH` and executes commands from the file in the current shell using the first path found
+
+	+ `. ./file` or `source ./file`: slash (`/`) in the filename (`./file`), so shell executes commands from the file in the current directory in the current shell without any search through the `PATH`
 
 ## shell grammar
 
