@@ -40,17 +40,19 @@ info make
 
 + a recipe is run if a target doesn't exist or is older than any of the prerequisites or if any prerequisite needs to be remade as a target in its own rule
 
-\Makefile_pattern_rule<a name="Makefile_pattern_rule"></a>
++ rule types:
 
-: a rule with the `%` character in the target
+	\Makefile_pattern_rule<a name="Makefile_pattern_rule"></a>
 
-\Makefile_static_pattern_rule<a name="Makefile_static_pattern_rule"></a>
+	: a rule with the `%` character in the target
 
-: a \Makefile_pattern_rule_linked with multiple targets and prerequisite names derived from target names
+	\Makefile_static_pattern_rule<a name="Makefile_static_pattern_rule"></a>
 
-\Makefile_implicit_rule<a name="Makefile_implicit_rule"></a>
+	: a \Makefile_pattern_rule_linked with multiple targets and prerequisite names derived from target names
 
-: a pre-defined or a user-defined non-static \Makefile_pattern_rule_linked
+	\Makefile_implicit_rule<a name="Makefile_implicit_rule"></a>
+
+	: a pre-defined or a user-defined non-static \Makefile_pattern_rule_linked
 
 + \Makefile_implicit_rule_linked\plural usually make use of \Makefile_impl_vars_linked, e.g.
 
@@ -58,6 +60,8 @@ info make
 	%.o : %.c
 		$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
 	```
+
++ \Makefile ___doesn't handle___ filenames with spaces, [tricks to incorporate them make things too obscure](https://www.cmcrossroads.com/article/gnu-make-meets-file-names-spaces-them)
 
 ## variables
 
@@ -204,3 +208,20 @@ info make
 	%.eps : %.txt plots.plt
 		gnuplot -c plots.plt $< $@@ $(shell awk '/^X/ {print NR}' $<)
 	```
+
+## directory search
+
++ use files matching a pattern inside a directory as a prerequisite:
+
+	```makefile
+	txt_files := $(wildcard *.txt)
+	dat_dir := data_files
+	dat_files := $(wildcard $(dat_dir)/*.dat)
+
+	tar_archive := data.tgz
+
+	$(tar_archive) : $(txt_files) $(dat_files) Makefile
+		tar cvfz $@@ $^
+	```
+
+	note that putting a directory as a prerequisite is not a good solution since opening a file in \Vim creates a temporary file inside the directory which affects the directory \mtime
