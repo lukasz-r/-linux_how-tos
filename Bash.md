@@ -1,5 +1,5 @@
 
-# BASH
+# Bash
 
 ## \getting_help
 
