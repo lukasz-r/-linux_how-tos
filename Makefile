@@ -21,6 +21,7 @@ chapters := \
 	Vim \
 	SSH \
 	Git \
+	youtube-dl \
 	Pandoc
 
 # CSS style sheet file:
