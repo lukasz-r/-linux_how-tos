@@ -564,6 +564,7 @@ echo ${file#*.}		# name.tar.gz
 echo ${file##*.}	# gz
 echo ${file%.*}		# file.name.tar
 echo ${file%%.*}	# file
+## the operation can also be performed on arguments, e.g. reg=${1%\(*}
 
 # pattern substitution:
 ## replace a first dot (".") with a space (" ") in a string:
