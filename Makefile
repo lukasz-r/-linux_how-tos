@@ -5,6 +5,7 @@ chapters := \
 	Bash \
 	time_and_date \
 	archives \
+	file_encryption \
 	compilers_and_libraries \
 	mc \
 	Makefile \
