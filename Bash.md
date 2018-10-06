@@ -276,13 +276,19 @@ done
 for file in ./*.jpg; do # RIGHT!!!
 stat "$file"
 done
-### but quoting is necessary to avoid glob expansion when an argument with globs needs to be passed to a command:
+### but quoting argument with globs is necessary to avoid glob expansion when the argument is passed to a command:
 mmv -v "[0-9]*" "p#1#2"
 find -iname "*.pdf"
 ### if "*.pdf" above weren't quoted, the shell would expand it to the listing of all "*.pdf" files in the current directory and pass the resultant to the find command, which would most likely issue an error message; only if there weren't any "*.pdf" files in the current directory, the quoted and unquoted versions would give the same result, so quoting is necessary
-### globbing is not performed for variable assignment:
+### globbing is not performed at variable assignment, so quoting is unnecessary, thus both lines do exactly same thing:
 pattern=a*
-### assigns literal "a*" to the "pattern" variable
+pattern="a*"
+### assign literal "a*" to the "pattern" variable
+### a variable containing globs shouldn't be quoted in loops to allow a glob expansion:
+pattern=./*.pdf
+for file in $pattern; do
+	ls "$file"
+done
 ### extended globs: perform some operations on all but "*.dat" and "*.txt" files and directories: use "!(pattern-list)":
 shopt -s extglob
 for file in !(*.dat|*.txt); do
