@@ -386,6 +386,17 @@ git checkout file_mod
 
 		+ the command might fail if a remote branch is protected --- to push it you need to unprotect it first, and you'd better protect it back afterwards
 
+## joining commits
+
++ join two most recent commits into one:
+
+	```bash
+	git reset --soft @@~1
+	git commit --amend
+	```
+
+	to join $n$ most recent commits into one, use `git reset --soft @@~m`, where $m = n - 1$
+
 ## comparing branches and commits
 
 + copy a file from the `source_br` branch into the `working_br` branch:
