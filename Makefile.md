@@ -112,6 +112,14 @@ info make
 		make
 		```
 
++ print a value of a variable:
+
+	```makefile
+	geometry_dir := ../../xyz_geometries
+	geometry_files := $(wildcard $(geometry_dir)/*.xyz)
+	$(info $(geometry_files))
+	```
+
 ## grouping targets and prerequisites
 
 + avoid repeating a recipe common for several rules for which prerequisites don't follow the same pattern (e.g. the number of prerequisites is different for different rules):
