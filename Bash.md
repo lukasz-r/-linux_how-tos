@@ -160,12 +160,34 @@
 
 		outputs `21` since the `(a=2; echo -n "$a")` compound command is executed in a subshell
 
-# start and stop exporting variables:
-set -a
-CC=icc
-CXX=icpc
-FC=ifort
-set +a
++ start and stop exporting variables:
+
+	```bash
+	set -a
+	CC=icc
+	CXX=icpc
+	FC=ifort
+	set +a
+	```
+
++ put newlines and tabs in a variable:
+
+	+ directly:
+
+		```bash
+		var="{
+			line 1
+			line 2
+		}"
+		echo "$var"
+		```
+
+	+ using escape characters (preferable if the code is indented so that indentation characters don't enter the variable):
+
+		```bash
+		var=$(echo -e "{\n\tline1\n\tline2\n}")
+		echo "$var"
+		```
 
 # the lists in BASH are formed by a word splitting based on the "IFS" variable (which is usually <space><tab><newline>), e.g.
 file1 file2 "file 3"
