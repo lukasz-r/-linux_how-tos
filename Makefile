@@ -12,6 +12,7 @@ chapters := \
 	SELinux \
 	package_management \
 	job_scheduling \
+	raw_image_development \
 	image_metadata \
 	images_edition \
 	Wget \
