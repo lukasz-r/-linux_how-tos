@@ -5,6 +5,7 @@
 	> push/pull from a non-tracking branch
 	> when staging proves useful: committing changes only for some files
 	> stashing
+	> empty dirs not transferred
 ## LVM
 	> thin provisioning
 	> virtual disks, any size can be given to thinly-provisioned volumes
