@@ -1042,7 +1042,7 @@ filesystem structure
 ## src_dir=$HOME/$name/$name-git (if from Git) or src_dir=$HOME/$name/$name-src-$ver (if downloaded directly) − directory to keep the source
 ## bld_dir=$src_dir/build-$suffix − directory to build a software from source
 ## inst_dir=$HOME/$name/$name-$suffix (locally) or inst_dir=/opt/$name/$name-$suffix (globally) − directory to install binaries and libraries
-## jobs_dir=$HOME/$name/${name}_jobs − directory to keep input files
+## jobs_dir=$HOME/${name}_jobs − directory to keep input files
 ## scr_dir=/scratch/$USER/$name − scratch dirctory
 ## e.g. suffix=${branch//\//-}_${CC}-${CC_VERSION}_${FC}-${FC_VERSION}, name=nwchem, branch=release-6-8
 --------------------------------------------------------------------------------
