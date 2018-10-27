@@ -614,6 +614,35 @@ git commit -a
 git push
 ```
 
+## extract the subdirectory into its own \Git project
+
++ make the new remote repo to keep extracted history, e.g. on a `GitLab`: `git@@gitlab.com:luke_r/shplus-h.git`
+
++ extract commits affecting only the `subdir` directory, prefixing commit messages with `(split)`, into a `split` branch:
+
+	```bash
+	cd ~/main_repo
+	git subtree split -P subdir --annotate="(split)" -b split
+	```
+
+	+ note that the command must be issued at the top repo directory and the path to the `subdir` must be given relative to that directory
+
++ push the resulting `split` branch into the remote repo as the `master` branch:
+
+	```bash
+	git push git@@gitlab.com:luke_r/shplus-h.git split:master
+	```
+
+	+ to overwrite a remote branch, use `+split:master` instead
+
++ optionally, remove the extracted branch and subdirectory:
+
+	```bash
+	git branch -D split
+	git rm -rf subdir
+	git commit -m "subdir into a separate repo"
+	```
+
 # development logs
 --------------------------------------------------------------------------------
 ## branch ref points to the tip of a branch (a most recent commit)
