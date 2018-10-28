@@ -5,9 +5,13 @@
 ================================================================================
 basic concepts
 ================================================================================
-# filename − final component of a pathname:
-	pathname: /home/luke/.bash_profile
-	filename: .bash_profile
+# pathname − a string used to identify a file, containing zero or more slashes
+# absolute (full) pathname − a pathname beginning with one or more slashes
+# filename − a pathname component containing no slashes
+# each filename is thus a pathname
+# e.g.:
+### pathnames: "/home/luke/.bash_profile", "luke/.bash_profile", "./.bash_profile", "home", ".bash_profile"
+### filenames: "home", "luke", ".bash_profile"
 
 # abstraction − a technique for arranging complexity of computer systems so that the user works with simpler concepts without going into unnecessary details of the hardware structure
 # the essence of abstraction is preserving information that is relevant in a given context, and forgetting information that is irrelevant in that context
@@ -171,7 +175,7 @@ fg %2
 %2
 --------------------------------------------------------------------------------
 
-# print the filename of the CTTY:
+# print the pathname of the CTTY:
 tty
 
 # show jobs' PIDs, PGIDs, SIDs and CTTYs ("?" in the TTY field means job has no CTTY):
@@ -906,9 +910,9 @@ files, directories, inodes and links
 # inode number for "/" (a root dir) is traditionally 2
 # on my laptop, "/", "/home", "/opt" and "/scratch" all have inode numbers equal to 2, which is permitted since they are different filesystems
 
-# a (filename, inode number) directory entry is unique only within that directory [there can be multiple identical (filename, inode number) pairs in different directories], but it can be resolved into system-wide unique (pathname, inode number) pair through a path resolution process
-# (pathname, inode number) pairs are system-wide unique since pathnames are system-wide unique (there are no identical pathnames within a filesystem, and of course pathnames on different filesystems always differ), though inode numbers are not system-wide unique
-# an inode can have several filenames (links), but each file's pathname points to one inode, thus there is a function mapping pathnames into inode numbers
+# a (filename, inode number) directory entry is unique only within that directory [there can be multiple identical (filename, inode number) pairs in different directories], but it can be resolved into system-wide unique (absolute pathname, inode number) pair through a path resolution process
+# (absolute pathname, inode number) pairs are system-wide unique since absolute pathnames are system-wide unique (there are no identical absolute pathnames within a filesystem, and of course absolute pathnames on different filesystems always differ), though inode numbers are not system-wide unique
+# an inode can have several filenames (links), but each file's absolute pathname points to one inode, thus there is a function mapping absolute pathnames into inode numbers
 
 # list full directory contents (filenames and inode numbers):
 ls -il /scratch
@@ -986,7 +990,7 @@ readlink -f a.txt
 # or:
 realpath a.txt
 
-# extract a filename from a pathname:
+# extract a final filename from a pathname:
 basename ./Desktop/ # yields "Desktop"
 
 # find duplicate files in a set of directories:
@@ -2153,7 +2157,7 @@ rsync -ahPvz --filter=". $HOME/rsync_filter" "$HOME" /backup
 --------------------------------------------------------------------------------
 ## rsync builds a list of files to be transferred in a similar way "find directory | sort" lists files, but for each file a pattern list is checked until the first matching pattern is found (if it's an exclude pattern, file is skipped, and vice versa, but if no pattern matches a file, it's not skipped), thus if the directory is excluded, it won't be descended into
 
-## if the pattern contains "/" (not counting the trailing "/") or "**", it's matched against the pathname, otherwise it's matched against its final component (filename)
+## if the pattern contains "/" (not counting the trailing "/") or "**", it's matched against the pathname, otherwise it's matched against the final filename
 
 ## the filter rules:
 + luke/Pictures/
