@@ -3,9 +3,11 @@
 
 ## \getting_help
 
-	```bash
-	info bash
-	```
+```bash
+info bash
+man 7 glob
+man 7 regex
+```
 
 ## case of variable names
 
