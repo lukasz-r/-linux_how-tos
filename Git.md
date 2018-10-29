@@ -145,7 +145,7 @@ git submodule update --init --recursive
 
 	+ untracked, since it:
 
-		+ is ignored due to the rules in `.gitignore` (note that the rules don't affect already tracked files)
+		+ is ignored due to the rules in `.gitignore` (see [here](#ignoring-files)) (note that the rules don't affect already tracked files)
 
 		+ hasn't been staged and the last commit doesn't include this file (e.g. it's a newly created file)
 
@@ -187,12 +187,54 @@ git diff Makefile
 
 ## ignoring files
 
-+ files to be ignored by \Git are specified in the `.gitignore` file
++ files to be ignored by \Git are specified in the `.gitignore` files
 
-+ ignore a symbolic link to a directory: don't put `/` (trailing slash) after its name:
-```bash
-Books
-```
++ to decide whether a file in a directory is ignored, \Git applies first `.gitignore` file containing a matching pattern found starting from the directory up
+
++ a matching `.gitignore` file's directory becomes the top directory for pattern matching
+
++ in most cases there's only one `.gitignore` file, located in the top repo directory
+
++ `.gitignore` file pattern matching rules (the matching pathnames are given relative to the top directory):
+
+	+ \Git doesn't track empty directories
+
+	+ wildcards don't match slashes
+
+	+ a pattern with no slashes or with only a trailing slash matches files recursively in a top directory:
+
+		+ e.g. `*.o` matches `obj.o`, `objects/a.o` and `dir.o` directory
+
+	+ a pattern with only a trailing slash matches directories recursively in a top directory:
+
+		+ e.g. `dir/` matches `dir` and `foo/dir` directories
+
+	+ a pattern with no trailing slash matches a file or a symbolic link recursively in a top directory:
+
+		+ e.g. `Books` matches `Books` file (which can be a directory), and `dir/Books` symbolic link
+
+	+ a pattern with a leading slash and a pattern with inside slashes is matched relative to the top directory:
+
+		+ e.g. `/*.c` matches only `*.c` files in the top directory
+
+		+ e.g. `dir1/dir2` and `/dir1/dir2` match only `dir1/dir2`, but not `dir0/dir1/dir2`
+
+	+ a pattern with `**/` matches specific hierarchy recursively in the top directory:
+
+		+ e.g. `**/dir1/dir2` matches `dir1/dir2` and `dir0/dir1/dir2`
+
+	+ a pattern with `/**/` matches zero or more directories:
+
+		+ e.g. `dir1/**/dir2` matches `dir1/dir2` and `dir1/a/dir2` and `dir1/a/b/dir2`
+
+	+ use a negated pattern to include a file excluded by a previous pattern:
+
+		```bash
+		*.html
+		!foo.html
+		```
+
+		+ the directory containing a file cannot be excluded by a pattern
 
 ## adding files
 
