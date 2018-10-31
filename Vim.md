@@ -393,6 +393,8 @@ such a command might be then invoked with: `:SearchMess`
 
 + insert an external file contents into the current \Vim_buffer_linked: `:r file.txt`
 
++ add line numbers to non-empty \Vim_selection{selected lines}: `:!nl`
+
 ## encoding
 
 + check the file encoding in vi: `:set fenc`
