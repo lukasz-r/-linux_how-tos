@@ -2,6 +2,7 @@
 
 # chapter titles in the order they enter the documentation
 chapters := \
+	globs_and_regexes \
 	Bash \
 	time_and_date \
 	archives \
