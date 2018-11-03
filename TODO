@@ -27,5 +27,6 @@
 ## ffmpeg: ffmpeg -i input.mkv -vf "scale=iw/2:ih/2" half_the_frame_size.mkv to rescale (use "scale=1200:-1" to keep aspcet ratio)
 ## ffmpeg -i "Egzorcysta - 202 - Kurierzy.mkv" -b:v 800k -vf "scale=1200:-1" out202-ffmpeg.mkv
 ## ffmpeg -i "Egzorcysta - 202 - Kurierzy.mkv" -b:v 800k -vf "scale=1200:-2" out202-ffmpeg.mkv if height not divisible by 2
+## ffmpeg: concat demuxer
 
 ## BASH: mapfile built-in: mapfile -t -O 1 ep_titles < $ep_list_file
