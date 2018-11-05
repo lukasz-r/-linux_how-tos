@@ -348,17 +348,17 @@ git reset HEAD file_mod # unstages a file, "file_mod" is now modified
 git checkout file_mod
 ```
 
-+ undo all changes in the tracked files in the working tree and in the index (e.g. introduced with `git pull` which led to merge conflicts), reverting them to the last commit:
++ undo all changes in the \Git_wt_linked and \Git_sa_linked (e.g. introduced with `git pull` which led to merge conflicts), moving all back to the most recent commit state:
 
 	```bash
-	git reset --hard HEAD
+	git reset --hard
 	```
 
 ## discarding commits
 
 + note that:
 
-	+ `git reset <commit>` resets things to the `<commit>` state
+	+ `git reset <commit>` resets the current `HEAD` to the `<commit>` state
 
 	+ `git revert <commit>` undoes the `<commit>`
 
@@ -370,27 +370,46 @@ git checkout file_mod
 	git commit --amend
 	```
 
-	the command can also be used to undo a most recent commit after adding modifications that should have gone in that commit: in the end you end up with a single commit
+	the command can also be used after adding modifications that should have been added before committing, but were forgotten, to modify a most recent commit
 
-+ undo a most recent commit without changing the files (most recently committed changes go to where they were before the last commit: \Git_wt_linked or \Git_sa_linked):
++ undo a most recent commit without changing the files in the \Git_wt_linked, __moving__ most recently committed changes to the \Git_sa_linked (thus the changes become marked for a commit):
 
 	```bash
-	git reset --soft HEAD^
+	git reset --soft @@^
 	```
 
-	after adding modifications you can start with the discarded commit message:
+	now you can optionally add more modifications and start with the discarded commit message:
 
 	```bash
 	git commit -c ORIG_HEAD
 	```
 
-	this has the same effect as running `git commit --amend` after adding modifications
+	this has the same effect as running `git commit --amend` after optionally adding modifications
 
-+ undo a most recent commit and reset the files to the parent commit state (all modifications since the parent commit are lost):
++ undo a most recent commit without changing the files in the \Git_wt_linked, __not moving__ most recently committed changes to the \Git_sa_linked (thus the changes become not marked for a commit):
 
 	```bash
-	git reset --hard HEAD^
+	git reset @@^
 	```
+
+	or:
+
+	```bash
+	git reset --mixed @@^
+	```
+
++ undo $n$ most recent commits without moving changes introduced by them to the \Git_sa_linked, leaving \Git_wt_linked intact:
+
+	```bash
+	git reset @@~n
+	```
+
++ undo a most recent commit, reset the \Git_wt_linked to the parent commit state, and clear the \Git_sa_linked:
+
+	```bash
+	git reset --hard @@^
+	```
+	+ __all modifications since the parent commit are lost!__
 
 	+ an undone commit can still be retrieved for some $90$ days using reflogs
 
