@@ -406,6 +406,11 @@ done
 --------------------------------------------------------------------------------
 ## user function definitions can go anywhere, e.g. in the beginning of the script
 
+## "print" takes a list of strings, separated by commas, and prints them separated with spaces:
+{print $1, $2}
+## putting list of strings separated by spaces instead of commas concatenates them into one string:
+{print $1 $2}
+
 ## executable awk scripts: use
 #!/usr/bin/awk -E
 ## in the first line
