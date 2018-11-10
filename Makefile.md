@@ -120,6 +120,39 @@ info make
 	$(info $(geometry_files))
 	```
 
+## looping
+
++ loop over files with identical rules: use \Makefile_pattern_rule_linked\plural to define your own \Makefile_implicit_rule_linked\plural, e.g. create `*.tex` files from corresponding `*.awk` and `*.dat` files:
+
+	```makefile
+	targets := $(patsubst %.dat,%.tex,$(wildcard *.dat))
+
+	all : $(targets)
+
+	%.tex : %.awk %.dat
+		./$< $*.dat > $@@
+
+	.PHONY : clean
+
+	clean :
+		rm -f ./*{.aux,log,tex}
+	```
+
+	note that we first list `*.dat` files and substitute `*.dat` with `*.tex` to obtain a list of targets since there might not be any `*.tex` files (`make clean` removes them)
+
++ loop over files which can be concatenated into a big file:
+
+	```makefile
+	defs_md := defs.md
+	defs_parser := parse_defs
+	defs_files := $(wildcard *.defs)
+	defs_collect := defs_all.md
+
+	$(defs_collect) : $(defs_md) $(defs_parser) $(defs_files) Makefile
+		awk '!/^#/' $< > $@@
+		cat $(defs_files) | ./$(defs_parser) >> $@@
+	```
+
 ## grouping targets and prerequisites
 
 + avoid repeating a recipe common for several rules for which prerequisites don't follow the same pattern (e.g. the number of prerequisites is different for different rules):
@@ -140,24 +173,6 @@ info make
 	clean :
 		rm -f ./*.x
 	```
-
-+ avoid repeating a recipe common for several rules for which prerequisites follow the same pattern: use \Makefile_pattern_rule_linked\plural to define your own \Makefile_implicit_rule_linked\plural, e.g. create `*.tex` files from corresponding `*.awk` and `*.dat` files:
-
-	```makefile
-	targets := $(patsubst %.dat,%.tex,$(wildcard *.dat))
-
-	all : $(targets)
-
-	%.tex : %.awk %.dat
-		./$< $*.dat > $@@
-
-	.PHONY : clean
-
-	clean :
-		rm -f ./*{.aux,log,tex}
-	```
-
-	note that we have to first list `*.dat` files and substitute `*.dat` with `*.tex` to obtain a list of targets since there might not be any `*.tex` files (`make clean` removes them)
 
 + use \Makefile_static_pattern_rule_linked\plural to override \Makefile_implicit_rule_linked\plural for some files, e.g. for `big.dat` and `little.dat` which are made with `special_big.awk` and `special_little.awk` rather than with `big.awk` and `little.awk` files:
 
