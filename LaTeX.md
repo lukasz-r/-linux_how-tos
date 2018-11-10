@@ -69,65 +69,68 @@ clean :
 	left \hfill right
 	```
 
-# insert references from another file:
--------------------------------------------------------
-(...)
-\usepackage{xr-hyper}
-\usepackage[colorlinks = true, linkcolor = blue, citecolor = blue, urlcolor = blue, bookmarks = true]{hyperref}
-\externaldocument[manuscript-]{main_file}
-(...)
-See Fig.~\ref{manuscript-fig_label_in_main_file} for details.
-(...)
--------------------------------------------------------
++ insert references from another file:
 
-# switch between languages (main language is given as the last option):
--------------------------------------------------------
-\documentclass{article}
+	```bash
+	(...)
+	\usepackage{xr-hyper}
+	\usepackage[colorlinks = true, linkcolor = blue, citecolor = blue, urlcolor = blue, bookmarks = true]{hyperref}
+	\externaldocument[manuscript-]{main_file}
+	(...)
+	See Fig.~\ref{manuscript-fig_label_in_main_file} for details.
+	(...)
+	```
 
-\usepackage[utf8]{inputenc}
-\usepackage[german, polish]{babel}
++ switch between languages (main language is given as the last option):
 
-\begin{document}
+	```latex
+	\documentclass{article}
 
-	\begin{otherlanguage}{german}
-		Deutsch
-	\end{otherlanguage}
+	\usepackage[utf8]{inputenc}
+	\usepackage[german, polish]{babel}
 
-		Polski
+	\begin{document}
 
-	\foreignlanguage{german}{Deutsch}
+		\begin{otherlanguage}{german}
+			Deutsch
+		\end{otherlanguage}
 
-\end{document}
--------------------------------------------------------
+			Polski
 
-# a letter in German with date in a German format, with hyphenation turned off and a font size of 20 pt:
--------------------------------------------------------
-\documentclass[20pt]{extletter}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage[german]{babel}
-\usepackage[useregional]{datetime2}
+		\foreignlanguage{german}{Deutsch}
 
-\hyphenpenalty = 10000
+	\end{document}
+	```
 
-\address{Essen,}
-\date{den~\DTMdisplaydate{2017}{08}{05}{}}
-\signature{Lük Anonymus}
++ a letter in German with date in a German format, with hyphenation turned off and a font size of 20 pt:
 
-\begin{document}
+	```latex
+	\documentclass[20pt]{extletter}
+	\usepackage[T1]{fontenc}
+	\usepackage[utf8]{inputenc}
+	\usepackage[german]{babel}
+	\usepackage[useregional]{datetime2}
 
-\begin{letter}{Frau Müller \\ Düsseldorf}
+	\hyphenpenalty = 10000
 
-\opening{Sehr geehrte Frau Müller,}
+	\address{Essen,}
+	\date{den~\DTMdisplaydate{2017}{08}{05}{}}
+	\signature{Lük Anonymus}
 
-Halo, etc.
+	\begin{document}
 
-\closing{MfG,}
+	\begin{letter}{Frau Müller \\ Düsseldorf}
 
-\end{letter}
+	\opening{Sehr geehrte Frau Müller,}
 
-\end{document}
--------------------------------------------------------
+	Halo, etc.
+
+	\closing{MfG,}
+
+	\end{letter}
+
+	\end{document}
+	```
 
 # avoid "Command `\lll` already defined" error with "babel" and "amssymb" packages:
 \let\lll\undefined
@@ -250,3 +253,43 @@ LaTeX: presentations (Beamer)
 \end{frame}
 (...)
 -------------------------------------------------------
+
+## posters
+
++ a poster with multiline title, with figures side by side with captions without labels:
+
+	```latex
+	\documentclass{tikzposter}
+
+	\usetheme{Simple}
+	\usepackage[utf8]{inputenc}
+	\usepackage[T1]{fontenc}
+	\usepackage{subcaption}
+	\AtBeginEnvironment{tikzfigure}{\captionsetup{type = figure}}
+	\captionsetup[subfigure]{labelformat = empty}
+
+	\colorlet{backgroundcolor}{white}
+	\colorlet{framecolor}{blue}
+
+	\newcommand{\pheight}{8cm}
+
+	\title{\parbox{\linewidth}{\centering Line 1 \\ Line 2}}
+
+	\begin{document}
+		\maketitle
+		\begin{columns}
+			\column{0.5}
+			\block{Some nice title}{
+				\centering
+				\begin{tikzfigure}
+					\subcaptionbox{Left figure}{\includegraphics[height = \pheight]{img1}}
+					\subcaptionbox{Right figure}{\includegraphics[height = \pheight]{img2}}
+				\end{tikzfigure}
+			}
+			\column{0.5}
+			\block{Another nice title}{
+				Some text.
+			}
+		\end{columns}
+	\end{document}
+	```
