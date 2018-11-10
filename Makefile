@@ -29,24 +29,34 @@ chapters := \
 	Pandoc
 
 # CSS style sheet file:
-CSS_file := style.css
+css_file := style.css
 
-# Markdown files for all chapters
-md_files := defs.md $(chapters:=.md)
+# Markdown definitions file, definitions parser, definition files, and file to collect all definitions
+defs_md := defs.md
+defs_parser := parse_defs
+defs_files := $(wildcard *.defs)
+defs_collect := defs_all.md
 
-# target HTML file
-target := index.html
+# chapters Markdown files
+md_files := $(chapters:=.md)
 
 # Markdown file collecting all chapters
 md_main_file := How-Tos.md
 
+# target HTML file
+target := index.html
+
 all : $(target)
 
-$(md_main_file) : $(md_files) Makefile
-	cat $(md_files) | gpp -T > $@
+$(defs_collect) : $(defs_md) $(defs_parser) $(defs_files) Makefile
+	awk '!/^#/' $< > $@
+	cat $(defs_files) | ./$(defs_parser) >> $@
 
-$(target) : $(md_main_file) $(CSS_file)
-	pandoc -sSp --toc --toc-depth=4 -c $(CSS_file) \
+$(md_main_file) : $(defs_collect) $(md_files)
+	cat $(defs_collect) $(md_files) | gpp -T > $@
+
+$(target) : $(md_main_file) $(css_file)
+	pandoc -sSp --toc --toc-depth=4 -c $(css_file) \
 		-f markdown+auto_identifiers+blank_before_header+backtick_code_blocks+fenced_code_attributes+fancy_lists+example_lists+abbreviations+tex_math_dollars \
 		--highlight-style=espresso --mathjax \
 		-o $@ $<
@@ -57,4 +67,4 @@ view : $(target)
 .PHONY : clean
 
 clean :
-	rm -f $(md_main_file) $(target)
+	rm -f $(defs_collect) $(md_main_file) $(target)
