@@ -1,0 +1,19 @@
+#!/usr/bin/awk -E
+
+# parse definitions from defs file into Markdown format
+# defs file format:
+# def name	first occurence name	[later occurence name]
+
+BEGIN {
+	FS = "\t"
+}
+
+!/^#/ {
+	name_first = "__" $2 "__"
+	if (NF > 2)
+		name_later = "__" $3 "__"
+	else
+		name_later = name_first
+	print "\\define{" $1 "_anchor}{" name_first "<a name=\"" $1 "\"></a>}"
+	print "\\define{" $1 "_link}{[" name_later "](#" $1 ")}"
+	}
