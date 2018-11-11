@@ -665,15 +665,82 @@ git add .
 + but make sure your `.gitignore` properly takes care of files generated through the compilation process so that you don't stage those files as well with this command
 
 + stage an ignored file:
-```bash
-git add -f ignored_file
-```
+
+	```bash
+	git add -f ignored_file
+	```
 
 + commit your changes and send them to a remote repo:
-```bash
-git commit -a
-git push
-```
+
+	```bash
+	git commit -a
+	git push
+	```
+
+## tags
+
++ tags point to specific points in history and are useful for:
+
+	+ release points
+
+	+ marking commits for easy later access, e.g. state of a book at the moment it was physically printed
+
++ list tags:
+
+	```bash
+	git tag
+	```
+
++ list tags matching a pattern:
+
+	```bash
+	git tag -l "v1.2*"
+	```
+
+\Git_lightweight_tag_anchor
+: a pointer to a specific commit
+
+\Git_annotated_tag_anchor
+: a pointer to a specific commit with information on who and when created it, tag message, and optional signature
+
++ create a \Git_lightweight_tag_link to a current commit:
+
+	```bash
+	git tag v1.2beta
+	```
+
++ create an \Git_annotated_tag_link to a current commit:
+
+	```bash
+	git tag -a v1.2 -m "version 1.2 ready"
+	```
+
++ share tags via a remote repo:
+
+	```bash
+	git push --tags
+	```
+
+	tags aren't pushed with `git push`
+
++ delete a tag locally and remotely:
+
+	```bash
+	git tag -d v1.2
+	git push origin :refs/tags/v1.2
+	```
+
++ checking out a tag:
+
+	```bash
+	git checkout v1.2
+	```
+
+	leads to a \Git_detached_HEAD_link state, thus to start making changes from a tag it's better to create a branch:
+
+	```bash
+	git checkout -b v1.2.x v1.2
+	```
 
 ## extract the subdirectory into its own \Git project
 
