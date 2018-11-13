@@ -2,6 +2,8 @@
 
 # chapter titles in the order they enter the documentation
 chapters := \
+	basic_concepts \
+	Octave \
 	LaTeX \
 	globs_and_regexes \
 	Bash \
@@ -32,7 +34,7 @@ chapters := \
 css_file := style.css
 
 # Markdown definitions file, definitions parser, definition files, and file to collect all definitions
-defs_md := defs.md
+defs_md := non-parsed_defs.md
 defs_parser := parse_defs
 defs_files := $(wildcard *.defs)
 defs_collect := defs_all.md

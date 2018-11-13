@@ -3,25 +3,6 @@
 ================================================================================
 
 ================================================================================
-basic concepts
-================================================================================
-# pathname − a string used to identify a file, containing zero or more slashes
-# absolute (full) pathname − a pathname beginning with one or more slashes
-# filename − a pathname component containing no slashes
-# each filename is thus a pathname
-# e.g.:
-### pathnames: "/home/luke/.bash_profile", "luke/.bash_profile", "./.bash_profile", "home", ".bash_profile"
-### filenames: "home", "luke", ".bash_profile"
-
-# abstraction − a technique for arranging complexity of computer systems so that the user works with simpler concepts without going into unnecessary details of the hardware structure
-# the essence of abstraction is preserving information that is relevant in a given context, and forgetting information that is irrelevant in that context
-
-# B = byte, b = bit
-# 1 B = 8 b
-# 1 kB = 8 kb = 10³ B (kilobyte)
-# 1 KiB = 8 Kib = 2¹⁰ B = 1024 B (kibibyte)
-
-================================================================================
 user administration
 ================================================================================
 --------------------------------------------------------------------------------
@@ -1758,13 +1739,6 @@ hostnamectl set-hostname mcb
 
 # list available wireless frequencies:
 iwlist freq
-
-================================================================================
-octave
-================================================================================
-# physical constants:
-pkg load miscellaneous
-eps0 = physical_constant("electric constant")
 
 ================================================================================
 remind
