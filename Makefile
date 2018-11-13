@@ -28,7 +28,7 @@ chapters := \
 	youtube-dl \
 	Pandoc
 
-# CSS style sheet file:
+# CSS style sheet file
 css_file := style.css
 
 # Markdown definitions file, definitions parser, definition files, and file to collect all definitions
@@ -53,7 +53,7 @@ $(defs_collect) : $(defs_md) $(defs_parser) $(defs_files) Makefile
 	cat $(defs_files) | ./$(defs_parser) >> $@
 
 $(md_main_file) : $(defs_collect) $(md_files)
-	cat $(defs_collect) $(md_files) | gpp -T > $@
+	cat $^ | gpp -T > $@
 
 $(target) : $(md_main_file) $(css_file)
 	pandoc -sSp --toc --toc-depth=4 -c $(css_file) \
