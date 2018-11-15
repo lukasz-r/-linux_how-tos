@@ -4,6 +4,7 @@
 chapters := \
 	basic_concepts \
 	Octave \
+	gnuplot \
 	LaTeX \
 	globs_and_regexes \
 	Bash \
