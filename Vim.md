@@ -231,6 +231,8 @@
 	`\=`, `\?` | 0 or 1 of the preceding item
 	`\+`       | 1 or more of the preceding item
 	`\{n,m}`   | $n$ to $m$ of the preceding item
+	`\<`       | beginning of a word
+	`\>`       | end of a word
 
 	: __examples of characters in the \Vim_search_pattern_linked with the `magic` option__
 
@@ -251,6 +253,8 @@
 
 + turn off the highlighted search results: `:nohls`
 
++ search for the __whole__ `the` word (thus match only `the`, not `then`, `other`, etc.): `/\<the\>`
+
 \define{Vim_spat}{  \|\s$\|\n\n\n}
 
 + search for multiple patterns, e.g. double spaces, whitespace characters at the end of a line, and double line breaks: `/\Vim_spat`
@@ -262,6 +266,8 @@
 com SearchMess /\Vim_spat
 ```
 such a command might be then invoked with: `:SearchMess`
+
++ search for the __whole__ `KTM1` and `TRK1` words: `/\<\(KTM1\|TRK1\)\>`
 
 ### replacement examples
 
@@ -285,6 +291,8 @@ such a command might be then invoked with: `:SearchMess`
 	+ we repeat the search adding the groups via `\(` and `\)` around `_l` and `[|>]`: `\Vim_spat`
 
 	+ we use `\1`, `\2`, etc. to refer to strings matched inside `\(` and `\)`: `%s//\Vim_rpat/g`
+
++ replace the __whole__ `KTM1` and `TRK1` words with `\KTM1_link` and `\TRK1_link`, respectively: `:%s/\(\<\(KTM1\|TRK1\)\>\)/\\\1_link/g`
 
 + the `E488: Trailing characters` error is usually caused when the unescaped separator (e.g. `\`) is used in the pattern --- in that case either escape the separator (use `\\`), or use a different separator (e.g. `#`: `:s#/>$#}#g`)
 
