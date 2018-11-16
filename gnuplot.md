@@ -26,6 +26,53 @@
 		"{/Symbol-Oblique l}_2".info."{/Symbol-Oblique l}_1")
 	```
 
++ join data points with smooth lines, scale the $x$ axis to label it with smaller numbers, iterate through file columns, and use macros to avoid repetition:
+
+	+ `data.dat`:
+
+		```
+		10000 3.09984 0.0133141 1.01911 0.0530381 0.0155319
+		20000 12.3519 0.0410307 4.11062 0.0550196 0.0327131
+		40000 51.7149 0.126686 17.4544 0.0590475 0.0584791
+		80000 230.961 0.527484 78.6465 0.0965059 0.164902
+		160000 941.585 2.01676 293.456 0.0913962 0.233645
+		```
+
+	+ `plot.plt`:
+
+		```octave
+		#!/usr/bin/gnuplot
+
+		set term pdf enhanced
+
+		cstyle = "lw 1.5 pt 7 ps 0.6"
+		set style line 2 lc rgb "red" @@cstyle
+		set style line 3 lc rgb "blue" @@cstyle
+		set style line 4 lc rgb "green" @@cstyle
+		set style line 5 lc rgb "magenta" @@cstyle
+		set style line 6 lc rgb "orange" @@cstyle
+
+		unit_power_x = 4
+		unit_x = 10**unit_power_x
+		set xlabel "{/:Italic n}_0/10^{" . unit_power_x . "}"
+		set ylabel "{/:Italic t}/s"
+		set logscale y
+		set key top left spacing 0.8 font ", 10"
+		titles = "'bubble sort' 'insertion sort' 'selection sort' 'counting sort' 'radix sort'"
+		ncols = words(titles)
+		col_first = 2
+		col_last = col_first + ncols - 1
+
+		set output "plot.pdf"
+		iter = "for [icol = col_first:col_last]"
+		plot \
+			@@iter "data.dat" u ($1 / unit_x):icol w p ls icol notitle, \
+			@@iter "data.dat" u ($1 / unit_x):icol smooth csplines w l ls icol notitle, \
+			@@iter 1 / 0 w lp ls icol t word(titles, icol - 1)
+		```
+
+	+ note that `for` must be used for each `plot-element` as iteration is a part of a `plot-element`
+
 + scale plot sizes generated with `multiplot layout` (default size for eps is $5 \times 3.5~\mathrm{in}$):
 
 	```octave
@@ -182,10 +229,8 @@
 
 			$b_w$ --- box width
 
-	+ the $y$ coordinate is taken from a respective column
+		+ the $y$ coordinate is taken from a respective column
 
-	+ the label is the $y$ coordinate printed with the `%.1f` format
+		+ the label is the $y$ coordinate printed with the `%.1f` format
 
-+ note that for functions to operate on column values, the full `column(col)` syntax must be used (a simple `col` is just a column number)
-
-+ note that `for` must be used for each `plot-element` as iteration is a part of a `plot-element`
+	+ note that for functions to operate on column values, the full `column(col)` syntax must be used (a simple `col` is just a column number)
