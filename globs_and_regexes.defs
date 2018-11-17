@@ -1,0 +1,13 @@
+globs_and_regexes	globs and regexes
+
+character_class	character class
+equivalence_class	equivalence class
+bracket_expression	bracket expression
+
+glob	glob (wildcard pattern)	glob
+globbing	globbing
+
+regex	regex (regular expression)	regex
+globs_and_regexes_branch	branch
+globs_and_regexes_piece	piece
+globs_and_regexes_atom	atom

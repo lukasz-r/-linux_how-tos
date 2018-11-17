@@ -1,30 +1,72 @@
 
-# globs and regexes
+# \globs_and_regexes_anchor
 
-+ \getting_help
+## \getting_help
 
 ```bash
 man 7 glob
 man 7 regex
+man wctype
+man isalpha
 ```
 
-## main differences between globs and regexes
+## features common for \glob_link\plural{s} and \regex_link\plural{es}
 
-glob (wildcard pattern)
-: a string with one of the characters `?`, `*` or `[`
+\character_class_anchor
+
+: set of characters sharing a common property
+
+	class                    | characters
+	-------------------------|-----------
+	`[:alnum:]`              | alphanumeric characters
+	`[:alpha:]`              | alphabetic characters
+	`[:digit:]`              | digits
+	`[:blank:]`              | a space or a tab
+	`[:space:]`              | \whitespace_link
+	`[:upper:]`              | uppercase letters
+	`[:lower:]`              | lowercase letters
+
+	: \character_class_link\plural{es}
+
+\equivalence_class_anchor
+
+: e.g. `[=a=]`: all characters typographically equivalent to `a`, e.g. `a`, `ą`, `a`, `à`, `á`, `â`, `ä`, `å`
+
+\bracket_expression_anchor
+
+: a list of characters enclosed inside `[]`
+
+	+ a \bracket_expression_link matches a single character from the list of characters
+
+	+ the list can be given explicitly, as a range, as a \character_class_link, as an \equivalence_class_link, or as a compliment (negated list)
+
+	expression               | match
+	-------------------------|------
+	`[abc]`                  | `a`, `b`, or `c`
+	`[0-9]`, `[[:digit:]]`   | any digit
+	`[^0-9jk]`               | any non-digit non-`j` non-`k` character
+	`[[=e=]]`                | e.g. `e`, `ę`, `è`, `é`, `ê`, `ë`
+
+	: \bracket_expression_link\plural{s}
+
+## main differences between \glob_link\plural{s} and \regex_link\plural{es}
+
+\glob_anchor
+
+: a string with at least one `?`, `*`, or `[` character
 
 	pattern | match
-	--------|-------------------------------------------
+	--------|------
 	`*`     | any string __(including the null string)__
 	`?`     | any single character
-	`[...]` | any character inside
+	`[...]` | see \bracket_expression_link
 
-	: globs
+	: \glob_link\plural{s}
 
-+ `shopt -s extglob` turns on additional pattern matching operators
+	+ `shopt -s extglob` turns on additional pattern matching operators
 
 	pattern  | match
-	---------|---------------------
+	---------|------
 	`(a|b)`  | a or b
 	`*(abc)` | zero or more `abc`'s
 	`+(abc)` | one or more `abc`'s
@@ -32,57 +74,61 @@ glob (wildcard pattern)
 	`@(abc)` | exactly one `abc`
 	`!(abc)` | anything except `abc`
 
-	: extended globs
+	: extended \glob_link\plural{s}
 
-globbing
-: expansion of globs into the list of pathnames matching the pattern
+\globbing_anchor
 
-+ globs are meant to match filenames
+: expansion of \glob_link\plural{s} into the list of \pathname_link\plural{s} matching the pattern
 
-+ globbing is applied separately on each pathname component (the components are separated with `/`)
++ \glob_link\plural{s} are meant to match \filename_link\plural{s}
 
-+ globs must span the whole filename to possibly match it, e.g. `*.txt` matches `file.txt`
++ \globbing_link is applied separately on each \pathname_link component (the components are separated with `/`)
 
-regex (regular expression)
-: one branch or multiple branches separated by `|`
++ \glob_link\plural{s} must span the whole \filename_link to possibly match it, e.g. `*.txt` matches `file.txt`
 
-+ regex matches anything that matches one of its branches
+\regex_anchor
 
-branch
-: one or multiple concatenated pieces
+: one or more \globs_and_regexes_branch_link\plural{es} separated by `|`
 
-+ branch matches all strings that match its pieces, in the order of pieces
+	+ \regex_link matches anything that matches one of its branches
 
-piece
-: an atom followed by `*`, `+`, `?`, or a bound (`{...}`)
+\globs_and_regexes_branch_anchor
+
+: one or multiple concatenated (coming one after another) \globs_and_regexes_piece_link\plural{s}
+
+	+ \globs_and_regexes_branch_link matches all strings that match its \globs_and_regexes_piece_link\plural{s}, in the order of \globs_and_regexes_piece_link\plural{s}
+
+\globs_and_regexes_piece_anchor
+
+: an \globs_and_regexes_atom_link followed by `*`, `+`, `?`, or `{...}` (a bound)
 
 	pattern          | match
-	-----------------|-------------------
+	-----------------|------
 	`atom*`          | zero or more atoms
 	`atom+`          | one or more atoms
 	`atom?`          | zero or one atom
 	`atom{2,}`, etc. | two or more atoms, etc.
 
-	: pieces
+	: \globs_and_regexes_piece_link\plural{s}
 
 	pattern             | match
 	--------------------|------
-	`(regex)`           | regex itself
+	`(regex)`           | \regex_link itself
 	`()`                | __null string__
-	bracket expression  | any character in a list
+	`[...]`             | see \bracket_expression_link
 	`.`                 | any single character
 	`^`                 | the null string at the beginning of a line
 	`$`                 | the null string at the end of a line
 	`\^`, `\+`, etc.    | `^`, `+`, etc.
 	`a`, `b`, `1`, etc. | `a`, `b`, `1`, etc. (literal match)
 
-	: atoms
+	: \globs_and_regexes_atom_anchor\plural{s}
 
-+ regexes match portions of text
++ \regex_link\plural{es} match portions of text
 
-+ regexes are used to search for a certain pattern and are not meant to span the whole text, e.g. `ab` matches `abc`, `abnormal`, `slab`
++ \regex_link\plural{es} are used to search for a certain pattern and are not meant to span the whole text, e.g. `ab` matches `abc`, `abnormal`, `slab`
 
-	+ however, some commands use regexes to search for files and in that case they must span the whole pathname to possibly match it, e.g. `find -regex ".*bar."` matches `./fubar3`, but `find -regex bar` doesn't
+	+ however, some commands use \regex_link\plural{es} to search for files and in that case they must span the whole pathname to possibly match it, e.g. `find -regex ".*bar."` matches `./fubar3`, but `find -regex bar` doesn't
 
 ## globs:
 ### "[0-9]*" matches filenames beginning with a number
