@@ -4,20 +4,24 @@
 ## files
 
 \file_anchor
+
 : in \Linux, everything is a \file_link
 
 \pathname_anchor
+
 : a string used to identify a file, containing zero or more slashes
 
 \absolute_pathname_anchor
+
 : a \pathname_link beginning with one or more slashes
 
 \filename_anchor
+
 : a \pathname_link component containing no slashes
 
 + each \filename_link is thus a \pathname_link
 
-+ examples of \pathname_link\plural:
++ \pathname_link examples:
 
 	+ `/home/luke/.bash_profile`
 
@@ -29,7 +33,7 @@
 
 	+ `.bash_profile`
 
-+ examples of \filename_link\plural:
++ \filename_link examples:
 
 	+ `home`
 
@@ -37,12 +41,30 @@
 
 	+ `.bash_profile`
 
+## characters
+
 \CLI_anchor
+
 : too obvious to define
+
+\whitespace_anchor
+
+: one or more characters that represent horizontal or vertical space
+
+	e.g. a space, a horizontal or vertical, tab, newline
+
+\Alt_anchor
+
+: a left \key{Alt} key
+
+\AltGr_anchor
+
+: a right \key{Alt} key, usually used to input characters not present in the keyboard (e.g. Polish characters)
 
 ## abstraction
 
 \abstraction_anchor
+
 : a technique for arranging complexity of computer systems so that the user works with simpler concepts without going into unnecessary details of the hardware structure
 
 + the essence of \abstraction_link is preserving information that is relevant in a given context, and forgetting information that is irrelevant in that context
