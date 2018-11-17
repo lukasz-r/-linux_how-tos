@@ -53,6 +53,10 @@
 
 	e.g. a space, a horizontal or vertical, tab, newline
 
+\blank_character_anchor
+
+: a space or a tab
+
 \Alt_anchor
 
 : a left \key{Alt} key

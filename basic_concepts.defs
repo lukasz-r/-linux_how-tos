@@ -1,4 +1,5 @@
 basic_concepts	basic concepts
+
 file	file
 pathname	pathname
 absolute_pathname	absolute (full) pathname	absolute pathname
@@ -6,6 +7,7 @@ filename	filename
 
 CLI	command-line interface (CLI)	CLI
 whitespace	whitespace
+blank_character	blank character
 Alt	left Alt	Alt
 AltGr	right Alt (Alt Graph)	AltGr
 
