@@ -1,8 +1,12 @@
 # Markdown definitions not to be parsed by parse_defs
 
-\define{Linux}{__Linux__}
+# add suffix to a name (usually "s" or "es")
+\define{\plural{x}}{<wbr>__<wbr>\x<wbr>__}
 
-\define{plural}{<wbr>__s__}
+# display a string as if it were printed on a keyboard key
+\define{\key{x}}{<kbd>\x</kbd>}
+
+\define{Linux}{__Linux__}
 
 \define{getting_help}{__getting help__}
 
