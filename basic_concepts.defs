@@ -5,9 +5,9 @@ pathname	pathname
 absolute_pathname	absolute (full) pathname	absolute pathname
 filename	filename
 
-CLI	command-line interface (CLI)	CLI
-whitespace	whitespace
+CLI	CLI (command-line interface)	CLI
 blank_character	blank character
+whitespace	whitespace
 Alt	left Alt	Alt
 AltGr	right Alt (Alt Graph)	AltGr
 

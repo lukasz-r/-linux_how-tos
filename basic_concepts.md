@@ -47,15 +47,15 @@
 
 : too obvious to define
 
-\whitespace_anchor
-
-: one or more characters that represent horizontal or vertical space
-
-	e.g. a space, a horizontal or vertical, tab, newline
-
 \blank_character_anchor
 
 : a space or a tab
+
+\whitespace_anchor
+
+: one or more characters that represent horizontal or vertical space, e.g. a \blank_character_link, a vertical tab, a \newline
+
++ note that the above definitions of \blank_character_link and \whitespace_link are consistent with `man isalpha`, and \Vim_link's `:h [:blank:]` and `:h [:space:]` manuals, but not with \Vim_link's `:h \s` manual, according to which `\s` matches a \whitespace_link, whereas it in fact matches a \blank_character_link: we'll stick to the above definitions throughout the text
 
 \Alt_anchor
 
