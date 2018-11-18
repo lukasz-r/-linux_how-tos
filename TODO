@@ -29,4 +29,12 @@
 ## ffmpeg -i "Egzorcysta - 202 - Kurierzy.mkv" -b:v 800k -vf "scale=1200:-2" out202-ffmpeg.mkv if height not divisible by 2
 ## ffmpeg: concat demuxer
 
-## BASH: mapfile built-in: mapfile -t -O 1 ep_titles < $ep_list_file
+## BASH:
+	> mapfile built-in: mapfile -t -O 1 ep_titles < $ep_list_file
+	> test globs with echo
+
+## rsync:
+	> use ./* as glob (filenames with colons: problems)
+
+## find:
+	> find -mindepth 2 ...
