@@ -57,6 +57,14 @@
 
 + note that the above definitions of \blank_character_link and \whitespace_link are consistent with `man isalpha`, and \Vim_link's `:h [:blank:]` and `:h [:space:]` manuals, but not with \Vim_link's `:h \s` manual, according to which `\s` matches a \whitespace_link, whereas it in fact matches a \blank_character_link: we'll stick to the above definitions throughout the text
 
+\empty_line_anchor
+
+: a line with no characters at all
+
+\blank_line_anchor
+
+: an \empty_line_link or a line with only \blank_character_link\plural{s}
+
 \Alt_anchor
 
 : a left \key{Alt} key

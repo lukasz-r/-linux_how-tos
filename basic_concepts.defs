@@ -8,6 +8,8 @@ filename	filename
 CLI	CLI (command-line interface)	CLI
 blank_character	blank character
 whitespace	whitespace
+empty_line	empty line
+blank_line	blank line
 Alt	left Alt	Alt
 AltGr	right Alt (Alt Graph)	AltGr
 
