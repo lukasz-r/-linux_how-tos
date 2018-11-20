@@ -10,21 +10,49 @@ man wctype
 man isalpha
 ```
 
+## characters
+
+\blank_character_anchor
+
+: a space or a tab
+
+\whitespace_anchor
+
+: one or more characters that represent horizontal or vertical space, e.g. a \blank_character_link, a vertical tab, a \newline
+
++ note that the above definitions of a \blank_character_link and a \whitespace_link are consistent with `man isalpha`, and \Vim_link's `:h [:blank:]` and `:h [:space:]` manuals, but not with \Vim_link's `:h \s` manual, according to which `\s` matches a \whitespace_link, whereas it in fact matches a \blank_character_link: but we'll stick to the __above definitions__ throughout the text
+
+\nonbr_space_anchor
+
+: a space preventing an automatic line break at its position
+
++ a \nonbr_space_link is inputted via \key{\AltGr_link}+\key{Space}
+
+\empty_line_anchor
+
+: a line with no characters at all
+
+\blank_line_anchor
+
+: an \empty_line_link or a line with only \blank_character_link\plural{s}
+
 ## features common for \glob_link\plural{s} and \regex_link\plural{es}
 
 \character_class_anchor
 
 : set of characters sharing a common property
 
-	class                    | characters
-	-------------------------|-----------
-	`[:alnum:]`              | alphanumeric characters
-	`[:alpha:]`              | alphabetic characters
-	`[:digit:]`              | digits
-	`[:blank:]`              | a space or a tab
-	`[:space:]`              | \whitespace_link
-	`[:upper:]`              | uppercase letters
-	`[:lower:]`              | lowercase letters
+\define{\globs_and_regexes_set{x}}{C_\mathrm{\x}}
+
+	class | characters | set
+	------|------------|----
+	`[:upper:]` | uppercase letters | $\globs_and_regexes_set{upper}$
+	`[:lower:]` | lowercase letters | $\globs_and_regexes_set{lower}$
+	`[:alpha:]` | alphabetic characters | $\globs_and_regexes_set{alpha} = \globs_and_regexes_set{upper} \cup \globs_and_regexes_set{lower}$
+	`[:digit:]` | digits | $\globs_and_regexes_set{digit} = \{0, 1, \ldots, 9\}$
+	`[:alnum:]` | alphanumeric characters | $\globs_and_regexes_set{alnum} = \globs_and_regexes_set{alpha} \cup \globs_and_regexes_set{digit}$
+	`[:blank:]` | \blank_character_link\plural{s} | $\globs_and_regexes_set{blank}$
+	`[:space:]` | \whitespace_link | $\globs_and_regexes_set{space} \supset \globs_and_regexes_set{blank}$
 
 	: \character_class_link\plural{es}
 
@@ -40,12 +68,12 @@ man isalpha
 
 	+ the list can be given explicitly, as a range, as a \character_class_link, as an \equivalence_class_link, or as a compliment (negated list)
 
-	expression               | match
-	-------------------------|------
-	`[abc]`                  | `a`, `b`, or `c`
-	`[0-9]`, `[[:digit:]]`   | any digit
-	`[^0-9jk]`               | any non-digit non-`j` non-`k` character
-	`[[=e=]]`                | e.g. `e`, `ę`, `è`, `é`, `ê`, `ë`
+	expression | match
+	-----------|------
+	`[abc]` | `a`, `b`, or `c`
+	`[0-9]`, `[[:digit:]]` | any digit
+	`[^0-9jk]` | any non-digit non-`j` non-`k` character
+	`[[=e=]]` | e.g. `e`, `ę`, `è`, `é`, `ê`, `ë`
 
 	: \bracket_expression_link\plural{s}
 
@@ -57,17 +85,17 @@ man isalpha
 
 	pattern | match
 	--------|------
-	`*`     | any string __(including the null string)__
-	`?`     | any single character
+	`*` | any string __(including the null string)__
+	`?` | any single character
 	`[...]` | see \bracket_expression_link
 
 	: \glob_link\plural{s}
 
 	+ `shopt -s extglob` turns on additional pattern matching operators
 
-	pattern  | match
-	---------|------
-	`(a|b)`  | a or b
+	pattern | match
+	--------|------
+	`(a|b)` | a or b
 	`*(abc)` | zero or more `abc`'s
 	`+(abc)` | one or more `abc`'s
 	`?(abc)` | zero or one `abc`'s
@@ -102,24 +130,24 @@ man isalpha
 
 : an \globs_and_regexes_atom_link followed by `*`, `+`, `?`, or `{...}` (a bound)
 
-	pattern          | match
-	-----------------|------
-	`atom*`          | zero or more atoms
-	`atom+`          | one or more atoms
-	`atom?`          | zero or one atom
-	`atom{2,}`, etc. | two or more atoms, etc.
+	pattern | match
+	--------|------
+	`atom*` | zero or more \globs_and_regexes_atom_link\plural{s}
+	`atom+` | one or more \globs_and_regexes_atom_link\plural{s}
+	`atom?` | zero or one \globs_and_regexes_atom_link
+	`atom{2,}`, etc. | two or more \globs_and_regexes_atom_link\plural{s}, etc.
 
 	: \globs_and_regexes_piece_link\plural{s}
 
-	pattern             | match
-	--------------------|------
-	`(regex)`           | \regex_link itself
-	`()`                | __null string__
-	`[...]`             | see \bracket_expression_link
-	`.`                 | any single character
-	`^`                 | the null string at the beginning of a line
-	`$`                 | the null string at the end of a line
-	`\^`, `\+`, etc.    | `^`, `+`, etc.
+	pattern | match
+	--------|------
+	`(regex)` | \regex_link itself
+	`()` | __null string__
+	`[...]` | see \bracket_expression_link
+	`.` | any single character
+	`^` | the null string at the beginning of a line
+	`$` | the null string at the end of a line
+	`\^`, `\+`, etc. | `^`, `+`, etc.
 	`a`, `b`, `1`, etc. | `a`, `b`, `1`, etc. (literal match)
 
 	: \globs_and_regexes_atom_anchor\plural{s}

@@ -1,5 +1,11 @@
 globs_and_regexes	globs and regexes
 
+blank_character	blank character
+whitespace	whitespace
+nonbr_space	non-breaking space
+empty_line	empty line
+blank_line	blank line
+
 character_class	character class
 equivalence_class	equivalence class
 bracket_expression	bracket expression
