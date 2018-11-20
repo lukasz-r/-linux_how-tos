@@ -20,6 +20,6 @@
 
 + insert a non-breaking space:
 
-	+ outside the code block --- use escaped space, e.g. `one\ two`
+	+ outside the code block --- use an escaped space, e.g. `one\ two`
 
-	+ inside the code block --- input the space with \key{\AltGr_link}+\key{Space}, e.g. to keep the trailing \whitespace_link: `list `
+	+ inside the code block --- input it directly (see \nonbr_space_link), e.g. to keep the trailing space: `list `
