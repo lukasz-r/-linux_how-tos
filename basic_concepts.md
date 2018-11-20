@@ -55,6 +55,16 @@
 
 : the thing we love!
 
+## keyboard and keys
+
+\Alt_anchor: \key{Alt}
+
+: a left \key{Alt} key
+
+\AltGr_anchor: \key{AltGr}
+
+: a right \key{Alt} key, usually used to input characters not present in the keyboard (e.g. Polish characters)
+
 ## digital information units
 
 + $\mathrm{B} = \mathrm{byte}$
