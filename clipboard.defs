@@ -1,0 +1,5 @@
+clipboard	clipboard
+
+clipboard_primary	PRIMARY (primary clipboard)	primary clipboard
+clipboard_secondary	SECONDARY (secondary clipboard)	secondary clipboard
+clipboard_system	CLIPBOARD (system clipboard)	system clipboard

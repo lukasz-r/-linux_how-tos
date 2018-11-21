@@ -3,6 +3,7 @@
 # chapter titles in the order they enter the documentation
 chapters := \
 	basic_concepts \
+	clipboard \
 	Octave \
 	gnuplot \
 	LaTeX \
