@@ -1,2 +1,9 @@
+Vim	Vim
+
 Vim_buffer	buffer
 Vim_normal_mode	normal (command) mode	normal mode
+Vim_insert_mode	insert mode
+Vim_replace_mode	replace mode
+Vim_visual_mode	visual mode
+Vim_cline_mode	command-line mode
+Vim_register	Vim register	register

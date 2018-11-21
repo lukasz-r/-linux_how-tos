@@ -1,20 +1,10 @@
 
-\define{Vim}{__Vim__}
-# \Vim
-
-\define{Vim_buffer}{__buffer__}
-\define{Vim_buffer_linked}{[\Vim_buffer](#Vim_buffer)}
+# \Vim_anchor
 
 \define{\Vim_selection{text}}{[__<wbr>\text<wbr>__](#Vim_visual_mode)}
 
 \define{Vim_register}{__register__}
 \define{Vim_register_linked}{[\Vim_register](#Vim_register)}
-
-\define{Vim_prim_clip}{__primary clipboard__}
-\define{Vim_prim_clip_linked}{[\Vim_prim_clip](#Vim_prim_clip)}
-
-\define{Vim_sys_clip}{__system clipboard__}
-\define{Vim_sys_clip_linked}{[\Vim_sys_clip](#Vim_sys_clip)}
 
 \define{Vim_search_pattern}{__search pattern__}
 \define{Vim_search_pattern_linked}{[\Vim_search_pattern](#Vim_search_pattern)}
@@ -24,154 +14,160 @@
 
 ## \getting_help
 
-+ start a \Vim tutor:
++ start a \Vim_link tutor:
 
 	```bash
 	vimtutor
 	```
-+ help in a \Vim:
++ help in a \Vim_link:
 
 	+ `:h p`: get help about the `p` command
 
-	+ `:h CTRL-f`: get help about the `<CTRL>+f` shortcut
+	+ `:h CTRL-F`: get help about the \key{Ctrl}+\key{F} shortcut
+
+	+ `:h CTRL-W_X`: get help on the \key{Ctrl}+\key{W}\ \key{X} combination
+
+	+ `:h CTRL-W_CTRL-B`: get help on the \key{Ctrl}+\key{W}\ \key{Ctrl}+\key{B} combination
 
 ## opening and saving files
 
-\Vim_buffer<a name="Vim_buffer"></a>
+\Vim_buffer_anchor
 
 : an area of memory used to hold text read from a file or a newly created text
 
-+ save a file (write the whole \Vim_buffer_linked to the current file): `:w`
++ save a file (write the whole \Vim_buffer_link to the current file): `:w`
 
 + reload a file: `:e`
 
-+ exit all edited files without saving changes: `:qa!`
++ write changes to all open files and exit \Vim_link: `:wqa`
 
-## most useful \Vim modes
++ exit all open files without saving changes: `:qa!`
 
-+ __normal (command) mode__ --- a default mode after \Vim starts:
+## most useful \Vim_link modes
 
-	+ `<ESC>`: usually enters the mode
+\define{Vim_mode_tab_caption}{command examples}
+\define{Vim_mode_tab_sep}{__/__}
 
-	+ `5w`: move forward 5 words
+\Vim_normal_mode_anchor
 
-	+ `5b`: move backward 5 words
+: a default mode after \Vim_link starts, useful for efficient text navigation and deletion
 
-	+ `)`: move forward a sentence
+	command | action
+	--------|-------
+	\key{Esc} | usually enters the mode
+	`5w` \Vim_mode_tab_sep `5b` | move forward \Vim_mode_tab_sep backward 5 words
+	`)` \Vim_mode_tab_sep `(` | move forward \Vim_mode_tab_sep backward a sentence
+	`}` \Vim_mode_tab_sep `{` | move forward \Vim_mode_tab_sep backward a paragraph
+	\key{Ctrl}+\key{F} \Vim_mode_tab_sep \key{Ctrl}+\key{B} | move forward \Vim_mode_tab_sep backward a page
+	`fc` \Vim_mode_tab_sep `Fc` | move forward \Vim_mode_tab_sep backward to the `c` character (`f` means `find`)
+	`;` \Vim_mode_tab_sep `,` | repeat the forward \Vim_mode_tab_sep backward move
+	`0` | move to the first character of the line
+	`^` | move to the first non-\blank_character_link of the line
+	`%` | jump to the corresponding item, e.g. a matching bracket
+	`gg` | go to the beginning of a file
+	`10G` | go to the 10th line
+	`G` | go to the end of a file
+	`/word` | search forward for `word`
+	`n` \Vim_mode_tab_sep `N` | repeat the latest search forward \Vim_mode_tab_sep backward
+	`4dd` | delete 4 lines
+	`D` or `d$` | delete the characters from the cursor to the \EOL
+	`.` | repeat last normal-mode change
 
-	+ `(`: move backward a sentence
+	: \Vim_normal_mode_link \Vim_mode_tab_caption
 
-	+ `}`: move forward a paragraph
+\Vim_insert_mode_anchor
 
-	+ `{`: move backward a paragraph
+: a mode to insert text into the \Vim_buffer_link
 
-	+ `<CTRL>+f`: move forward a page
+	command | action
+	--------|-------
+	`a` | start inserting the text after the cursor
+	`i` | start inserting the text before the cursor
+	`A` | start inserting the text at the end of the line
+	`I` | start inserting the text before the first non-blank in the line
+	`o` | add an \empty_line_link below the cursor and start inserting the text
+	`O` | add an \empty_line_link above the cursor and start inserting the text
+	`120i-`\ \key{Esc} | insert the `-` character 120 times
 
-	+ `<CTRL>+b`: move backward a page
+	: \Vim_insert_mode_link \Vim_mode_tab_caption
 
-	+ `fc`: move forward to the `c` character (`f` means `find`)
+\Vim_replace_mode_anchor
 
-	+ `Fc`: move backward to the `c` character
+: a mode similar to an \Vim_insert_mode_link, but typing replaces existing characters
 
-	+ `;`: repeat the forward move
+	command | action
+	--------|-------
+	`R` | start replacing characters
+	`ra` | replace the character under the cursor with `a`
 
-	+ `,`: repeat the backward move
+	: \Vim_replace_mode_link \Vim_mode_tab_caption
 
-	+ `0`: move to the first character of the line
+\Vim_visual_mode_anchor
 
-	+ `^`: move to the first non-blank character of the line
+: a mode for navigation and manipulation of text selections:
 
-	+ `%`: jump to the corresponding item, e.g. a matching bracket
+	command | action
+	--------|-------
+	`v` | start selecting characters continuously
+	`V` | start selecting lines
+	\key{Ctrl}+\key{V} | start selecting blocks
+	`gv` | restore the previous visual selection
 
-	+ `gg`: go the beginning of a file
+	: \Vim_visual_mode_link \Vim_mode_tab_caption
 
-	+ `10G`: go to the 10th line
+\Vim_cline_mode_anchor
 
-	+ `G`: go to the end of a file
+: a mode for entering editor commands at the bottom of the window:
 
-	+ `/word`: search forward for `word`
+	command | action
+	--------|-------
+	`:h :q` | get help on the `:q` command
+	`:10` | go to the 10th line
+	`:@@:` | repeat last command-line-mode command
 
-	+ `n`: repeat the latest search forward
-
-	+ `N`: repeat the latest search backward
-
-	+ `.`: repeat last normal-mode change
-
-+ __insert mode__ --- a mode to insert text into the \Vim_buffer_linked:
-
-	+ `a`: start inserting the text after the cursor
-
-	+ `i`: start inserting the text before the cursor
-
-	+ `A`: start inserting the text at the end of the line
-
-	+ `I`: start inserting the text before the first non-blank in the line
-
-	+ `o`: add an empty line below and start inserting the text
-
-	+ `O`: add an empty line above and start inserting the text
-
-	+ `120i-<ESC>`: insert the `-` character 120 times
-
-+ __replace mode__ --- a mode similar to an insert mode, but typing replaces existing characters:
-
-	+ `R`: start replacing characters
-
-+ __visual mode__<a name="Vim_visual_mode"></a> --- a mode for navigation and manipulation of text selections:
-
-	+ `v`: select characters continuously
-
-	+ `V`: select lines
-
-	+ `<CTRL>+v`: select blocks
-
-	+ `gv`: restore the previous visual selection
-
-+ __command-line mode__ --- a mode for entering editor commands at the bottom of the window:
-
-	+ `:h :q`: get help on the `:q` command
-
-	+ `:10`: go to the 10th line
-
-	+ `:@@:`: repeat last command-line-mode command
+	: \Vim_mode_tab_caption
 
 ## clipboards and registers
 
-\Vim_register<a name="Vim_register"></a>
+\Vim_register_anchor
 
-: a space in memory used by \Vim to store some text
+: a space in memory used by \Vim_link to store some text
 
-+ in Linux there two independent clipboards:
++ \Vim_register_link\plural{s} are accessed via `"<register_name>`
 
-	+ \Vim_prim_clip<a name="Vim_prim_clip"></a> (copy-on-select, pasted with middle mouse button)
++ by default, `y` (yank) and `d` (delete) copy to, and `p` (paste) pastes from an __unnamed__ \Vim_register_link
 
-	+ \Vim_sys_clip<a name="Vim_sys_clip"></a> (copy with `<CTRL>+c`, paste with `<CTRL>+v`)
+	\Vim_register_link name | description
+	------------------------|------------
+	`"` (__unnamed__) | a default \Vim_register_link
+	`*` | \clipboard_primary_link (hint: star `*` is select)
+	`+` | \clipboard_system_link (hint: \key{Ctrl}`+`\key{C})
+	`n`, $n \in \{0, 1, \ldots, 9\}$ | numbered \Vim_register_link\plural{s} to keep text from recent `y` and `d` commands
+	`a`, `b`, ... | \Vim_register_link named `a`, `b`, ... to store user's text
+	`%` | the name of the current file
+	`/` | last search pattern
 
-+ by default, `y` (yank) and `d` (delete) copy to, and `p` (paste) pastes from an unnamed \Vim_register_linked
+	: \Vim_register_link examples in __vimx__
 
-+ \Vim_prim_clip_linked is the `*` \Vim_register_linked in __vimx__ (hint: star is select)
+	(__vimx__ in Fedora is from __vim-X11__ package)
 
-+ \Vim_sys_clip_linked is the `+` \Vim_register_linked in __vimx__ (hint: `<CTRL>+c`)
-
-+ __vimx__ in Fedora is from __vim-X11__ package
-
-+ copy a word under the cursor (_yank inner word_): `yiw`
++ copy a word under the cursor : `yiw` (_yank inner word_)
 
 + paste the text after the cursor: `p`
 
 + paste the text before the cursor: `P` (useful to insert a copied line before the first line)
 
-+ display the contents of all numbered and named \Vim_register_linked\plural: `:reg`
++ display the contents of all numbered and named \Vim_register_link\plural{s}: `:reg`
 
-+ paste the text from \Vim_register_linked `x` after the cursor: `"xp`
++ paste the text from \Vim_register_link `x` after the cursor: `"xp`
 
-+ copy \Vim_selection{selection} to a system clipboard: `"+y`
++ copy \Vim_selection{selection} to a \clipboard_system_link: `"+y`
 
-+ copy a current line to a system clipboard: `V"+y`
++ copy a current line to a \clipboard_system_link: `V"+y`
 
-+ paste primary clipboard contents: `"*p`
++ paste \clipboard_primary_link contents: `"*p`
 
-+ paste system clipboard contents: `"+p`
++ paste \clipboard_system_link contents: `"+p`
 
 ## selecting text
 
@@ -179,21 +175,21 @@
 
 + select a word under the cursor: `viw`
 
-## deleting text
+## deleting characters
 
 + delete everything from a given line to the end of a file: `dG`
 
 + delete everything from a given line to the beginning of a file: `dgg`
 
-+ delete a word under the cursor (_delete inner word_): `diw`
++ delete a word under the cursor: `diw` (_delete inner word_)
 
 + delete from the cursor to the end of a word: `dw`
 
-+ delete a word under the cursor and type the `new` word (_change inner word, then type_ `new`): `ciwnew`
++ delete a word under the cursor and type the `new` word: `ciwnew` (_change inner word_, then type `new`)
 
-+ delete a current line and start inserting text in it (switch to an insert mode): `cc`
++ delete a current line and start inserting text in it (switch to an \Vim_insert_mode_link): `cc`
 
-+ delete a current line (turn it into a blank line): `0D` or: `cc<ESC>`
++ delete all characters in a current line (turn it into an \empty_line_link): `0D` or: `cc`\ \key{Esc}
 
 + delete lines containing a specific pattern: `:g/some_pattern/d`
 
@@ -202,6 +198,10 @@
 	+ to only list the lines that would be deleted, remove `/d` in the above commands
 
 	+ above commands can also be applied to a \Vim_selection{selection}
+
++ delete \empty_line_link\plural{s} in a \Vim_selection{selection}: `:g/^$/d`
+
++ delete \blank_line_link\plural{s} in a \Vim_selection{selection}: `:g/^\s*$/d`
 
 ## searching and replacing
 
@@ -255,11 +255,11 @@
 
 + search for the __whole__ `the` word (thus match only `the`, not `then`, `other`, etc.): `/\<the\>`
 
-\define{Vim_spat}{  \|\s$\|\n\n\n}
+\define{Vim_spat}{[  ][  ]\|\s$\| $\|\n\n\n}
 
-+ search for multiple patterns, e.g. double spaces, whitespace characters at the end of a line, and double line breaks: `/\Vim_spat`
++ search for multiple patterns, e.g. double spaces (including \nonbr_space_link\plural{s}), a \blank_character_link or a \nonbr_space_link at the end of a line, and double line breaks: `/\Vim_spat`
 
-	(`\|` separates patterns)
+	(`\|` separates patterns, `[  ]` contains a space and a \nonbr_space_link)
 
 	turn the avove search into a custom command in `~/.vimrc`:
 ```
@@ -303,13 +303,13 @@ such a command might be then invoked with: `:SearchMess`
 
 	(`|` separates commands)
 
-+ replace whitespace in the \Vim_selection{selected} lines with tabs: `:s/\s\+/\t/g`
++ replace \blank_character_link\plural{s} in the \Vim_selection{selected} lines with tabs: `:s/\s\+/\t/g`
 
-	(`:s/\s\+/\t/g` replaces one or more whitespace characters in a row, i.e. continouos whitespace, with a tab, whereas `:s/\s/\t/g` replaces each whitespace character with a tab, so there might be multipe tabs between words after replacement)
+	(`:s/\s\+/\t/g` replaces one or more \blank_character_link\plural{s} in a row, i.e. continouos horizontal whitespace, with a tab, whereas `:s/\s/\t/g` replaces each \blank_character_link with a tab, so there might be multipe tabs between words after replacement)
 
-+ remove whitespace in the beginning of the \Vim_selection{selected lines}: `:s/^\s\+`
++ remove \blank_character_link\plural{s} in the beginning of the \Vim_selection{selected lines}: `:s/^\s\+`
 
-	(`\s` selects whitespace)
+	(`\s` matches a \blank_character_link\plural)
 
 + replace \Vim_selection{selected} characters with `.`: `:r.`
 
@@ -337,7 +337,7 @@ such a command might be then invoked with: `:SearchMess`
 
 ## macros
 
-+ record typed characters into the `a` register for further repetition: `` qaysiw`q ``
++ record typed characters into the `a` \Vim_register_link for further repetition: `` qaysiw`q ``
 
 	+ `qa` starts recording into the `a` register
 
@@ -355,7 +355,7 @@ such a command might be then invoked with: `:SearchMess`
 
 + reverse all lines in a file: `:g/^/m0`
 
-	`^` matches the start of a line and thus all lines in a \Vim_buffer_linked, `m0` moves each matched line to the beginning of a \Vim_buffer_linked
+	`^` matches the start of a line and thus all lines in a \Vim_buffer_link, `m0` moves each matched line to the beginning of a \Vim_buffer_link
 
 	or select everything with `ggVG` and: `:!tac`
 
@@ -367,13 +367,13 @@ such a command might be then invoked with: `:SearchMess`
 
 + indent \Vim_selection{selected lines} by two levels: `2>`
 
-+ comment \Vim_selection{selected lines} with `# `: `:s/^/# /` or \Vim_selection{select a visual block} starting in the leftmost column and: `I# <ESC>`
++ comment \Vim_selection{selected lines} with `# `: `:s/^/# /` or \Vim_selection{select a visual block} starting in the leftmost column and: `I# `\ \key{Esc}
 
 ## more on inserting text
 
 + insert regular quotes (`"..."`) instead of smart quotes in a `*.tex` file: `\"` and then erase `\`
 
-+ insert the `list: ` string starting in a given column: \Vim_selection{select a visual block} starting in the given column and: `Ilist: <ESC>`
++ insert the `list: ` string starting in a given column: \Vim_selection{select a visual block} starting in the given column and: `Ilist: `\ \key{Esc}
 
 + add the `.` character at the end of \Vim_selection{selected lines}: `norm A.`
 
@@ -397,9 +397,9 @@ such a command might be then invoked with: `:SearchMess`
 
 	(`:p` means a file pathname)
 
-+ insert an output of a command into the current \Vim_buffer_linked: `:r !free -h`
++ insert an output of a command into the current \Vim_buffer_link: `:r !free -h`
 
-+ insert an external file contents into the current \Vim_buffer_linked: `:r file.txt`
++ insert an external file contents into the current \Vim_buffer_link: `:r file.txt`
 
 + add line numbers to non-empty \Vim_selection{selected lines}: `:!nl`
 
@@ -434,17 +434,19 @@ such a command might be then invoked with: `:SearchMess`
 
 + split a current window vertically and start editing a new file in a new window: `:vne`
 
-+ go to a next window: `<CTRL>+ww`
++ go to a next window: \key{Ctrl}+\key{W}\key{W}
 
-+ go to a window below: `<CTRL>+w↓`
++ go to a window below: \key{Ctrl}+\key{w}\ \key{↓}
 
-+ list all \Vim_buffer_linked\plural: `:ls`
++ exchange (swap) the split windows: \key{Ctrl}+\key{W}\ \key{X}
 
-+ note that switching \Vim_buffer_linked\plural doesn't switch between windows nor tabs, but switches a file in a current window if several files are open
++ list all \Vim_buffer_link\plural: `:ls`
 
-+ go to a next \Vim_buffer_linked: `:bn`
++ note that switching \Vim_buffer_link\plural doesn't switch between windows nor tabs, but switches a file in a current window if several files are open
 
-+ go to a previous \Vim_buffer_linked: `:bp`
++ go to a next \Vim_buffer_link: `:bn`
+
++ go to a previous \Vim_buffer_link: `:bp`
 
 + go to a next tab: `gt`
 
