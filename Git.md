@@ -816,19 +816,28 @@ git show my_branch~2 # grandparent (following only first parents in case of merg
 man git-rev-parse
 
 + show commits by an author matching a pattern:
-```bash
-git log --author=andreas
-```
+
+	```bash
+	git log -i --author=andreas
+	```
 
 + show commits by a commit message matching a pattern:
-```bash
-git log -i --grep=regular
-```
+
+	```bash
+	git log -i --grep=regular
+	```
+
++ show commits introducing a change in a code matching a pattern:
+
+	```bash
+	git log --pickaxe-all -i -G "[ck]ontr"
+	```
 
 + show files modified by an author matching a pattern:
-```bash
-git log --name-only --author=andreas
-```
+
+	```bash
+	git log --name-only -i --author=andreas
+	```
 
 + show specific file modification history:
 
