@@ -6,6 +6,7 @@ chapters := \
 	clipboard \
 	Octave \
 	gnuplot \
+	Open_Babel \
 	LaTeX \
 	globs_and_regexes \
 	Bash \
