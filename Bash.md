@@ -532,25 +532,61 @@ echo ${text//./ }
 ## remove all non-digits from a string:
 echo ${text//[^0-9]}
 
-# case modification:
-## convert first character in a string to lowercase:
-${text,}
-## convert a string to lowercase:
-${text,,}
-## convert first character in a string to uppercase:
-${text^}
-## convert a string to uppercase:
-${text^^}
-## convert first character of each word in a filename to uppercase:
-file_words=($file)
-echo "${file_words[*]^}"
-## note that:
-### "${file_words[@]}" expands each array element to a separate word: "${file_words[0]}" "${file_words[1]}" ...
-### "${file_words[*]}" expands to a single word: "${file_words[0]} ${file_words[1]} ...", thus this construct is appropriate for filename changes
-## convert first character of each word not beginning with "u" in a filename to uppercase:
-shopt -s extglob
-file_words=($file)
-echo "${file_words[*]^!(u)}"
+## case conversion
+
++ convert a first character in a string to lowercase:
+
+	```bash
+	${text,}
+	```
+
++ convert a string to lowercase:
+
+	```bash
+	${text,,}
+	```
+
++ convert a first character in a string to uppercase:
+
+	```bash
+	${text^}
+	```
+
++ convert a string to uppercase:
+
+	```bash
+	${text^^}
+	```
+
++ convert a first character of each word in `*.txt` files to uppercase:
+
+	```bash
+	#!/bin/bash
+
+	shopt -s nullglob
+	for file in ./*.txt; do
+		old_file=$(basename "$file")
+		file_words=($old_file)
+		new_file=${file_words[*]^}
+		[[ $old_file == $new_file ]] || mv -iv "$old_file" "$new_file"
+	done
+	```
+
+	+ note that:
+
+		+ `"${file_words[@@]}"` expands each array element into a separate word: `"${file_words[0]}" "${file_words[1]}" ...`
+
+		+ `"${file_words[*]}"` expands all array elements into a single word: `"${file_words[0]} ${file_words[1]} ..."`
+
+		+ _the case modification operation is applied to each member of the array in turn_, and both constructs can be used in a variable assignment (which I find strange, I'd expect only the `*` construct to be allowed in this context since it expands into a single word)
+
++ convert a first character of each word not beginning with `u` in a filename to uppercase:
+
+	```bash
+	shopt -s extglob
+	file_words=($(basename "$file"))
+	echo "${file_words[*]^!(u)}"
+	```
 
 # substring expansion: "${parameter:offset}" or "${parameter:offset:length}", offset counted from 0:
 text="abc456"
