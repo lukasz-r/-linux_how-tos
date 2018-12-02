@@ -81,12 +81,6 @@ convert f1.jpg f2.jpg +append f.jpg
 	cjpeg f.ppm > f.jpg
 	```
 
-+ create a PDF file from multiple images:
-
-	```bash
-	img2pdf --output out.pdf Image*.jpg
-	```
-
 ## creating and adding elements to images
 
 + create a black image of a given size:
