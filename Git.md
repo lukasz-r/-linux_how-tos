@@ -458,6 +458,24 @@ git checkout file_mod
 
 	to join $n$ most recent commits into one, use `git reset --soft @@~m`, where $m = n - 1$
 
+## moving commits between branches
+
++ suppose the main branch is `master` and we keep our development in the `topic` branch, which we keep up-to-date with the `master` branch via regular merging of the `master` branch into the `topic` branch:
+
+	```bash
+	git pull
+	git checkout topic
+	git merge master
+	```
+
+	now suppose we were to add some modifications in the `master` branch, but we mistakenly made a commit in the `topic` branch: to move the commit to the `master` branch, use:
+
+	```bash
+	git reset --soft @@^
+	git checkout master
+	git commit -c ORIG_HEAD
+	```
+
 ## comparing branches and commits
 
 + copy a file from the `source_br` branch into the `working_br` branch:
