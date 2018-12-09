@@ -4,6 +4,7 @@
 chapters := \
 	basic_concepts \
 	clipboard \
+	backup \
 	Octave \
 	gnuplot \
 	Open_Babel \
