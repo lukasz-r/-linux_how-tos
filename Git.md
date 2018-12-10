@@ -150,14 +150,22 @@ git submodule update --init --recursive
 		+ hasn't been staged and the last commit doesn't include this file (e.g. it's a newly created file)
 
 + show the working tree status:
-```bash
-git status
-```
+
+	```bash
+	git status
+	```
 
 	also show individual files in untracked directories and ignored files:
-```bash
-git status -uall --ignored
-```
+
+	```bash
+	git status -uall --ignored
+	```
+
+	show the information for the current directory only:
+
+	```bash
+	git status -uall --ignored .
+	```
 
 + show modified files:
 ```bash
