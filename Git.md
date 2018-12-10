@@ -540,29 +540,40 @@ git checkout file_mod
 ## clean-up
 
 + dry-run removing non-ignored untracked files and directories from the working tree:
-```bash
-git clean -dn
-```
+
+	```bash
+	git clean -dn
+	```
 
 	actually remove them:
-```bash
-git clean -df
-```
+
+	```bash
+	git clean -df
+	```
 
 + dry-run removing all (including ignored) untracked files and directories from the working tree:
-```bash
-git clean -dxn
-```
+
+	```bash
+	git clean -dxn
+	```
 
 	actually remove them:
-```bash
-git clean -dxf
-```
 
-	also remove directories with `.git` subdirectory:
-```bash
-git clean -dxff
-```
+	```bash
+	git clean -dxf
+	```
+
+	also remove directories with the `.git` subdirectory:
+
+	```bash
+	git clean -dxff
+	```
+
+	apply the clean-up only to the current directory:
+
+	```bash
+	git clean -dxff .
+	```
 
 ## creating and sharing a \Git repo for a working project
 
