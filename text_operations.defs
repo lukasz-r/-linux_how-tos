@@ -1,0 +1,15 @@
+text_operations	text operations
+
+sed	sed (stream editor)	sed
+
+AWK	AWK
+AWK_rule	rule
+AWK_pattern	pattern
+AWK_action	action
+
+tr	tr
+
+cut	cut
+
+sort	sort
+uniq	uniq

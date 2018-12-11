@@ -10,6 +10,7 @@ chapters := \
 	Open_Babel \
 	LaTeX \
 	globs_and_regexes \
+	text_operations \
 	Bash \
 	time_and_date \
 	archives \
@@ -27,7 +28,6 @@ chapters := \
 	web_server \
 	PDF \
 	printing \
-	text_file_operations \
 	Vim \
 	SSH \
 	Git \
