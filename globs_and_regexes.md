@@ -36,6 +36,10 @@ man isalpha
 
 : an \empty_line_link or a line with only \blank_character_link\plural{s}
 
+\case_insensitive_search_anchor
+
+: search ignoring the case of characters, e.g. `ab` matching `ab`, `Ab`, `aB`, or `AB`
+
 ## features common for \glob_link\plural{s} and \regex_link\plural{es}
 
 \character_class_anchor

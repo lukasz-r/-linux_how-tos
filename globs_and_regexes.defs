@@ -5,6 +5,7 @@ whitespace	whitespace
 nonbr_space	non-breaking space
 empty_line	empty line
 blank_line	blank line
+case_insensitive_search	case-insensitive search
 
 character_class	character class
 equivalence_class	equivalence class
