@@ -6,6 +6,8 @@
 # display a string as if it were printed on a keyboard key
 \define{\key{x}}{<kbd>\x</kbd>}
 
+\define{Unix}{__Unix__}
+
 \define{Linux}{__Linux__}
 
 \define{getting_help}{__getting help__}
