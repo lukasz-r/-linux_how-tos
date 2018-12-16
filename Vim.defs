@@ -1,9 +1,19 @@
 Vim	Vim
 
 Vim_buffer	buffer
+
 Vim_normal_mode	normal (command) mode	normal mode
 Vim_insert_mode	insert mode
 Vim_replace_mode	replace mode
 Vim_visual_mode	visual mode
 Vim_cline_mode	command-line mode
+
 Vim_register	Vim register	register
+
+Vim_substitute_command	substitute command
+Vim_substitute_range	substitute range
+Vim_substitute_pattern	substitute pattern
+Vim_substitute_string	substitute string
+Vim_substitute_flag	substitute flag
+
+Vim_rc_file	`~/.vimrc`

@@ -3,15 +3,6 @@
 
 \define{\Vim_selection{text}}{[__<wbr>\text<wbr>__](#Vim_visual_mode)}
 
-\define{Vim_register}{__register__}
-\define{Vim_register_linked}{[\Vim_register](#Vim_register)}
-
-\define{Vim_search_pattern}{__search pattern__}
-\define{Vim_search_pattern_linked}{[\Vim_search_pattern](#Vim_search_pattern)}
-
-\define{Vim_search_string}{__search string__}
-\define{Vim_search_string_linked}{[\Vim_search_string](#Vim_search_string)}
-
 ## \getting_help
 
 + start a \Vim_link tutor:
@@ -19,15 +10,15 @@
 	```bash
 	vimtutor
 	```
-+ help in a \Vim_link:
 
-	+ `:h p`: get help about the `p` command
+	command | meaning
+	--------|--------
+	`:h p` | get help about the `p` command
+	`:h CTRL-F` | get help about the \key{Ctrl}+\key{F} shortcut
+	`:h CTRL-W_X` | get help on the \key{Ctrl}+\key{W}\ \key{X} combination
+	`:h CTRL-W_CTRL-B` | get help on the \key{Ctrl}+\key{W}\ \key{Ctrl}+\key{B} combination
 
-	+ `:h CTRL-F`: get help about the \key{Ctrl}+\key{F} shortcut
-
-	+ `:h CTRL-W_X`: get help on the \key{Ctrl}+\key{W}\ \key{X} combination
-
-	+ `:h CTRL-W_CTRL-B`: get help on the \key{Ctrl}+\key{W}\ \key{Ctrl}+\key{B} combination
+	: help from within a \Vim_link
 
 ## opening and saving files
 
@@ -35,13 +26,14 @@
 
 : an area of memory used to hold text read from a file or a newly created text
 
-+ save a file (write the whole \Vim_buffer_link to the current file): `:w`
+	command | meaning
+	--------|--------
+	`:w` | save a file (write the whole \Vim_buffer_link to the current file)
+	`:e` | reload a file
+	`:wqa` | write changes to all open files and exit \Vim_link
+	`:qa!` | exit all open files without saving changes
 
-+ reload a file: `:e`
-
-+ write changes to all open files and exit \Vim_link: `:wqa`
-
-+ exit all open files without saving changes: `:qa!`
+	: saving and quitting \Vim_buffer_anchor\plural{s}
 
 ## most useful \Vim_link modes
 
@@ -125,7 +117,7 @@
 	`:10` | go to the 10th line
 	`:@@:` | repeat last command-line-mode command
 
-	: \Vim_mode_tab_caption
+	: \Vim_cline_mode_link \Vim_mode_tab_caption
 
 ## clipboards and registers
 
@@ -133,25 +125,25 @@
 
 : a space in memory used by \Vim_link to store some text
 
-+ \Vim_register_link\plural{s} are accessed via `"<register_name>`
++ \Vim_register_link\plural{s} are accessed via `"<register_name>`, e.g. `"*`
 
-+ by default, `y` (yank) and `d` (delete) copy to, and `p` (paste) pastes from an __unnamed__ \Vim_register_link
++ by default, `y` (___yank___) and `d` (___delete___) copy to, and `p` (___paste___) pastes from an __unnamed__ \Vim_register_link
 
 	\Vim_register_link name | description
 	------------------------|------------
 	`"` (__unnamed__) | a default \Vim_register_link
 	`*` | \clipboard_primary_link (hint: star `*` is select)
 	`+` | \clipboard_system_link (hint: \key{Ctrl}`+`\key{C})
-	`n`, $n \in \{0, 1, \ldots, 9\}$ | numbered \Vim_register_link\plural{s} to keep text from recent `y` and `d` commands
+	`n`, $n \in \{0, 1, \ldots, 9\}$ | numbered \Vim_register_link\plural{s} to keep text from recent `y` and `d` commands
 	`a`, `b`, ... | \Vim_register_link named `a`, `b`, ... to store user's text
 	`%` | the name of the current file
 	`/` | last search pattern
 
 	: \Vim_register_link examples in __vimx__
 
-	(__vimx__ in Fedora is from __vim-X11__ package)
+	(__vimx__ in \Fedora is provided by the __vim-X11__ package)
 
-+ copy a word under the cursor : `yiw` (_yank inner word_)
++ copy a word under the cursor : `yiw` (___yank inner word___)
 
 + paste the text after the cursor: `p`
 
@@ -171,6 +163,8 @@
 
 ## selecting text
 
++ see \Vim_visual_mode_link for basic commands to select text
+
 + select all text in a file: `ggVG`
 
 + select a word under the cursor: `viw`
@@ -181,11 +175,11 @@
 
 + delete everything from a given line to the beginning of a file: `dgg`
 
-+ delete a word under the cursor: `diw` (_delete inner word_)
++ delete a word under the cursor: `diw` (___delete inner word___)
 
 + delete from the cursor to the end of a word: `dw`
 
-+ delete a word under the cursor and type the `new` word: `ciwnew` (_change inner word_, then type `new`)
++ delete a word under the cursor and type the `new` word: `ciwnew` (___change inner word___, then type `new`)
 
 + delete a current line and start inserting text in it (switch to an \Vim_insert_mode_link): `cc`
 
@@ -205,15 +199,51 @@
 
 ## searching and replacing
 
-+ general form of a substitue command: `:[range]s/pattern/string/[flags]`
++ general form of a \Vim_substitute_command_anchor: `:[range]s/pattern/string/[flags]`
 
-	+ \Vim_search_pattern<a name="Vim_search_pattern"></a>: what to look for
+\Vim_substitute_range_anchor
 
-	+ \Vim_search_string<a name="Vim_search_string"></a>: how to replace what's been found
+: which lines to apply the operation to
+
+	range | meaning
+	------|-------
+	null string | a current line only
+	`%` | all lines in a file
+	`'<,'>` | all lines in a \Vim_selection{selection} (it appears automatically after typing `:s` following the \Vim_selection{selection})
+
+	: \Vim_substitute_range_link examples
+
+\Vim_substitute_pattern_anchor
+
+: a \regex_link specifying what to look for
+
+\Vim_substitute_string_anchor
+
+: how to replace what's been matched by the \Vim_substitute_pattern_link
+
+\Vim_substitute_flag_anchor\plural{s}
+
+: characters for fine-tuning of the substitute operation
+
+flag | meaning
+-----|--------
+`c` | confirm each substitution
+`g` | replace all occurrences in the line
+`i` | ignore case for the \Vim_substitute_pattern_link
+`I` | don't ignore the case for the \Vim_substitute_pattern_link
+`n` | report the number of matches, but do not replace anything
+
+: \Vim_substitute_flag_link examples
+
++ the \Vim_substitute_command_link by default operates on __whole lines__:
+
+	+ this causes no problem for a \Vim_selection{selection} capturing whole lines only
+
+	+ this might cause problems when a \Vim_selection{selection} includes only parts of line --- the solution then is to use the `\%V` atom in the \Vim_substitute_pattern_link to restrict the match to the current \Vim_selection{selection} only (without the atom, the \Vim_substitute_command_link operates on the whole lines, even the partially \Vim_selection{selected} ones)
 
 ### special characters
 
-+ some characters in the \Vim_search_pattern_linked and \Vim_search_string_linked:
++ some characters in the \Vim_substitute_pattern_link and \Vim_substitute_string_link:
 
 	+ are taken literally, but have special meaning when preceded with `\`
 
@@ -223,27 +253,27 @@
 
 + it's best to keep this option unchanged at its default value, thus all searches are performed with the `magic` option
 
-	character  | matches
-	-----------|----------------------------------
-	`\n`       | \newline
-	`$`        | \EOL
-	`*`        | 0 or more of the preceding item
+	character | matches
+	----------|--------
+	`\n` | \newline
+	`$` | \EOL
+	`*` | 0 or more of the preceding item
 	`\=`, `\?` | 0 or 1 of the preceding item
-	`\+`       | 1 or more of the preceding item
-	`\{n,m}`   | $n$ to $m$ of the preceding item
-	`\<`       | beginning of a word
-	`\>`       | end of a word
+	`\+` | 1 or more of the preceding item
+	`\{n,m}` | $n$ to $m$ of the preceding item
+	`\<` | beginning of a word
+	`\>` | end of a word
 
-	: __examples of characters in the \Vim_search_pattern_linked with the `magic` option__
+	: examples of characters in the \Vim_substitute_pattern_link with the `magic` option
 
 	character | meaning
-	----------|----------------------------------------------------------
-	`\r`      | \newline
-	`&`       | the whole matched pattern
-	`\2`      | the pattern matched in the second pair of `\(...\)` in the \Vim_search_pattern_linked
-	`\=`      | the remainder is interpreted as an expression
+	----------|--------
+	`\r` | \newline
+	`&` | the whole string matched by the \Vim_substitute_pattern_link
+	`\2` | the string matched in the second pair of `\(...\)` in the \Vim_substitute_pattern_link
+	`\=` | the remainder is interpreted as an expression
 
-	: __examples of characters in the \Vim_search_string_linked with the `magic` option__
+	: examples of characters in the \Vim_substitute_string_link with the `magic` option
 
 ### search examples
 
@@ -261,11 +291,13 @@
 
 	(`\|` separates patterns, `[  ]` contains a space and a \nonbr_space_link)
 
-	turn the avove search into a custom command in `~/.vimrc`:
-```
-com SearchMess /\Vim_spat
-```
-such a command might be then invoked with: `:SearchMess`
+	turn the avove search into a custom command in \Vim_rc_file_anchor:
+
+	```
+	com SearchMess /\Vim_spat
+	```
+
+	such a command might be then invoked with: `:SearchMess`
 
 + search for the __whole__ `KTM1` and `TRK1` words: `/\<\(KTM1\|TRK1\)\>`
 
@@ -313,6 +345,8 @@ such a command might be then invoked with: `:SearchMess`
 
 + replace \Vim_selection{selected} characters with `.`: `:r.`
 
++ replace all `1` characters with `_1` strings __only__ inside a \Vim_selection{selection}: `:s/\%V1/_1/g`
+
 #### case conversion
 
 + convert a \Vim_selection{selection}:
@@ -325,7 +359,7 @@ such a command might be then invoked with: `:SearchMess`
 
 + convert all instances of `FILTER_FILE` to lowercase: `:%s/FILTER_FILE/\L&/g`
 
-+ convert first characters of words in a \Vim_selection{selection} to uppercase: `:s/\<./\u&/g`
++ convert first characters of words __only__ in a \Vim_selection{selection} to uppercase: `:s/\%V\<./\u&/g`
 
 ### __vim-surround__ plugin
 
