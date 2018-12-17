@@ -1,20 +1,26 @@
 globs_and_regexes	globs and regexes
 
+null_string	null (empty) string	null string
+any_string	any string
 blank_character	blank character
 whitespace	whitespace
 nonbr_space	non-breaking space
 empty_line	empty line
 blank_line	blank line
+case_sensitive_search	case-sensitive search
 case_insensitive_search	case-insensitive search
 
 character_class	character class
+alphabetic_character	alphabetic character
+alphanumeric_character	alphanumeric character
 equivalence_class	equivalence class
 bracket_expression	bracket expression
 
 glob	glob (wildcard pattern)	glob
+extended_glob	extended glob
 globbing	globbing
 
 regex	regex (regular expression)	regex
-globs_and_regexes_branch	branch
-globs_and_regexes_piece	piece
-globs_and_regexes_atom	atom
+regex_branch	branch
+regex_piece	piece
+regex_atom	atom
