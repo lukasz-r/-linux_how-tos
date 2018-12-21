@@ -1,19 +1,31 @@
 #!/usr/bin/awk -E
 
-# parse definitions from defs file into Markdown format
-# defs file format:
-# def name	first occurence name	[later occurence name]
+# parse definitions from a definition file into the Markdown format
+
+# possible definition syntaxes:
+
+# (1) def_name	first occurrence name	[later occurrence name]
+# (2) def_name	name	URL starting with "http://" or "https://"
+
+# "def_name" can't contain dashes ("-")
+# the fields must be tab-separated
+# case (1): "\def_name_anchor" anchors a definition, and "\def_name_link" links to the anchor
+# case (2): "\def_name" links to an URL
 
 BEGIN {
 	FS = "\t"
 }
 
-!/^#/ {
+/^[[:alnum:]]/ {
 	name_first = "__" $2 "__"
 	if (NF > 2)
-		name_later = "__" $3 "__"
+		if ($3 ~ /^https?:\/\//) {
+			print "\\define{" $1 "}{[" name_first "](" $3 ")}"
+			next
+		} else
+			name_later = "__" $3 "__"
 	else
 		name_later = name_first
 	print "\\define{" $1 "_anchor}{" name_first "<a name=\"" $1 "\"></a>}"
 	print "\\define{" $1 "_link}{[" name_later "](#" $1 ")}"
-	}
+}
