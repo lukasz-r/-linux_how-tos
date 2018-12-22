@@ -5,12 +5,16 @@
 # possible definition syntaxes:
 
 # (1) def_name	first occurrence name	[later occurrence name]
-# (2) def_name	name	URL starting with "http://" or "https://"
+# (2) def_name	name	URL (starting with "http://" or "https://")
 
 # "def_name" can't contain dashes ("-")
 # the fields must be tab-separated
-# case (1): "\def_name_anchor" anchors a definition, and "\def_name_link" links to the anchor
-# case (2): "\def_name" links to an URL
+# case (1):
+## "\def_name_anchor" anchors the "first occurrence name"
+## "\def_name_link" links the "later occurrence name" to the anchor
+## "\def_name" prints the "later occurrence name" in bold
+# case (2):
+## "\def_name" links to an URL
 
 BEGIN {
 	FS = "\t"
@@ -28,4 +32,5 @@ BEGIN {
 		name_later = name_first
 	print "\\define{" $1 "_anchor}{" name_first "<a name=\"" $1 "\"></a>}"
 	print "\\define{" $1 "_link}{[" name_later "](#" $1 ")}"
+	print "\\define{" $1 "}{" name_later "}"
 }
