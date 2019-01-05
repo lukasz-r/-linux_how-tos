@@ -1,36 +1,46 @@
 #!/usr/bin/awk -E
 
-# parse definitions from a definition file into the Markdown format
+# parse definitions from a definition file to be used in the Markdown file
 
-# possible definition syntaxes:
+# definitions in a definition file can have two syntaxes:
 
-# (1) def_name	first occurrence name	[later occurrence name]
-# (2) def_name	name	URL (starting with "http://" or "https://")
+# (1) def	first occurrence text	[later occurrence text]
+# (2) def	text	URL (starting with "http://" or "https://")
 
-# "def_name" can't contain dashes ("-")
+# "def" can't contain dashes ("-")
 # the fields must be tab-separated
-# case (1):
-## "\def_name_anchor" anchors the "first occurrence name"
-## "\def_name_link" links the "later occurrence name" to the anchor
-## "\def_name" prints the "later occurrence name" in bold
-# case (2):
-## "\def_name" links to an URL
+
+# definitions to be used in the Markdown file:
+## "\def" prints the "first occurrence text" (or the "later occurrence text", if present) or the "text" in bold (such a non-linked definition is useful in chapter titles, the links to which in the table of contents would be broken if the linked definitions were used)
+## case (1):
+### "\def_anchor" creates an anchor with the "first occurrence text"
+### "\def_link" creates a link, with the "first occurrence text" (or the "later occurrence text", if present), to the anchor
+## case (2):
+### "\def_link" creates a link, with the "text", to an URL
 
 BEGIN {
 	FS = "\t"
 }
 
+function print_def(def, text) {
+	print "\\define{" def "}{" text "}"
+}
+
 /^[[:alnum:]]/ {
-	name_first = "__" $2 "__"
+	def = $1
+	def_link = def "_link"
+	text_first = "__" $2 "__"
+	text_later = text_first
 	if (NF > 2)
 		if ($3 ~ /^https?:\/\//) {
-			print "\\define{" $1 "}{[" name_first "](" $3 ")}"
+			URL = $3
+			print_def(def, text_first)
+			print "\\define{" def_link "}{[" text_first "](" URL ")}"
 			next
 		} else
-			name_later = "__" $3 "__"
-	else
-		name_later = name_first
-	print "\\define{" $1 "_anchor}{" name_first "<a name=\"" $1 "\"></a>}"
-	print "\\define{" $1 "_link}{[" name_later "](#" $1 ")}"
-	print "\\define{" $1 "}{" name_later "}"
+			text_later = "__" $3 "__"
+	def_anchor = def "_anchor"
+	print_def(def, text_later)
+	print "\\define{" def_anchor "}{" text_first "<a name=\"" def "\"></a>}"
+	print "\\define{" def_link "}{[" text_later "](#" def ")}"
 }
