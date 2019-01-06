@@ -1,6 +1,6 @@
 #!/usr/bin/awk -E
 
-# parse definitions from a definition file to be used in the Markdown file
+# definition file parser
 
 # definitions in a definition file can have two syntaxes:
 
@@ -8,9 +8,9 @@
 # (2) def	text	URL (starting with "http://" or "https://")
 
 # "def" can't contain dashes ("-")
-# the fields must be tab-separated
+# fields must be tab-separated
 
-# definitions to be used in the Markdown file:
+# definitions to be used in the Markdown file upon parsing the definition file:
 ## "\def" prints the "first occurrence text" (or the "later occurrence text", if present) or the "text" in bold (such a non-linked definition is useful in chapter titles, the links to which in the table of contents would be broken if the linked definitions were used)
 ## case (1):
 ### "\def_anchor" creates an anchor with the "first occurrence text"

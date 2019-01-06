@@ -14,6 +14,7 @@ chapters := \
 	Bash \
 	time_and_date \
 	archives \
+	searching_for_files \
 	file_encryption \
 	compilers_and_libraries \
 	mc \
@@ -37,13 +38,15 @@ chapters := \
 # CSS style sheet file
 css_file := style.css
 
-# Markdown definitions file, definitions parser, definition files, and file to collect all definitions
+# non-parsed definition file, definition file parser and per-chapter definition files
 defs_md := non-parsed_defs.md
 defs_parser := parse_defs
 defs_files := $(wildcard *.defs)
+
+# a file collecting all definitions
 defs_collect := defs_all.md
 
-# chapters Markdown files
+# Markdown chapter files
 md_files := $(chapters:=.md)
 
 # Markdown file collecting all chapters

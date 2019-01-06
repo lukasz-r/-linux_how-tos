@@ -1,9 +1,9 @@
-# Markdown definitions not to be parsed by parse_defs
+# non-parsed definition file
 
-# add suffix to a name (usually "s" or "es")
+# add suffix to a name (usually "s" or "es" to make plural forms)
 \define{\plural{x}}{<wbr>__<wbr>\x<wbr>__}
 
-# display a string as if it were printed on a keyboard key
+# display a text as if it were printed on a keyboard key
 \define{\key{x}}{<kbd>\x</kbd>}
 
 \define{Unix}{__Unix__}
@@ -23,5 +23,8 @@
 \define{EOL}{__end of line__}
 
 \define{modulefile}{__modulefile__}
+
+# separator
+\define{slash_sep}{__/__}
 
 \define{\concat{x}{y}}{\x\y}

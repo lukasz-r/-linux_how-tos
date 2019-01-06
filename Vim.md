@@ -38,7 +38,6 @@
 ## most useful \Vim_link modes
 
 \define{Vim_mode_tab_caption}{command examples}
-\define{Vim_mode_tab_sep}{__/__}
 
 \Vim_normal_mode_anchor
 
@@ -47,12 +46,12 @@
 	command | action
 	--------|-------
 	\key{Esc} | usually enters the mode
-	`5w` \Vim_mode_tab_sep `5b` | move forward \Vim_mode_tab_sep backward 5 words
-	`)` \Vim_mode_tab_sep `(` | move forward \Vim_mode_tab_sep backward a sentence
-	`}` \Vim_mode_tab_sep `{` | move forward \Vim_mode_tab_sep backward a paragraph
-	\key{Ctrl}+\key{F} \Vim_mode_tab_sep \key{Ctrl}+\key{B} | move forward \Vim_mode_tab_sep backward a page
-	`fc` \Vim_mode_tab_sep `Fc` | move forward \Vim_mode_tab_sep backward to the `c` character (`f` means `find`)
-	`;` \Vim_mode_tab_sep `,` | repeat the forward \Vim_mode_tab_sep backward move
+	`5w` \slash_sep `5b` | move forward \slash_sep backward 5 words
+	`)` \slash_sep `(` | move forward \slash_sep backward a sentence
+	`}` \slash_sep `{` | move forward \slash_sep backward a paragraph
+	\key{Ctrl}+\key{F} \slash_sep \key{Ctrl}+\key{B} | move forward \slash_sep backward a page
+	`fc` \slash_sep `Fc` | move forward \slash_sep backward to the `c` character (`f` means `find`)
+	`;` \slash_sep `,` | repeat the forward \slash_sep backward move
 	`0` | move to the first character of the line
 	`^` | move to the first non-\blank_character_link of the line
 	`%` | jump to the corresponding item, e.g. a matching bracket
@@ -60,7 +59,7 @@
 	`10G` | go to the 10th line
 	`G` | go to the end of a file
 	`/word` | search forward for `word`
-	`n` \Vim_mode_tab_sep `N` | repeat the latest search forward \Vim_mode_tab_sep backward
+	`n` \slash_sep `N` | repeat the latest search forward \slash_sep backward
 	`4dd` | delete 4 lines
 	`D` or `d$` | delete the characters from the cursor to the \EOL
 	`.` | repeat last normal-mode change
