@@ -1,6 +1,9 @@
-# the "some_chapter" chapter main file is "some_chapter.md", additional files are placed in the "some_chapter" directory
+# the "chapter_title" chapter:
+## "chapter_title.md": a Markdown chapter file
+## "chapter_title.defs": a chapter definitions file
+## "chapter_title/*": additional chapter files, if needed
 
-# chapter titles in the order they enter the documentation
+# chapters
 chapters := \
 	basic_concepts \
 	clipboard \
@@ -35,45 +38,48 @@ chapters := \
 	youtube-dl \
 	Pandoc
 
-# CSS style sheet file
-css_file := style.css
+# Markdown chapter files
+md_chapters := $(chapters:=.md)
 
-# non-parsed definition file, definition file parser and per-chapter definition files
-defs_md := non-parsed_defs.md
-defs_parser := parse_defs
+# a Markdown file collecting all chapters
+md_collect := How-Tos.md
+
+# a non-parsed definitions file, definitions file parser, and per-chapter definitions files
+defs_non-parsed := defs_non-parsed.md
+defs_parser := defs_parser
 defs_files := $(wildcard *.defs)
 
 # a file collecting all definitions
 defs_collect := defs_all.md
 
-# Markdown chapter files
-md_files := $(chapters:=.md)
+# additional chapter files
+chapter_files := $(foreach chapter, $(chapters), $(wildcard $(chapter)/*))
 
-# Markdown file collecting all chapters
-md_main_file := How-Tos.md
+# a CSS style sheet file
+css_file := style.css
 
-# target HTML file
-target := index.html
+# a target HTML file
+html_file := index.html
 
-all : $(target)
+all : $(html_file)
 
-$(defs_collect) : $(defs_md) $(defs_parser) $(defs_files) Makefile
+$(defs_collect) : $(defs_non-parsed) $(defs_parser) $(defs_files) Makefile
 	awk '!/^#/' $< > $@
 	cat $(defs_files) | ./$(defs_parser) >> $@
 
-$(md_main_file) : $(defs_collect) $(md_files)
+$(md_collect) : $(defs_collect) $(md_chapters)
 	cat $^ | gpp -T > $@
 
-$(target) : $(md_main_file) $(css_file)
+$(html_file) : $(md_collect) $(chapter_files) $(css_file)
 	pandoc -sSp --toc --toc-depth=4 -c $(css_file) \
 		-f markdown+auto_identifiers+blank_before_header+backtick_code_blocks+fenced_code_attributes+fancy_lists+example_lists+abbreviations+tex_math_dollars \
 		--highlight-style=espresso --mathjax \
 		-o $@ $<
 
-view : $(target)
-	xdg-open $(target)
+view : $(html_file)
+	xdg-open $(html_file)
 
 .PHONY : clean
 
 clean :
-	rm -f $(defs_collect) $(md_main_file) $(target)
+	rm -f $(defs_collect) $(md_collect) $(html_file)

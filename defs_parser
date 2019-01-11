@@ -1,20 +1,20 @@
 #!/usr/bin/awk -E
 
-# definition file parser
+# a definitions file parser
 
-# definitions in a definition file can have two syntaxes:
+# definitions in a definitions file can have two syntaxes:
 
-# (1) def	first occurrence text	[later occurrence text]
+# (1) def	text_first	[text_later]
 # (2) def	text	URL (starting with "http://" or "https://")
 
 # "def" can't contain dashes ("-")
 # fields must be tab-separated
 
-# definitions to be used in the Markdown file upon parsing the definition file:
-## "\def" prints the "first occurrence text" (or the "later occurrence text", if present) or the "text" in bold (such a non-linked definition is useful in chapter titles, the links to which in the table of contents would be broken if the linked definitions were used)
+# definitions to be used in the Markdown file upon parsing the definitions file:
+## "\def" prints the "text_first" (or the "text_later", if present) or the "text", in bold (such a non-linked definition is useful in chapter titles, the links to which in the table of contents would be broken if the linked definitions were used)
 ## case (1):
-### "\def_anchor" creates an anchor with the "first occurrence text"
-### "\def_link" creates a link, with the "first occurrence text" (or the "later occurrence text", if present), to the anchor
+### "\def_anchor" creates an anchor with the "text_first"
+### "\def_link" creates a link, with the "text_first" (or the "text_later", if present), to the anchor
 ## case (2):
 ### "\def_link" creates a link, with the "text", to an URL
 
