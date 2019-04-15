@@ -1199,88 +1199,6 @@ temporary files and directories
 mktemp -p . -d mytempdir-XXX
 
 ================================================================================
-find / locate
-================================================================================
-# note that unless specified otherwise, "files" are used in Unix sense (regular files, directories, links, etc.)
-
-# case-insensitively search for files containing "finance" in their name:
-locate -i finance
-
-# case-insensitively search for files containing "1zł", "5zł", etc. in their name:
-locate -i "*[0-9]zł*"
-
---------------------------------------------------------------------------------
-# permissions with find
---------------------------------------------------------------------------------
-## file permissions: n₁n₂n₃
-
-## "-perm m₁m₂m₃":     n₁ = m₁ ∧ n₂ = m₂ ∧ n₃ = m₃
-## "\! -perm m₁m₂m₃":  n₁ ≠ m₁ ∨ n₂ ≠ m₂ ∨ n₃ ≠ m₃
-
-## "-perm -m₁m₂m₃":    n₁ ≥ m₁ ∧ n₂ ≥ m₂ ∧ n₃ ≥ m₃
-## "\! -perm -m₁m₂m₃": n₁ < m₁ ∨ n₂ < m₂ ∨ n₃ < m₃
-
-## "-perm /m₁m₂m₃":    n₁ ≥ m₁ ∨ n₂ ≥ m₂ ∨ n₃ ≥ m₃
-## "\! -perm /m₁m₂m₃": n₁ < m₁ ∧ n₂ < m₂ ∧ n₃ < m₃
-
-## list files which have exactly 664 permissions:
-find -perm 664
-
-## list files which have 664 permissions and possibly other extra permission bits set (so e.g. file with 777 permissions is matched, but 770 is not):
-find -perm -664
-
-## list files which are writable by somebody (owner, group or others):
-find -perm /222
-
-## list files at least readable by others (any n₁ and any n₂ and n₃ ≥ 4, thus n₁ ≥ 0 ∧ n₂ ≥ 0 ∧ n₃ ≥ 4):
-find -perm -004
-## now list files not readable by others [n₃ < 4, note that this corresponds to (n₁ < 0 ∨ n₂ < 0 ∨ n₃ < 4) == (0 ∨ 0 ∨ n₃ < 4) == (n₃ < 4) since both n₁ and n₂ are never negative]:
-find \! -perm -004
-
-## list files with special permissions, i.e. SUID, SGID or sticky bit set:
-find -perm /7000
-
-## list files which have SUID or SGID bit set:
-find -perm /6000
---------------------------------------------------------------------------------
-
-# list files from oldest to newest by modification time:
-find -printf "%T@ %p\n" | sort -n
-
---------------------------------------------------------------------------------
-# to skip certain directories when searching with "find", use "-path" and "-prune":
---------------------------------------------------------------------------------
-## list all the files in the "/proc" directory except for those in the directories directly under "/proc" whose names start with numbers:
-find /proc -path "/proc/[0-9]*" -prune -o -print
-
-## list all the files in the "src" directory whose names begin with "a", except for those under "src/.svn" dir:
-find src -path "src/.svn" -prune -o -iname "a*"
-## or:
-find src -path "src/.svn" -prune -o -iname "a*" -print
-## note that by default, the "find" command prints all the files matching the criteria, however, with the "-print" option it prints files only on explicit print instructions, so if "src/.svn" directory exists:
-### the first command above prints "src/.svn" directory (for which "-prune" returns true, but makes find never descend into that directory)
-### the second command above doesn't print "src/.svn" directory since "-print" is associated with the right-hand side of the OR condition ("-o"), and hence nothing is printed from the left-hand side of the condition
-
-## list files only in a current directory:
-find \! -name . -prune
-## or:
-find -maxdepth 1 \! -iname .
-## note that the the above commands don't print "." since it was excluded with "\! -name .", the directories are not descended into owing to "-prune"
---------------------------------------------------------------------------------
-
-# list all the files except those with some extensions (note that in BASH scripts it's better to use "!(pattern-list)", see the BASH section):
-find \! -iregex ".*\.\(bmp\|jp.*g\|gif\|png\)$"
-
-# find directories with leading whitespace in their name:
-find -type d -regex "./\s.*"
-
-# find directories with trailing whitespace in their name:
-find -type d -regex "./.*\s$"
-
-# use "echo" to dry-run a dangerous operation, e.g. moving files:
-find -iname "*.txt" -exec echo mv -iv '{}' dest \;
-
-================================================================================
 grep
 ================================================================================
 # case-insensitively search for files with the "mod.*ule" pattern within directories ending with "jobs" in the current directory and their subdirectories, omitting binary files:
@@ -1471,6 +1389,9 @@ $Uy = year(today())
 SET title "\"Poirot\""
 REM 10 Jul 2017 ++2 MSG Watch [title] %a.
 REM 10 Aug 2017 ++2 MSG Watch [title] %a.
+
+# report the previous month in a reminder message:
+REM 10 +4 MSG Tax for [mon($T - 30)] %a.
 
 # the global omits influence the counting of "+" delta and "-" back forms
 # no omits influence the counting of "++" delta and "--" back forms
