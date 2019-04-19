@@ -4,10 +4,17 @@
 # get the local TeX Live home directory (usually "~/texmf"):
 kpsewhich -var-value=TEXMFHOME
 
-# make LaTeX definitions visible to TeX Live: put your definitions in the above-obtained "$TEXMFHOME" followed by root TeX Live directory structure, which you get through e.g.
+# get the path where to place bibliography files:
+kpsewhich -var-value=BIBINPUTS
+# also look for "BIBINPUTS":
+vi $(kpsewhich texmf.cnf)
+
+# make LaTeX definitions visible to TeX Live: put your definitions in the above-obtained "TEXMFHOME" followed by root TeX Live directory structure, which you get through e.g.
 kpsewhich braket.sty
 # usually it's "~/texmf/tex/latex", then you can check if TeX Live sees a given file:
 kpsewhich my_definitions.sty
+
+# make LaTeX bibliography visible to TeX Live: put your definitions in the above-obtained "TEXMFHOME" followed by the "BIBINPUTS" directory structure, which altogether is usually "~/texmf/bibtex/bib"
 
 # open the "longtable" package manual:
 texdoc longtable
