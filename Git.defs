@@ -1,3 +1,6 @@
+Git_commit_message	commit message
+Git_commit_title	commit title (subject)	commit title
+
 Git_detached_HEAD	detached HEAD
 Git_lightweight_tag	lightweight tag
 Git_annotated_tag	annotated tag

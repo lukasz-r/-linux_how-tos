@@ -193,6 +193,32 @@ git diff HEAD
 git diff Makefile
 ```
 
+## \Git_commit_message\plural{s}
+
++ a \Git_commit_message_anchor contains a \Git_commit_title_link of up to 50 characters in the first line, __optionally__ followed by:
+
+	+ a \blank_line_link
+
+	+ a more thorough description
+
++ good \Git_commit_title_anchor features:
+
+	+ if a specific part (file, module, etc.) was the main focus of the changes being committed, put the name of the part first, followed by a colon and a space (`: `)
+
+	+ the main action description starts with a capital letter and the imperative mood is used
+
+	+ no period (`.`) et the end
+
+	+ examples:
+
+		```bash
+		mesh: Fix network information clean-up
+		```
+
+		```bash
+		Add short definitions to be used in chapter titles
+		```
+
 ## ignoring files
 
 + files to be ignored by \Git are specified in the `.gitignore` files
