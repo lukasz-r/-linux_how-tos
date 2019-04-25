@@ -1390,6 +1390,11 @@ SET title "\"Poirot\""
 REM 10 Jul 2017 ++2 MSG Watch [title] %a.
 REM 10 Aug 2017 ++2 MSG Watch [title] %a.
 
+# define a string function with a string argument:
+FSET taxes_msg(country) "Tax return in " + country + " due %a."
+REM 15 Apr +5 OMIT Sat Sun AFTER MSG [taxes_msg("the United States")]
+REM 1 May --1 +5 OMIT Sat Sun AFTER MSG [taxes_msg("Poland")]
+
 # report the previous month in a reminder message:
 REM 10 +4 MSG Tax for [mon($T - 30)] %a.
 
