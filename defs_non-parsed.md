@@ -11,6 +11,8 @@
 
 \define{getting_help}{__getting help__}
 
+\define{see}{__additional info__}
+
 \define{basic_operations}{__basic operations__}
 
 \define{Unix}{__Unix__}
