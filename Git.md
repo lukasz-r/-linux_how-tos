@@ -47,6 +47,26 @@ git config --global user.email johngit@example.com
 git commit --author="John Git Jr. johngitjunior@example.com"
 ```
 
+### credentials
+
++ \see:
+
+	```bash
+	man gitcredentials
+	```
+
++ prevent \Git from interactively asking for a password through an external program, and do it on a \CLI_link instead:
+
+	```bash
+	git config --global core.askPass ""
+	```
+
++ keep usernames and passwords after they were provided:
+
+	```bash
+	git config --global credential.helper store
+	```
+
 ## cloning a repo
 
 + clone a repo into a local directory:
