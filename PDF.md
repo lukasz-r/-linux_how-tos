@@ -46,7 +46,7 @@ man pdftotext
 	pdfnup --nup 2x3 --no-landscape --scale 0.9 input.pdf --outfile output.pdf
 	```
 
-## rotating pages
+## rotating and splitting pages
 
 + create a \PDF_link file combining pages from `A.pdf` and `B.pdf` files:
 
@@ -64,6 +64,18 @@ man pdftotext
 
 	```bash
 	pdf-stapler cat input.pdf 1-endD output.pdf
+	```
+
+	or:
+
+	```bash
+	qpdf input.pdf --rotate=180:1-z output.pdf
+	```
+
++ rotate all pages by 180 degrees and save each page to a separate file:
+
+	```bash
+	qpdf input.pdf --rotate=180:1-z --split-pages "output%d.pdf"
 	```
 
 ## cropping
