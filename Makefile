@@ -18,7 +18,7 @@ chapters := \
 	time_and_date \
 	archives \
 	searching_for_files \
-	file_encryption \
+	encryption \
 	compilers_and_libraries \
 	mc \
 	Makefile \
