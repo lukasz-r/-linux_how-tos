@@ -1,0 +1,9 @@
+encryption	encryption
+
+hash_function	hash function
+
+hash_value	hash value (hash code, hash digest, hash)	hash value
+hash_length	hash length
+SHA	SHA (Secure Hash Algorithms)	SHA
+SHA1	SHA-1
+NIST	NIST (National Institute of Standards and Technology)	NIST
