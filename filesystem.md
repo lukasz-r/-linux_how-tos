@@ -496,3 +496,25 @@ temporary files and directories
 ================================================================================
 # create a temporary directory in a current directory using a template:
 mktemp -p . -d mytempdir-XXX
+
+## splitting large \file\plural{s}
+
++ split a large \file_link into:
+
+	+ 100 smaller \file_link\plural{s}:
+
+		```bash
+		split -dn 100 large_file split_file_
+		```
+
+	+ $100~\mathrm{MiB}$ \file_link\plural{s}:
+
+		```bash
+		split -db 100M large_file split_file_
+		```
+
++ the split \file_link\plural{s} are `split_file_00`, `split_file_01`, `...` (and `x00`, `x01`, `...` if no `split_file_` prefix is present), and their concatenation leads back to an original \file_link:
+
+	```bash
+	cat split_file_* > original_large_file
+	```
