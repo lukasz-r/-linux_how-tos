@@ -16,6 +16,7 @@ chapters := \
 	text_operations \
 	Bash \
 	time_and_date \
+	filesystem \
 	archives \
 	searching_for_files \
 	encryption \
