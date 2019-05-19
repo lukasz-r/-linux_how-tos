@@ -358,7 +358,11 @@ flag | meaning
 
 + convert all instances of `FILTER_FILE` to lowercase: `:%s/FILTER_FILE/\L&/g`
 
-+ convert first characters of words __only__ in a \Vim_selection{selection} to uppercase: `:s/\%V\<./\u&/g`
++ inside a \Vim_selection{selection}, convert:
+
+	+ first characters of words to uppercase: `:s/\%V\<./\u&/g`
+
+	+ first characters of words to uppercase, the rest to lowercase: `:s#\%V\v(\w)(\S*)#\u\1\L\2#g`
 
 ### __vim-surround__ plugin
 
