@@ -1,11 +1,5 @@
 # a non-parsed definitions file
 
-# add suffix to a name (usually "s" or "es" to make plural forms)
-\define{\plural{x}}{<wbr>__<wbr>\x<wbr>__}
-
-# display a text as if it were printed on a keyboard key
-\define{\key{x}}{<kbd>\x</kbd>}
-
 # a slash separator
 \define{slash_sep}{__/__}
 
@@ -21,6 +15,15 @@
 \define{Windows}{__Windows__}
 \define{Mac_OS}{classic __Mac OS__}
 \define{macOS}{__macOS__}
+
+# add suffix to a name (usually "s" or "es" to make plural forms)
+\define{\plural{x}}{<wbr>__<wbr>\x<wbr>__}
+
+# display a text as if it were printed on a keyboard key
+\define{\key{x}}{<kbd>\x</kbd>}
+
+# a link to an example defined with '<a name="anchor_name">':
+\define{\example_link{anchor_name}}{<a href="#\anchor_name">__this example__</a>}
 
 # definitions that will be moved to the respective definitions files
 \define{EOL}{__end of line__}
