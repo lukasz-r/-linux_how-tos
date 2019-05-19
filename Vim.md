@@ -240,17 +240,19 @@ flag | meaning
 
 	+ this might cause problems when a \Vim_selection{selection} includes only parts of line --- the solution then is to use the `\%V` atom in the \Vim_substitute_pattern_link to restrict the match to the current \Vim_selection{selection} only (without the atom, the \Vim_substitute_command_link operates on the whole lines, even the partially \Vim_selection{selected} ones)
 
-### special characters
+### special characters and the \Vim_magic_option
+
++ \see: `:h magic`
 
 + some characters in the \Vim_substitute_pattern_link and \Vim_substitute_string_link:
 
-	+ are taken literally, but have special meaning when preceded with `\`
+	+ are taken literally, but have a special meaning when preceded with `\`
 
 	+ have a special meaning without `\` before them
 
-+ the `magic` options decides if a specific character is taken literally or not
++ the \Vim_magic_option_anchor decides if a specific character is taken literally or not
 
-+ it's best to keep this option unchanged at its default value, thus all searches are performed with the `magic` option
++ it's best to keep this option unchanged, as the \Vim_default_magic_option_anchor
 
 	character | matches
 	----------|--------
@@ -263,7 +265,7 @@ flag | meaning
 	`\<` | beginning of a word
 	`\>` | end of a word
 
-	: examples of characters in the \Vim_substitute_pattern_link with the `magic` option
+	: examples of characters in the \Vim_substitute_pattern_link with the \Vim_default_magic_option_link
 
 	character | meaning
 	----------|--------
@@ -272,7 +274,9 @@ flag | meaning
 	`\2` | the string matched in the second pair of `\(...\)` in the \Vim_substitute_pattern_link
 	`\=` | the remainder is interpreted as an expression
 
-	: examples of characters in the \Vim_substitute_string_link with the `magic` option
+	: examples of characters in the \Vim_substitute_string_link with the \Vim_default_magic_option_link
+
++ the \Vim_very_magic_option_anchor is useful to avoid too much escaping, see \example_link{Vim_very_magic_option_example}
 
 ### search examples
 
@@ -301,6 +305,10 @@ flag | meaning
 + search for the __whole__ `KTM1` and `TRK1` words: `/\<\(KTM1\|TRK1\)\>`
 
 ### replacement examples
+
++ <a name="Vim_very_magic_option_example">replace commas with points as a decimal separator (e.g. replace `2,10` with `2.10`): `:%s/\([0-9]\),\([0-9]\)/\1.\2/g`
+
+	+ now do the opposite with the help of the \Vim_very_magic_option_link: `:%s/\v([0-9])\.([0-9])/\1,\2/g`
 
 + find strings of 120 `-` characters: `/-\{120}`
 
@@ -362,7 +370,7 @@ flag | meaning
 
 	+ first characters of words to uppercase: `:s/\%V\<./\u&/g`
 
-	+ first characters of words to uppercase, the rest to lowercase: `:s#\%V\v(\w)(\S*)#\u\1\L\2#g`
+	+ first characters of words to uppercase, the remaining characters to lowercase: `:s#\%V\v(\w)(\S*)#\u\1\L\2#g` (note the \Vim_very_magic_option_link)
 
 ### __vim-surround__ plugin
 

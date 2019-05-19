@@ -16,4 +16,8 @@ Vim_substitute_pattern	substitute pattern
 Vim_substitute_string	substitute string
 Vim_substitute_flag	substitute flag
 
+Vim_magic_option	magic option
+Vim_default_magic_option	default magic option (`\m`)	default magic option
+Vim_very_magic_option	very magic option (`\v`)	very magic option
+
 Vim_rc_file	`~/.vimrc`
