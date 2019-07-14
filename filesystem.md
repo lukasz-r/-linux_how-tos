@@ -191,17 +191,21 @@ sudo chown -R theochem:gaussian dir
 # change the files group recursively inside a directory:
 chgrp -R gaussian dir
 
-================================================================================
-file permissions
-================================================================================
-# file permissions − access rights to specific users, groups of users and processes created by users that control their ability to operate on files
+## file permissions
 
-# of course, root is not bound by file permissions
+\file_permission_anchor\plural{s}
 
-# file permission classes:
-## owner: used when the UID of the file equals the EUID of the calling process (e.g. the user accesses his own file) (A
-## group: used when the GID of the file equals the EGID of the calling process or the GID of one of the supplementary groups of the calling process (e.g. the user accesses the file which he doesn't own but which belongs to one of his groups) (B)
-## others: used when neither (A) nor (B) applies (e.g. the user accesses the file which he doesn't own and which belongs to none of his groups)
+: access rights to specific users, groups of users and processes created by users that control their ability to operate on \file_link\plural{s}
+
++ of course, root is not bound by file permissions
+
++ \file_permission_class_anchor\plural{es}:
+
+	+ \file_owner_anchor: used when the UID of the file equals the EUID of the calling process (e.g. the user accesses his own file) (A
+
+	+ \file_group_anchor: used when the GID of the file equals the EGID of the calling process or the GID of one of the supplementary groups of the calling process (e.g. the user accesses the file which he doesn't own but which belongs to one of his groups) (B)
+
+	+ \file_others_anchor: used when neither (A) nor (B) applies (e.g. the user accesses the file which he doesn't own and which belongs to none of his groups)
 
 # chmod and most commands refer to the owner, group and others class with "u", "g" and "o" letters, respectively, and "a" means all three classes
 # though most commands refer to the owner class as the user class, we prefer to use the former name since it avoids confusion with the current user which might not be the file owner
@@ -209,41 +213,84 @@ file permissions
 # display file owner, group and corresponding UID and GID, plus much more information:
 stat file
 
-# file mode − filesystem permissions given to owner, group and others class to access files, plus special permissions
-# permissions for each class are represented by a bit triad b₃b₂b₁:
-## b₁ − execute bit
-## b₂ − write bit
-## b₃ − read bit
-# a bit is either 0 or 1, so the highest binary value of the triad is 111, which corresponds to:
-## m = 1 * 2² + 1 * 2¹ + 1 * 2⁰ = 7
-# octal numbers are used to represent the permissions:
-## all numbers ≤ 7 have the same decimal and octal representations
-## let's see how two bit triads convert to octal numbers:
-### 111111 → 77
-### 000111 → 7 ≡ 07
-### 110110 → 66
-## similarly for three bit triads:
-### 111111111 → 777
-### 100100100 → 444
-## similarly for four, five, etc. bit triads
-## so we can convert each bit triad separately into a decimal number and compose the resulting numbers into an octal number
-## octal numbers are thus a natural choice to represent the bit triad values compactly
-# execute bit: 001 ⇒ m = 1
-# write bit: 010 ⇒ m = 2
-# read bit: 100 ⇒ m = 4
-# there are 2³ = 8 possible bit patterns for a single class, and hence 8³ = 512 possible bit patterns for the three classes
-# class permissions can be represented by their octal value or symbolically with "r", "w", "x" and "-" symbols, e.g.
-## m = 7 ⇔ rwx
-## m = 5 ⇔ r-x
-## m = 4 ⇔ r--
+\file_mode_anchor
 
---------------------------------------------------------------------------------
-# permissions for files:
---------------------------------------------------------------------------------
-## r = read a file
+: filesystem \file_permission_link\plural{s} given to \file_owner_link, \file_group_link and \file_others_link \file_permission_class_link\plural{es} to access \file_link\plural{s}, plus \file_special_permission_link\plural{s}
+
++ \file_permission_link\plural{s} for each \file_permission_class_link are represented by a $b_3b_2b_1$ ___bit triad___:
+
+	bit | meaning
+	----|--------
+	$b_3$ | \file_read_bit
+	$b_2$ | \file_write_bit
+	$b_1$ | \file_execute_bit
+
+	: $b_3b_2b_1$ bit triad
+
++ a bit is either $0$ or $1$, so the highest binary value of the bit triad is 111, which corresponds to the decimal value of
+
+	$$m = 1 \cdot 2^2 + 1 \cdot 2^1 + 1 \cdot 2^0 = 7$$
+
++ why __octal numbers__ are used to represent the \file_permission_link\plural{s}:
+
+	+ decimal integer numbers between $0$ and $7$ have the same octal representation
+
+	+ let's see how multiple bit triads convert to octal numbers:
+
+		two bit triads | octal value
+		---------------|------------
+		$111\,111$ | $77$
+		$000\,111$ | $7 \equiv 07$
+		$110\,110$ | $66$
+
+		three bit triads | octal value
+		-----------------|------------
+		$111\,111\,111$ | $777$
+		$000\,000\,111$ | $7 \equiv 007$
+		$100\,100\,100$ | $444$
+
+		similarly for four, five, etc. bit triads
+
+	+ so to get the octal value corresponding to $n$ bit triads, we can convert each bit triad separately into a decimal number, and compose the resulting $n$ decimal numbers into an $n$-digit octal number
+
+	+ octal numbers are thus a natural choice to represent the bit triad values compactly
+
+\file_permission_link bit | bit triad | octal value
+--------------------------|-----------|------------
+\file_read_bit_link | $100$ | $m = 4$
+\file_write_bit_link | $010$ | $m = 2$
+\file_execute_bit_link | $001$ | $m = 1$
+
+: octal values corresponding to individual \file_permission_link bits
+
++ there are $2^3 = 8$ possible bit patterns for a single \file_permission_class_link, and hence $8^3 = 512$ possible bit patterns for the three \file_permission_class_link\plural{es}
+
++ \file_permission_class_link \file_permission_link\plural{s} can be represented by their octal value $m$, or symbolically with "r", "w", "x" and "-" symbols, e.g.
+
+bit triad | octal value | symbolic representation
+----------|-------------|------------------------
+$000$ | $m = 0$ | `---`
+$001$ | $m = 1$ | `--x`
+$010$ | $m = 2$ | `-w-`
+$011$ | $m = 3$ | `-wx`
+$100$ | $m = 4$ | `r--`
+$101$ | $m = 5$ | `r-x`
+$110$ | $m = 6$ | `rw-`
+$111$ | $m = 7$ | `rwx`
+
+: $8$ possible bit patterns for a single bit triad
+
+symbol | meaning
+-------|--------
+\file_read_permission_link | \file_read_permission_anchor
+\file_write_permission_link | \file_write_permission_anchor
+\file_execute_permission_link | \file_execute_permission_anchor
+\file_no_permission_link | \file_no_permission_anchor
+
+: meaning of \file_permission_link\plural{s} symbolic representation
+
 ## w = modify a file
 ## x = execute a file
---------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
 # permissions for directories (directory is basically a list of files and directories contained in it):

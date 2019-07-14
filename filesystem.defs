@@ -1,0 +1,15 @@
+file_permission	file permission	permission
+file_special_permission	special permission
+file_permission_class	file permission class	class
+file_owner	owner (u)	owner
+file_group	group (g)	group
+file_others	others (o)	others
+
+file_mode	file mode
+file_read_bit	read bit
+file_write_bit	write bit
+file_execute_bit	execute bit
+file_read_permission	read permission	r
+file_write_permission	write permission	w
+file_execute_permission	execute permission	x
+file_no_permission	no permission	-
