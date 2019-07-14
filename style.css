@@ -54,9 +54,22 @@ table td {
 	border-right: none;
 }
 
+table tr:nth-child(odd) td {
+	background:#ccc;
+}
+
+table tr:nth-child(even) td {
+	background:#fff;
+}
+
 code {
 	font-family: monospace;
 	font-size: 140%;
+}
+
+img[src*="#example"] {
+	width: 500px;
+	border: 3px solid black;
 }
 
 kbd {
