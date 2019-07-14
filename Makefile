@@ -73,7 +73,7 @@ $(md_collect) : $(defs_collect) $(md_chapters)
 
 $(html_file) : $(md_collect) $(chapter_files) $(css_file)
 	pandoc -sSp --toc --toc-depth=4 -c $(css_file) \
-		-f markdown+auto_identifiers+blank_before_header+backtick_code_blocks+fenced_code_attributes+fancy_lists+example_lists+abbreviations+tex_math_dollars \
+		-f markdown+auto_identifiers+blank_before_header+backtick_code_blocks+inline_code_attributes+fenced_code_attributes+fancy_lists+example_lists+abbreviations+tex_math_dollars \
 		--highlight-style=espresso --mathjax \
 		-o $@ $<
 
