@@ -47,7 +47,7 @@ md_collect := How-Tos.md
 
 # a non-parsed definitions file, definitions file parser, and per-chapter definitions files
 defs_non-parsed := defs_non-parsed.md
-defs_parser := defs_parser
+defs_parser := defs_parser.py
 defs_files := $(wildcard *.defs)
 
 # a file collecting all definitions
