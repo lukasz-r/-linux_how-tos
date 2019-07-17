@@ -14,22 +14,27 @@
 
 ## case (1):
 ### "\term": prints the "text_first" (or the "text_later", if present)
-### "\term_anchor" creates an anchor with the "text_first"
-### "\term_link" creates a link, with the "text_first" (or the "text_later", if present), to the anchor
+### "\term_anc" creates an anchor with the "text_first"
+### "\term_lnk" creates a link, with the "text_first" (or the "text_later", if present), to the anchor
 
 ## case (2):
 ### "\term": prints the "text"
-### "\term_link" creates a link, with the "text", to an URL
+### "\term_lnk" creates a link, with the "text", to an URL
 
 ## the "\term" non-linked definition is useful in chapter titles, the links to which in the table of contents would be broken if the linked definitions were used instead
-## plural forms are available via "\term_plural" and "\term_link_plural"
+## plural forms are available via "\term_pl" and "\term_lnk_pl"
+
+## we don't use "_anchor", "_link" nor "_plural" full suffixes, but "_anc", "_lnk" and "_pl" abbreviated suffixes to reduce the probability of a terms clash
+## e.g. if we define "file" and "file_link", the full-suffix link to "file" is "file_link", clashing with the already defined "file_link" term, whereas the abbreviated-suffix link to "file" is "file_lnk", not coinciding with "file_link"
 
 import fileinput
 import re
 import inflect
 
 p = inflect.engine()
-plural_suffix = "_plural"
+anchor_suffix = "_anc"
+link_suffix = "_lnk"
+plural_suffix = "_pl"
 
 def print_def(term, text):
     print("\define{" + term + "}{__" + text + "__}")
@@ -41,7 +46,7 @@ for line in fileinput.input():
         fields = line.split("\t")
         fields_count = len(fields)
         term = fields[0]
-        term_link = term + "_link"
+        term_link = term + link_suffix
         text_first = fields[1]
         text_later = text_first
         if fields_count > 2:
@@ -52,7 +57,7 @@ for line in fileinput.input():
                 continue
             else:
                 text_later = fields[2]
-        term_anchor = term + "_anchor"
+        term_anchor = term + anchor_suffix
         print_def(term, text_later)
         print("\define{" + term_anchor + "}{__" + text_first + "__<a name=\"" + term + "\"></a>}")
         print("\define{" + term_link + "}{[__" + text_later +"__](#" + term + ")}")
