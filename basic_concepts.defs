@@ -7,7 +7,9 @@ filename	filename
 
 abstraction	abstraction
 
+OS	OS (operating system)	OS
 CLI	CLI (command-line interface)	CLI
+GUI	GUI (graphical user interface)	GUI
 
 Alt	left Alt	Alt
 AltGr	right Alt (Alt Graph)	AltGr

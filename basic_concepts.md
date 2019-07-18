@@ -59,9 +59,17 @@
 
 ## common acronyms
 
+\OS_anc
+
+: a system software that manages it all
+
 \CLI_anc
 
-: the thing we love!
+: (the thing we love the most!) a means of interacting with a software via text commands
+
+\GUI_anc
+
+: a means of interacting with a software via graphical tools
 
 ## keyboard and keys
 
