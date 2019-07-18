@@ -1,10 +1,25 @@
 globs_and_regexes	globs and regexes
 
-null_string	null (empty) string	null string
+metacharacter	metacharacter
+character_escaping	character escaping	escaping
+escape_character	escape character
+escape_sequence	escape sequence
+control_character	control (non-printing) character	control character
+null_string	null string
+empty_string	empty string
 any_string	any string
+standard_space	standard space
+tab_stop	tab stop	tab stop
+horizontal_tab	horizontal tab
+vertical_tab	vertical tab
 blank_character	blank character
+whitespace_character	whitespace character
 whitespace	whitespace
 nonbr_space	non-breaking space
+newline	newline
+carriage_return	CR (carriage return)	CR
+line_feed	LF (line feed)	LF
+CRLF	CRLF
 empty_line	empty line
 blank_line	blank line
 case_sensitive_search	case-sensitive search
@@ -13,10 +28,13 @@ case_insensitive_search	case-insensitive search
 character_class	character class
 alphabetic_character	alphabetic character
 alphanumeric_character	alphanumeric character
+word_character	word character
+nword_character	non-word character
 equivalence_class	equivalence class
 bracket_expression	bracket expression
 
 glob	glob (wildcard pattern)	glob
+globbing_character	globbing character
 extended_glob	extended glob
 globbing	globbing
 
@@ -24,3 +42,9 @@ regex	regex (regular expression)	regex
 regex_branch	branch
 regex_piece	piece
 regex_atom	atom
+word_boundary	word boundary
+
+grep	grep
+basic_regex	BRE (basic regular expression)	BRE
+extended_regex	ERE (extended regular expression)	ERE
+Perl_compatible_regex	PCRE (Perl-compatible regular expression)	PCRE
