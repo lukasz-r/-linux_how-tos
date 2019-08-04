@@ -2,7 +2,7 @@
 
 # a definitions file parser
 
-# definitions in a definitions file can assume to syntaxes:
+# definitions in a definitions file can assume two syntaxes:
 
 # (1) name	text_first	[text_later]
 # (2) name	text	URL (starting with "http://" or "https://")
@@ -22,7 +22,8 @@
 ### "\name_lnk" creates a link with the "text" to an URL
 
 ## the "\name" non-linked definition is useful in chapter titles, the links to which in the table of contents would be broken if the linked definitions were used instead
-## plural text forms are available via "\name_pl" and "\name_lnk_pl"
+## plural text forms are available via "\name_pl", "\name_anc_pl" and "\name_lnk_pl"
+## use "\name_anc" or "\name_anc_pl" and never both to avoid creating multiple anchors with the same name
 
 ## we don't use "_anchor", "_link" nor "_plural" full suffixes, but "_anc", "_lnk" and "_pl" abbreviated suffixes to reduce the probability of the names clash
 ## e.g. if we define "file" and "file_link" names, the full-suffix link to "file" is "file_link", clashing with the already defined "file_link" name, whereas the abbreviated-suffix link to "file" is "file_lnk", not coinciding with the "file_link" name
@@ -63,5 +64,6 @@ for line in fileinput.input():
         name_anchor = name + anchor_suffix
         print_def(name, text_later)
         print("\define{" + name_anchor + "}{__" + text_first + "__<a name=\"" + name + "\"></a>}")
+        print("\define{" + name_anchor + plural_suffix + "}{__" + p.plural(text_first) + "__<a name=\"" + name + "\"></a>}")
         print("\define{" + name_link + "}{[__" + text_later +"__](#" + name + ")}")
         print("\define{" + name_link + plural_suffix + "}{[__" + p.plural(text_later) + "__](#" + name + ")}")
