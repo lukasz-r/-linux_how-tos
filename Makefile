@@ -80,7 +80,7 @@ $(html_file) : $(md_collect) $(chapter_files) $(css_file)
 		-o $@ $<
 
 view : $(html_file)
-	xdg-open $(html_file)
+	xdg-open $<
 
 .PHONY : clean
 clean :
