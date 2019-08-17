@@ -14,6 +14,7 @@ chapters := \
 	LaTeX \
 	globs_and_regexes \
 	text_operations \
+	coding_and_programming_basics \
 	Bash \
 	time_and_date \
 	filesystem \
@@ -62,6 +63,7 @@ css_file := style.css
 # a target HTML file
 html_file := index.html
 
+.PHONY : all
 all : $(html_file)
 
 $(defs_collect) : $(defs_non-parsed) $(defs_parser) $(defs_files) Makefile
@@ -81,6 +83,5 @@ view : $(html_file)
 	xdg-open $(html_file)
 
 .PHONY : clean
-
 clean :
-	rm -f $(defs_collect) $(md_collect) $(html_file)
+	$(RM) $(defs_collect) $(md_collect) $(html_file)
