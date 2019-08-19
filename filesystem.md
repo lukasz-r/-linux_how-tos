@@ -1,31 +1,73 @@
 
-# filesystem
+# \filesystem
 
-================================================================================
-files, directories, inodes and links
-================================================================================
-# a file is stored in at least three parts of a filesystem:
-## inode (index node) − a data structure storing file metadata, but not its name
-## data blocks − a data structure storing file contents
-## directory − a list of hard links, i.e. (filename, inode number) pairs
+## \file_type_pl in \Linux
 
-# file metadata (thus information stored in an inode):
-## file type (regular file, directory, etc.)
-## location of data blocks the file uses on a filesystem
-## owner and group
-## permissions
-## timestamps
-## size
-## number of links to the inode (link count)
+\file_type_lnk | \file_type_character_anc
+---------------|:-----------------------:
+\regular_file_anc | `-`{.bash}
+\directory_anc | `d`{.bash}
+\symbolic_link_anc | `l`{.bash}
+\FIFO_anc | `p`{.bash}
+\socket_anc | `s`{.bash}
+\character_special_file_anc | `c`{.bash}
+\block_special_file_anc | `b`{.bash}
 
-# hard link is thus a pointer to an inode
-# there can be multiple links pointing to an inode, thus a file can reside in more than one directory
-# "file1" and "file2" are hard-linked if they point to the same inode
-# all hard links to an inode are equivalent, regardless of their creation order
-# a file has n hard links if the link count of its inode is n (thus we count the very file itself)
-# inode numbers are unique within a filesystem, thus files can be hard-linked only within the same filesystem
-# inode number for "/" (a root dir) is traditionally 2
-# on my laptop, "/", "/home", "/opt" and "/scratch" all have inode numbers equal to 2, which is permitted since they are different filesystems
+: \file_type_anc_pl in \Linux
+
+\special_file_anc
+
+: a \character_special_file_lnk or a \block_special_file_lnk
+
++ a \file_type_character_lnk is printed directly before a \file_mode_string_lnk in the output of `ls`{.bash} or `stat`{.bash} commands
+
+## \file_pl, \directory_pl, \inode_pl and \file_link_pl
+
++ a \file_lnk is stored in at least three parts of a \filesystem_lnk:
+
+	+ \inode_anc
+	: a data structure storing \file_metadata_lnk, but not its \filename_lnk
+
+	+ \data_block_pl
+	: a data structure storing \file_lnk contents
+
+	+ \directory_anc
+	: a list of \hard_link_lnk_pl
+
+\hard_link_anc
+: a (\filename_lnk, \inode_lnk number) pair
+
++ \file_metadata_anc --- information stored in an \inode_lnk:
+
+	+ \file_type_lnk
+
+	+ location of \data_block_lnk_pl the \file_lnk uses on a \filesystem_lnk
+
+	+ \file_owner_lnk and \file_group_lnk
+
+	+ \file_permission_lnk_pl
+
+	+ \file_timestamp_lnk_pl
+
+	+ size
+
+	+ \file_link_count_anc (number of \file_link_lnk_pl to the \inode_lnk)
+
++ \hard_link_lnk is thus a pointer to an \inode_lnk
+
++ there can be multiple \hard_link_lnk_pl pointing to an \inode_lnk, thus a \file_lnk can reside in more than one \directory_lnk
+
++ `file1` and `file2` are __hard-linked__ if they point to the same \inode_lnk
+
++ all \hard_link_lnk_pl to an \inode_lnk are equivalent, regardless of their creation order
+
++ a \file_lnk has $n$ \hard_link_lnk_pl if the \file_link_count_lnk of its \inode_lnk is $n$ (thus we count the very \file_lnk itself)
+
++ \inode_number_lnk_pl are unique within a \filesystem_lnk, thus \file_lnk_pl can be hard-linked only within the same \filesystem_lnk
+
++ traditionally, the \inode_number_lnk of the `/` (root) \directory_lnk is $2$
+
++ on my laptop, `/`, `/home`, `/opt` and `/scratch` all have \inode_number_lnk_pl of $2$, which is permitted since they are different \filesystem_lnk_pl
 
 # a (filename, inode number) directory entry is unique only within that directory [there can be multiple identical (filename, inode number) pairs in different directories], but it can be resolved into system-wide unique (absolute pathname, inode number) pair through a path resolution process
 # (absolute pathname, inode number) pairs are system-wide unique since absolute pathnames are system-wide unique (there are no identical absolute pathnames within a filesystem, and of course absolute pathnames on different filesystems always differ), though inode numbers are not system-wide unique
@@ -121,7 +163,7 @@ rdfind -removeidentinode false a.txt texts
 # the results are written to a "results.txt" file
 
 # dry-run replacing duplicate files with hard links in a current directory:
-rdfind -n true -makehardlinks true .
+rdfind -n true -makehard_links true .
 # the results are written to a "results.txt" file
 
 ================================================================================
@@ -193,19 +235,38 @@ chgrp -R gaussian dir
 
 ## file permissions
 
-\file_permission_anchor\plural{s}
+\file_permission_anc\plural{s}
 
-: access rights to specific users, groups of users and processes created by users that control their ability to operate on \file_link\plural{s}
+: access rights to specific users, groups of users and processes created by users that control their ability to operate on \file_lnk\plural{s}
 
 + of course, root is not bound by file permissions
 
-+ \file_permission_class_anchor\plural{es}:
+\file_permission_type_lnk | \file_permission_symbolic_representation_anc
+---------------------------|------------------------
+\file_read_permission_anc | \file_read_permission_lnk
+\file_write_permission_anc | \file_write_permission_lnk
+\file_execute_permission_anc | \file_execute_permission_lnk
+\file_no_permission_anc | \file_no_permission_lnk
 
-	+ \file_owner_anchor: used when the UID of the file equals the EUID of the calling process (e.g. the user accesses his own file) (A
+: \file_permission_type_anc_pl
 
-	+ \file_group_anchor: used when the GID of the file equals the EGID of the calling process or the GID of one of the supplementary groups of the calling process (e.g. the user accesses the file which he doesn't own but which belongs to one of his groups) (B)
+\file_permission_class_anc
+: specific \file_permission_lnk\plural{s} given to a corresponding \file_user_class_lnk
 
-	+ \file_others_anchor: used when neither (A) nor (B) applies (e.g. the user accesses the file which he doesn't own and which belongs to none of his groups)
+	\file_permission_class_lnk | \file_user_class_anc | comment                           
+	----------------------------|-------------------------|-----------------------------------
+	\file_owner_permission_class_anc | \file_owner_anc | used when the UID of the file equals the EUID of the calling process (e.g. the user accesses his own file) (A
+	\file_group_permission_class_anc | \file_group_anc | used when the GID of the file equals the EGID of the calling process or the GID of one of the supplementary groups of the calling process (e.g. the user accesses the file which he doesn't own but which belongs to one of his groups) (B)
+	\file_others_permission_class_anc | \file_others_anc | used when neither (A) nor (B) applies (e.g. the user accesses the file which he doesn't own and which belongs to none of his groups)
+	\file_all_permission_class_anc ($=$ \file_owner_permission_class_lnk\file_group_permission_class_lnk\file_others_permission_class_lnk) | \file_all_users_lnk
+
+	: \file_permission_class_lnk\plural{es} and corresponding \file_user_class_lnk\plural{es}
+
++ groups of \file_user_class_lnk\plural{es}:
+
+	+ \file_all_users_anc: \file_owner_lnk, \file_group_lnk, and \file_others_lnk
+
+	+ \file_any_user_anc: \file_owner_lnk, \file_group_lnk, or \file_others_lnk
 
 # chmod and most commands refer to the owner, group and others class with "u", "g" and "o" letters, respectively, and "a" means all three classes
 # though most commands refer to the owner class as the user class, we prefer to use the former name since it avoids confusion with the current user which might not be the file owner
@@ -213,17 +274,17 @@ chgrp -R gaussian dir
 # display file owner, group and corresponding UID and GID, plus much more information:
 stat file
 
-\file_mode_anchor
+\file_mode_anc
 
-: filesystem \file_permission_link\plural{s} given to \file_owner_link, \file_group_link and \file_others_link \file_permission_class_link\plural{es} to access \file_link\plural{s}, plus \file_special_permission_link\plural{s}
+: \file_owner_permission_class_lnk, \file_group_permission_class_lnk and \file_others_permission_class_lnk \file_permission_lnk\plural{s} plus \file_special_permission_lnk\plural{s}
 
-+ \file_permission_link\plural{s} for each \file_permission_class_link are represented by a $b_3b_2b_1$ ___bit triad___:
++ a \file_permission_class_lnk is represented by three bits:
 
 	bit | meaning
 	----|--------
-	$b_3$ | \file_read_bit
-	$b_2$ | \file_write_bit
-	$b_1$ | \file_execute_bit
+	$b_3$ | \file_read_bit_anc
+	$b_2$ | \file_write_bit_anc
+	$b_1$ | \file_execute_bit_anc
 
 	: $b_3b_2b_1$ bit triad
 
@@ -231,7 +292,7 @@ stat file
 
 	$$m = 1 \cdot 2^2 + 1 \cdot 2^1 + 1 \cdot 2^0 = 7$$
 
-+ why __octal numbers__ are used to represent the \file_permission_link\plural{s}:
++ why __octal numbers__ are used to represent the \file_permission_lnk\plural{s}:
 
 	+ decimal integer numbers between $0$ and $7$ have the same octal representation
 
@@ -255,39 +316,34 @@ stat file
 
 	+ octal numbers are thus a natural choice to represent the bit triad values compactly
 
-\file_permission_link bit | bit triad | octal value
+\file_permission_lnk bit | bit triad | octal value
 --------------------------|-----------|------------
-\file_read_bit_link | $100$ | $m = 4$
-\file_write_bit_link | $010$ | $m = 2$
-\file_execute_bit_link | $001$ | $m = 1$
+\file_read_bit_lnk | $100$ | $m = 4$
+\file_write_bit_lnk | $010$ | $m = 2$
+\file_execute_bit_lnk | $001$ | $m = 1$
 
-: octal values corresponding to individual \file_permission_link bits
+: octal values corresponding to individual \file_permission_lnk bits
 
-+ there are $2^3 = 8$ possible bit patterns for a single \file_permission_class_link, and hence $8^3 = 512$ possible bit patterns for the three \file_permission_class_link\plural{es}
++ there are $2^3 = 8$ possible bit patterns for a single \file_permission_class_lnk, and hence $8^3 = 512$ possible bit patterns for the three \file_owner_permission_class_lnk, \file_group_permission_class_lnk and \file_others_permission_class_lnk \file_permission_class_lnk\plural{es} combined
 
-+ \file_permission_class_link \file_permission_link\plural{s} can be represented by their octal value $m$, or symbolically with "r", "w", "x" and "-" symbols, e.g.
++ \file_permission_class_lnk can be represented by its octal value $m$, or \file_permission_symbolic_representation_alt{symbolically}:
 
-bit triad | octal value | symbolic representation
-----------|-------------|------------------------
-$000$ | $m = 0$ | `---`
-$001$ | $m = 1$ | `--x`
-$010$ | $m = 2$ | `-w-`
-$011$ | $m = 3$ | `-wx`
-$100$ | $m = 4$ | `r--`
-$101$ | $m = 5$ | `r-x`
-$110$ | $m = 6$ | `rw-`
-$111$ | $m = 7$ | `rwx`
+	bit triad | octal value | \file_permission_symbolic_representation_lnk
+	----------|-------------|------------------------
+	$000$ | $m = 0$ | `---`
+	$001$ | $m = 1$ | `--x`
+	$010$ | $m = 2$ | `-w-`
+	$011$ | $m = 3$ | `-wx`
+	$100$ | $m = 4$ | `r--`
+	$101$ | $m = 5$ | `r-x`
+	$110$ | $m = 6$ | `rw-`
+	$111$ | $m = 7$ | `rwx`
 
-: $8$ possible bit patterns for a single bit triad
+	: $8$ possible bit patterns for a single \file_permission_class_lnk
 
-symbol | meaning
--------|--------
-\file_read_permission_link | \file_read_permission_anchor
-\file_write_permission_link | \file_write_permission_anchor
-\file_execute_permission_link | \file_execute_permission_anchor
-\file_no_permission_link | \file_no_permission_anchor
+\file_mode_string_anc
 
-: meaning of \file_permission_link\plural{s} symbolic representation
+: a \file_permission_symbolic_representation_lnk of a \file_mode_lnk, e.g. `rw-rw-r--`{.bash}
 
 ## w = modify a file
 ## x = execute a file
@@ -461,13 +517,16 @@ chmod 775 dir
 ## note that if an external disk with FAT filesystem is mounted, a regular user can create files directly under a mount point since FAT is totally lame and doesn't know what Linux permissions are
 --------------------------------------------------------------------------------
 
-================================================================================
-file timestamps
-================================================================================
-# file MAC (modification, access, change) times:
-## M (mtime) describes when the file contents most recently changed
-## A (atime) describes when the file was most recently opened for reading
-## C (ctime) describes when the file owner, group, permissions, size or name most recently changed
+## \file_timestamp_pl
+
+\file_MAC_time_lnk | description
+-------------------|------------
+\file_mtime_anc | when the \file_lnk contents most recently changed
+\file_atime_anc | when the \file_lnk was most recently opened for reading
+\file_ctime_anc | when the \file_lnk owner, group, permissions, size or name most recently changed
+
+: \file_MAC_time_anc_pl
+
 ## mtime changes each time a file is written during edition, even if its final version is the same as that of the originally-opened file
 ## mtime change triggers atime and ctime changes: atime is set to mtime, and ctime is ca. 50 ms later in time than mtime since file metadata are written after its contents were saved
 ## renaming a file changes only its ctime
@@ -546,21 +605,21 @@ mktemp -p . -d mytempdir-XXX
 
 ## splitting large \file\plural{s}
 
-+ split a large \file_link into:
++ split a large \file_lnk into:
 
-	+ 100 smaller \file_link\plural{s}:
+	+ 100 smaller \file_lnk\plural{s}:
 
 		```bash
 		split -dn 100 large_file split_file_
 		```
 
-	+ $100~\mathrm{MiB}$ \file_link\plural{s}:
+	+ $100~\mathrm{MiB}$ \file_lnk\plural{s}:
 
 		```bash
 		split -db 100M large_file split_file_
 		```
 
-+ the split \file_link\plural{s} are `split_file_00`, `split_file_01`, `...` (and `x00`, `x01`, `...` if no `split_file_` prefix is present), and their concatenation leads back to an original \file_link:
++ the split \file_lnk\plural{s} are `split_file_00`, `split_file_01`, `...` (and `x00`, `x01`, `...` if no `split_file_` prefix is present), and their concatenation leads back to an original \file_lnk:
 
 	```bash
 	cat split_file_* > original_large_file

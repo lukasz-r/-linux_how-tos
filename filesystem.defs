@@ -1,11 +1,44 @@
+filesystem	filesystem
+
+file_type	file type
+file_type_character	file type character
+regular_file	regular file
+directory	directory
+symbolic_link	symbolic link
+FIFO	FIFO (named pipe)	FIFO
+socket	socket
+character_special_file	character special file
+block_special_file	block special file
+special_file	special (device) file	special file
+
+inode	inode (index node)	inode
+inode_number	inode number
+data_block	data block
+file_link	file link	link
+hard_link	hard link
+file_link_count	link count
+
+file_metadata	file metadata
+
+file_user_class	file user class
+file_owner	owner
+file_group	group
+file_others	others
+file_all_users	all users
+file_any_user	any user
+
 file_permission	file permission	permission
+file_permission_type	file permission type	permission type
 file_special_permission	special permission
-file_permission_class	file permission class	class
-file_owner	owner (u)	owner
-file_group	group (g)	group
-file_others	others (o)	others
+file_permission_class	file permission class	permission class
+file_permission_symbolic_representation	symbolic representation
+file_owner_permission_class	u
+file_group_permission_class	g
+file_others_permission_class	o
+file_all_permission_class	a
 
 file_mode	file mode
+file_mode_string	file mode string
 file_read_bit	read bit
 file_write_bit	write bit
 file_execute_bit	execute bit
@@ -13,3 +46,9 @@ file_read_permission	read permission	r
 file_write_permission	write permission	w
 file_execute_permission	execute permission	x
 file_no_permission	no permission	-
+
+file_timestamp	file timestamp	timestamp
+file_MAC_time	MAC time
+file_mtime	mtime (modification time)	mtime
+file_atime	atime (access time)	atime
+file_ctime	ctime (change time)	ctime
