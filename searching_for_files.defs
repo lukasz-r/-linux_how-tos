@@ -1,0 +1,14 @@
+searching_for_files	searching for files
+
+locate	`locate`{.bash}
+locate_database	default locate database	locate database
+locate_database_path	`/var/lib/mlocate/mlocate.db`{.bash}
+updatedb	`updatedb`{.bash}
+updatedb_conf_path	`/etc/updatedb.conf`{.bash}
+
+find	`find`{.bash}
+find_starting_point	starting point
+find_name_pattern	`name_pattern`	name pattern
+find_path_pattern	`path_pattern`	path pattern
+
+excluding_dirs	excluding directories from search
