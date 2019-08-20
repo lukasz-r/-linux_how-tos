@@ -120,8 +120,10 @@ clean :
 
 	\hyphenpenalty = 10000
 
-	\address{Essen,}
-	\date{den~\DTMdisplaydate{2017}{08}{05}{}}
+	\address{
+		Essen,
+		\date{den~\DTMdisplaydate{2017}{08}{05}{-1}}
+	}
 	\signature{Lük Anonymus}
 
 	\begin{document}
