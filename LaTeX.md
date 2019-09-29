@@ -142,6 +142,62 @@ clean :
 	\end{document}
 	```
 
++ a letter in French using French acronyms, with customized date format to show month and year:
+
+	```latex
+	\documentclass[12pt]{letter}
+	\usepackage[T1]{fontenc}
+	\usepackage[utf8]{inputenc}
+	\usepackage[margin = 2.5cm]{geometry}
+	\usepackage[polish, french]{babel}
+	\usepackage[useregional]{datetime2}
+	\usepackage[hidelinks]{hyperref}
+
+	\newcommand{\monthyearfr}[2]{\DTMfrenchmonthname{#1}~#2}
+	\newcommand{\myemail}{me@@me.pl}
+	\newcommand{\jc}{\textbf{Jan Cabacki}}
+
+	\address{
+		Jan Kowalski \\
+		ul. Piękna 169 \\
+		00-001 Miasteczko \\
+		\textsc{Pologne} \\
+		tél. \texttt{+48000000000} \\
+		e-mail \href{mailto:\myemail}{\texttt{\myemail}}
+	}
+
+	\date{Miasteczko, le~\DTMdisplaydate{2019}{09}{30}{-1}}
+	\signature{Jan Kowalski}
+
+	\begin{document}
+
+	\begin{letter}{
+		Centre des archives du personnel militaire \\
+		Caserne Bernadotte \\
+		Place de Verdun \\
+		64023 Pau cedex \\
+		\textsc{France}
+	}
+
+	\opening{Madame, Monsieur,}
+
+	Je suis historien local sur le point d'étudier l'histoire des soldats qui prenaient part à la Deuxième Guerre mondiale, à l'occasion du 75\ieme{} anniversaire de la fin de la Guerre.
+
+	En rapport avec mes recherches, je voudrais vous prier de m'envoyer une copie du dossier personnel de~\jc, un soldat des forces armées polonaises, né le~\DTMdisplaydate{1916}{3}{8}{-1}.
+
+	Je couvrirai tous les frais de la recherche d'archives.
+
+	D'après mes informations, {\jc} est arrivé en France après l'invasion de la Pologne en 1939. En~\monthyearfr{6}{1940}, après la bataille de France, il a été évacué, y compris d'autres soldats alliés, au Royaume-Uni. Là-bas il s'est enrôlé à la 1\iere{} division blindée polonaise sous les ordres de G\up{al}~Stanisław~Maczek, avec laquelle il a pris part au débarquement de Normandie en~\monthyearfr{6}{1944}. Il a été tué au combat le~\DTMdisplaydate{1944}{8}{19}{-1} à Soignolles.
+
+	Je vous remercie d'avance pour votre aide. Veuillez recevoir mes salutations distinguées.
+
+	\closing{Dans l'attente de votre réponse,}
+
+	\end{letter}
+
+	\end{document}
+	```
+
 # avoid "Command `\lll` already defined" error with "babel" and "amssymb" packages:
 \let\lll\undefined
 \usepackage{amssymb}
