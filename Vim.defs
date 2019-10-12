@@ -21,3 +21,6 @@ Vim_default_magic_option	default magic option (`\m`)	default magic option
 Vim_very_magic_option	very magic option (`\v`)	very magic option
 
 Vim_rc_file	`~/.vimrc`
+
+Vim_vimtex_plugin	vimtex	https://github.com/lervag/vimtex
+Vim_vim_surround_plugin	vim-surround	https://github.com/tpope/vim-surround

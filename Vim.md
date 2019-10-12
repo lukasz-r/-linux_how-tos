@@ -372,14 +372,6 @@ flag | meaning
 
 	+ first characters of words to uppercase, the remaining characters to lowercase: `:s#\%V\v(\w)(\S*)#\u\1\L\2#g` (note the \Vim_very_magic_option_lnk)
 
-### __vim-surround__ plugin
-
-+ surround a current word in backticks: `` ysiw` ``
-
-+ surround a current line in backticks: `` yss` ``
-
-+ to avoid repeating typing long character sequences, use [macros](#macros)
-
 ## macros
 
 + record typed characters into the `a` \Vim_register_lnk for further repetition: `` qaysiw`q ``
@@ -423,6 +415,26 @@ flag | meaning
 + add the `.` character at the end of \Vim_selection{selected lines}: `norm A.`
 
 	(`norm A.` executes insert-mode command `A.`)
+
+## plugins
+
+### \Vim_vimtex_plugin
+
++ \see: \Vim_vimtex_plugin_lnk
+
++ useful to work with \LaTeX_lnk sources
+
++ properly highlights the \LaTeX_lnk code after dollar signs that don't start the math mode, but result from a package syntax, e.g. after the `>{$}c<{$}`{.latex} construct of the \LaTeX_array_package_lnk package
+
+### \Vim_vim_surround_plugin
+
++ \see: \Vim_vim_surround_plugin_lnk
+
++ surround a current word in backticks: `` ysiw` ``
+
++ surround a current line in backticks: `` yss` ``
+
++ to avoid repeating typing long character sequences, use [macros](#macros)
 
 ## external commands
 
