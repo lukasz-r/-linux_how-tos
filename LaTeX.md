@@ -206,6 +206,28 @@ clean :
 # set all margins:
 \usepackage[margin = 2cm]{geometry}
 
++ change table column and row separation and restrict the change to a single table only:
+
+	```latex
+	\begingroup
+		\addtolength{\tabcolsep}{6pt}
+		\renewcommand{\arraystretch}{1.5}
+		\begin{table}[h!]
+			\centering
+			\caption{Derivatives}
+			\begin{tabular}{l*{2}{>{$}c<{$}}}
+				\toprule
+				function & f(x) & f'(x) \\
+				\midrule
+				linear & a x + b & a \\
+				sine & \sin{x} & \cos{x} \\
+				\bottomrule
+			\end{tabular}
+			\label{tab:derivatives}
+		\end{table}
+	\endgroup
+	```
+
 --------------------------------------------------------------------------------
 # bibliography with Biblatex
 --------------------------------------------------------------------------------
