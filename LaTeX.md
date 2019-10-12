@@ -109,7 +109,7 @@ clean :
 	\end{document}
 	```
 
-+ a letter in German with date in a German format, with hyphenation turned off and a font size of 20 pt:
++ a letter in German with a date in a German format, with hyphenation turned off and a font size of 20 pt:
 
 	```latex
 	\documentclass[20pt]{extletter}
@@ -120,22 +120,31 @@ clean :
 
 	\hyphenpenalty = 10000
 
+	\newcommand{\myname}{Helga Müller}
+	\newcommand{\mycity}{Essen}
+	\newcommand{\reclastname}{Schäfer}
+
 	\address{
-		Helga Müller \\
-		Düsseldorf
+		Frau \\
+		\myname \\
+		\mycity
 	}
-	\date{Essen, den~\DTMdisplaydate{2017}{08}{05}{-1}}
-	\signature{Lük Anonymus}
+	\date{\mycity, den~\DTMdisplaydate{2017}{08}{05}{-1}}
+	\signature{\myname}
 
 	\begin{document}
 
-	\begin{letter}{}
+	\begin{letter}{
+		Herrn \\
+		Hans \reclastname \\
+		Düsseldorf
+	}
 
-	\opening{Sehr geehrte Frau Müller,}
+	\opening{Sehr geehrter Herr \reclastname,}
 
-	Halo, etc.
+	ich schreibe\ldots
 
-	\closing{MfG,}
+	\closing{Mit freundlichen Grüßen}
 
 	\end{letter}
 
@@ -149,25 +158,26 @@ clean :
 	\usepackage[T1]{fontenc}
 	\usepackage[utf8]{inputenc}
 	\usepackage[margin = 2.5cm]{geometry}
-	\usepackage[polish, french]{babel}
+	\usepackage[french]{babel}
 	\usepackage[useregional]{datetime2}
 	\usepackage[hidelinks]{hyperref}
 
-	\newcommand{\monthyearfr}[2]{\DTMfrenchmonthname{#1}~#2}
+	\newcommand{\myname}{Jan Kowalski}
+	\newcommand{\mycity}{Miasteczko}
 	\newcommand{\myemail}{me@@me.pl}
 	\newcommand{\jc}{\textbf{Jan Cabacki}}
+	\newcommand{\monthyearfr}[2]{\DTMfrenchmonthname{#1}~#2}
 
 	\address{
-		Jan Kowalski \\
+		\myname \\
 		ul. Piękna 169 \\
-		00-001 Miasteczko \\
+		00-001 \mycity \\
 		\textsc{Pologne} \\
 		tél. \texttt{+48000000000} \\
 		e-mail \href{mailto:\myemail}{\texttt{\myemail}}
 	}
-
-	\date{Miasteczko, le~\DTMdisplaydate{2019}{09}{30}{-1}}
-	\signature{Jan Kowalski}
+	\date{\mycity, le~\DTMdisplaydate{2019}{09}{30}{-1}}
+	\signature{\myname}
 
 	\begin{document}
 
