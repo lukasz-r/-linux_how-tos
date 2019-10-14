@@ -1,6 +1,7 @@
 LaTeX	LaTeX
 
 LaTeX_environment	LaTeX environment
+LaTeX_math_mode	LaTeX math mode	math mode
 
 LaTeX_package	LaTeX package	package
 LaTeX_array_package	array	https://www.ctan.org/pkg/array
