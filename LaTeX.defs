@@ -1,3 +1,6 @@
 LaTeX	LaTeX
 
+LaTeX_environment	LaTeX environment
+
+LaTeX_package	LaTeX package	package
 LaTeX_array_package	array	https://www.ctan.org/pkg/array
