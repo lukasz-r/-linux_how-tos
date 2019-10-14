@@ -1,0 +1,12 @@
+package_management	package management
+
+package_management_dependency	dependency
+
+package_management_RPM	RPM
+package_management_YUM	YUM
+package_management_DNF	DNF
+
+package_management_dpkg	dpkg
+package_management_APT	APT
+
+Red_Hat_Developer_Toolset	Red Hat Developer Toolset	https://developers.redhat.com/products/developertoolset/overview
