@@ -24,10 +24,10 @@
 ## case (1):
 ############################################################
 
-### "\anchor_name_txt":
+### "\anchor_name":
 ### prints the "text_first" (or the "text_later", if present)
 
-### "\anchor_name_txt_pl":
+### "\anchor_name_pl":
 ### as above, but prints a pluralized text
 
 ### "\anchor_name_anc":
@@ -58,10 +58,10 @@
 ## case (2):
 ############################################################
 
-### "\link_name_txt":
+### "\link_name":
 ### prints the "text"
 
-### "\link_name_txt_pl":
+### "\link_name_pl":
 ### as above, but prints a pluralized text
 
 ### "\link_name_lnk":
@@ -75,16 +75,16 @@
 ############################################################
 
 ############################################################
-## the "\anchor_name_txt(_pl)" and "\link_name_txt(_pl)"
+## the "\anchor_name(_pl)" and "\link_name(_pl)"
 ## non-linked definitions are useful in chapter titles,
 ## the links to which in the table of contents would be broken
 ## if the linked definitions were used instead
 ############################################################
 
 ############################################################
-## we don't use "_text", "_anchor", "_link",
+## we don't use "_anchor", "_link",
 ## "_plural" nor "_alternative_text" full suffixes,
-## but "_txt", "_anc", "_lnk", "_pl" and "_alt_txt" abbreviated suffixes
+## but "_anc", "_lnk", "_pl" and "_alt_txt" abbreviated suffixes
 ## to reduce the probability of the names clash
 ## e.g. if we define "file" and "file_link" names,
 ## the full-suffix link to "file" is "file_link",
@@ -97,11 +97,10 @@ import fileinput
 import re
 import inflect
 
-text_suffix = "_txt"
 anchor_suffix = "_anc"
 link_suffix = "_lnk"
 plural_suffix = "_pl"
-alt_text_suffix = "_alt" + text_suffix
+alt_text_suffix = "_alt_txt"
 alt_text_argument = "{alt_text}"
 alt_text_formatted = "<wbr>\\alt_text<wbr>"
 
@@ -111,8 +110,8 @@ p = inflect.engine()
 p.defadj("OS", "OSes")
 
 def print_text_defs(def_name, text):
-    print("\define{" + def_name + text_suffix + "}{__" + text + "__}")
-    print("\define{" + def_name + text_suffix + plural_suffix + "}{__" + p.plural(text) + "__}")
+    print("\define{" + def_name + "}{__" + text + "__}")
+    print("\define{" + def_name + plural_suffix + "}{__" + p.plural(text) + "__}")
 
 def print_anchor_def(def_name, anchor_name, text):
     print("\define{" + def_name + "}{__" + text + "__<a name=\"" + anchor_name + "\"></a>}")
